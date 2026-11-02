@@ -11,27 +11,27 @@ def get_candles(interval):
     response = requests.get(
         BASE,
         params={"interval": interval, "limit": 1000},
-        timeout=30
+        timeout=30,
     )
     response.raise_for_status()
     bars = response.json()["bars"]
-    bars = [b for b in bars if not b.get("isOpen", False)]
-    bars.sort(key=lambda x: x["openTime"])
+    bars = [bar for bar in bars if not bar.get("isOpen", False)]
+    bars.sort(key=lambda bar: bar["openTime"])
 
     if len(bars) < 110:
-        raise Exception(f"کندل کافی نیست: {interval}")
+        raise RuntimeError(f"کندل کافی نیست: {interval}")
 
     latest = datetime.fromisoformat(
         bars[-1]["openTime"].replace("Z", "+00:00")
     )
-    age = (
+    age_minutes = (
         datetime.now(timezone.utc) - latest
     ).total_seconds() / 60
 
-    print(f"سن آخرین کندل {interval}: {age:.1f} دقیقه")
+    print(f"سن آخرین کندل {interval}: {age_minutes:.1f} دقیقه")
     max_age = 35 if interval == "15m" else 90
-    if age < -5 or age > max_age:
-        raise Exception(f"اطلاعات {interval} قدیمی است")
+    if age_minutes < -5 or age_minutes > max_age:
+        raise RuntimeError(f"اطلاعات {interval} قدیمی است")
 
     return bars
 
@@ -46,50 +46,79 @@ def ema(values, period):
 
 def rsi(values, period=14):
     changes = [
-        values[i] - values[i - 1]
-        for i in range(1, len(values))
+        values[index] - values[index - 1]
+        for index in range(1, len(values))
     ]
-    gains = [max(x, 0) for x in changes]
-    losses = [max(-x, 0) for x in changes]
+    gains = [max(change, 0) for change in changes]
+    losses = [max(-change, 0) for change in changes]
     avg_gain = sum(gains[-period:]) / period
     avg_loss = sum(losses[-period:]) / period
 
     if avg_loss == 0:
-        return 100
+        return 100.0
     if avg_gain == 0:
-        return 0
+        return 0.0
     return 100 - 100 / (1 + avg_gain / avg_loss)
 
 
 def atr(bars, period=14):
-    ranges = []
-    for i in range(1, len(bars)):
-        high = bars[i]["high"]
-        low = bars[i]["low"]
-        previous = bars[i - 1]["close"]
-        ranges.append(max(
-            high - low,
-            abs(high - previous),
-            abs(low - previous)
-        ))
-    return sum(ranges[-period:]) / period
+    true_ranges = []
+    for index in range(1, len(bars)):
+        high = bars[index]["high"]
+        low = bars[index]["low"]
+        previous_close = bars[index - 1]["close"]
+        true_ranges.append(
+            max(
+                high - low,
+                abs(high - previous_close),
+                abs(low - previous_close),
+            )
+        )
+    return sum(true_ranges[-period:]) / period
 
 
 def send_telegram(message):
     if not TOKEN:
-        raise RuntimeError("TELEGRAM_BOT_TOKEN در Secrets تنظیم نشده است.")
+        raise RuntimeError(
+            "Secret با نام TELEGRAM_BOT_TOKEN تنظیم نشده است."
+        )
 
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     response = requests.post(
         url,
         data={"chat_id": CHAT_ID, "text": message},
-        timeout=20
+        timeout=20,
     )
     response.raise_for_status()
+    result = response.json()
+    if not result.get("ok"):
+        raise RuntimeError(f"Telegram API error: {result}")
 
 
 def analyze():
-    candles15 = get_candles("15m")
-    candles1h = get_candles("1h")
+    candles_15m = get_candles("15m")
+    candles_1h = get_candles("1h")
 
-    close15 = [x["close"] for x in
+    closes_15m = [bar["close"] for bar in candles_15m]
+    closes_1h = [bar["close"] for bar in candles_1h]
+
+    fast_1h = ema(closes_1h, 50)
+    slow_1h = ema(closes_1h, 100)
+    fast_15m = ema(closes_15m, 50)
+    slow_15m = ema(closes_15m, 100)
+
+    current_rsi = rsi(closes_15m)
+    current_atr = atr(candles_15m)
+    price = closes_15m[-1]
+    candle_id = candles_15m[-1]["openTime"]
+
+    direction = None
+    if (
+        fast_1h > slow_1h
+        and fast_15m > slow_15m
+        and 50 < current_rsi < 65
+    ):
+        direction = "BUY"
+    elif (
+        fast_1h < slow_1h
+        and fast_15
