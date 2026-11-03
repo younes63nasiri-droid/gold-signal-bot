@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 CHAT_ID = "601146458"
 BASE = "https://biquote.io/api/XAUUSD/ohlc"
-BINANCE_KLINES = "https://api.binance.com/api/v3/klines"
+BYBIT_KLINES = "https://api.bybit.com/v5/market/kline"
 CRYPTO_ASSETS = {
     "XRPUSDT": "ریپل",
     "DOGEUSDT": "دوج‌کوین",
@@ -32,24 +32,42 @@ def get_candles(interval):
     return bars
 
 
-def get_crypto_candles(symbol, interval):
+dedef get_crypto_candles(symbol, interval):
+    bybit_interval = {"15m": "15", "1h": "60"}.get(interval)
+    if bybit_interval is None:
+        raise ValueError(f"بازه زمانی پشتیبانی نمی‌شود: {interval}")
+
     response = requests.get(
-        BINANCE_KLINES,
-        params={"symbol": symbol, "interval": interval, "limit": 300},
+        BYBIT_KLINES,
+        params={
+            "category": "linear",
+            "symbol": symbol,
+            "interval": bybit_interval,
+            "limit": 300,
+        },
         timeout=30,
     )
     response.raise_for_status()
-    rows = response.json()
+    payload = response.json()
+    if payload.get("retCode") != 0:
+        raise RuntimeError(f"خطای Bybit برای {symbol}: {payload.get('retMsg', 'unknown error')}")
+
+    rows = payload.get("result", {}).get("list", [])
     now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
-    # Binance candle fields: open time, open, high, low, close, volume, close time, ...
-    closed = [row for row in rows if int(row[6]) < now_ms]
+    candle_ms = int(bybit_interval) * 60 * 1000
+    # Bybit returns candles newest-first: start, open, high, low, close, volume, turnover.
+    closed = [row for row in rows if int(row[0]) + candle_ms <= now_ms]
+    closed.sort(key=lambda row: int(row[0]))
     if len(closed) < 110:
         raise RuntimeError(f"کندل کافی برای {symbol} در بازه {interval} نیست")
-    latest_age = (now_ms - int(closed[-1][6])) / 60000
+
+    latest_close_ms = int(closed[-1][0]) + candle_ms
+    latest_age = (now_ms - latest_close_ms) / 60000
     print(f"{symbol} {interval}: آخرین کندل بسته‌شده {latest_age:.1f} دقیقه قبل")
     max_age = 35 if interval == "15m" else 75
     if latest_age < 0 or latest_age > max_age:
         raise RuntimeError(f"داده {symbol} در بازه {interval} قدیمی است")
+
     return [
         {
             "openTime": datetime.fromtimestamp(int(row[0]) / 1000, timezone.utc).isoformat(),
@@ -59,7 +77,6 @@ def get_crypto_candles(symbol, interval):
         }
         for row in closed
     ]
-
 
 def ema(values, period):
     alpha = 2 / (period + 1)
