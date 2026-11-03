@@ -62,8 +62,21 @@ def get_crypto_candles(symbol, interval):
     if len(closed) < 110:
         raise RuntimeError(f"کندل کافی از Toobit برای {symbol} در بازه {interval} دریافت نشد؛ تعداد: {len(closed)}")
 
-    latest_close_ms = int(closed[-1][6])
+    latest_open_raw = closed[-1][0]
+    latest_close_raw = closed[-1][6]
+    latest_open_ms = int(latest_open_raw)
+    latest_close_ms = int(latest_close_raw)
     latest_age = (now_ms - latest_close_ms) / 60000
+    print(
+        f"TOOBIT_DIAG symbol={symbol} interval={interval} rows={len(rows)} "
+        f"closed_rows={len(closed)} now_ms={now_ms} "
+        f"now_utc={datetime.fromtimestamp(now_ms / 1000, timezone.utc).isoformat()} "
+        f"last_open_raw={latest_open_raw} "
+        f"last_open_utc={datetime.fromtimestamp(latest_open_ms / 1000, timezone.utc).isoformat()} "
+        f"last_close_raw={latest_close_raw} "
+        f"last_close_utc={datetime.fromtimestamp(latest_close_ms / 1000, timezone.utc).isoformat()} "
+        f"age_minutes={latest_age:.2f}"
+    )
     print(f"{symbol} {interval}: آخرین کندل بسته‌شده {latest_age:.1f} دقیقه قبل")
     max_age = 35 if interval == "15m" else 75
     if latest_age < 0 or latest_age > max_age:
