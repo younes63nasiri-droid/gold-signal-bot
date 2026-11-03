@@ -5,6 +5,12 @@ from datetime import datetime, timezone
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 CHAT_ID = "601146458"
 BASE = "https://biquote.io/api/XAUUSD/ohlc"
+BINANCE_KLINES = "https://api.binance.com/api/v3/klines"
+CRYPTO_ASSETS = {
+    "XRPUSDT": "ریپل",
+    "DOGEUSDT": "دوج‌کوین",
+    "TRXUSDT": "ترون",
+}
 
 
 def get_candles(interval):
@@ -24,6 +30,35 @@ def get_candles(interval):
     if age_minutes < -5 or age_minutes > max_age:
         raise RuntimeError(f"اطلاعات {interval} واقعاً قدیمی است")
     return bars
+
+
+def get_crypto_candles(symbol, interval):
+    response = requests.get(
+        BINANCE_KLINES,
+        params={"symbol": symbol, "interval": interval, "limit": 300},
+        timeout=30,
+    )
+    response.raise_for_status()
+    rows = response.json()
+    now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+    # Binance candle fields: open time, open, high, low, close, volume, close time, ...
+    closed = [row for row in rows if int(row[6]) < now_ms]
+    if len(closed) < 110:
+        raise RuntimeError(f"کندل کافی برای {symbol} در بازه {interval} نیست")
+    latest_age = (now_ms - int(closed[-1][6])) / 60000
+    print(f"{symbol} {interval}: آخرین کندل بسته‌شده {latest_age:.1f} دقیقه قبل")
+    max_age = 35 if interval == "15m" else 75
+    if latest_age < 0 or latest_age > max_age:
+        raise RuntimeError(f"داده {symbol} در بازه {interval} قدیمی است")
+    return [
+        {
+            "openTime": datetime.fromtimestamp(int(row[0]) / 1000, timezone.utc).isoformat(),
+            "high": float(row[2]),
+            "low": float(row[3]),
+            "close": float(row[4]),
+        }
+        for row in closed
+    ]
 
 
 def ema(values, period):
@@ -119,6 +154,69 @@ def analyze():
     print("Signal message sent.")
 
 
+def analyze_crypto(symbol, persian_name):
+    candles_15m = get_crypto_candles(symbol, "15m")
+    candles_1h = get_crypto_candles(symbol, "1h")
+    closes_15m = [bar["close"] for bar in candles_15m]
+    closes_1h = [bar["close"] for bar in candles_1h]
+
+    fast_1h, slow_1h = ema(closes_1h, 50), ema(closes_1h, 100)
+    fast_15m, slow_15m = ema(closes_15m, 50), ema(closes_15m, 100)
+    current_rsi = rsi(closes_15m)
+    current_atr = atr(candles_15m)
+    price = closes_15m[-1]
+    candle_id = candles_15m[-1]["openTime"]
+
+    direction = None
+    if fast_1h > slow_1h and fast_15m > slow_15m and 50 < current_rsi < 65:
+        direction = "BUY"
+    elif fast_1h < slow_1h and fast_15m < slow_15m and 35 < current_rsi < 50:
+        direction = "SELL"
+
+    print(f"{symbol}: price={price}, RSI={current_rsi:.2f}, ATR={current_atr:.8f}, signal={direction or 'NO TRADE'}")
+    if direction is None or current_atr <= 0:
+        message = (
+            f"🪙 گزارش ارز دیجیتال | {persian_name} ({symbol})\n\n"
+            "🟡 فعلاً موقعیت معاملاتی معتبری وجود ندارد.\n"
+            f"💰 قیمت بررسی‌شده: {price:.8f} USDT\n"
+            f"📈 RSI: {current_rsi:.1f}\n"
+            f"📊 ATR: {current_atr:.8f}\n"
+            f"⏱ زمان کندل: {candle_id}\n\n"
+            "ربات در بررسی بعدی دوباره بازار را تحلیل می‌کند.\n"
+            "⚠️ این گزارش توصیه مالی نیست."
+        )
+    else:
+        risk = 1.5 * current_atr
+        if direction == "BUY":
+            stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
+        else:
+            stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
+        message = (
+            f"🪙 سیگنال آزمایشی | {persian_name} ({symbol})\n\n"
+            f"📊 جهت: {'خرید' if direction == 'BUY' else 'فروش'} ({direction})\n"
+            f"💰 ورود: {price:.8f} USDT\n"
+            f"🛑 حد ضرر: {stop_loss:.8f}\n"
+            f"🎯 هدف اول: {target_1:.8f}\n"
+            f"🎯 هدف دوم: {target_2:.8f}\n"
+            f"📈 RSI: {current_rsi:.1f}\n"
+            f"⏱ زمان کندل: {candle_id}\n\n"
+            "⚠️ سیگنال آزمایشی؛ سودآوری تأیید نشده است."
+        )
+    send_telegram(message)
+    print(f"Telegram crypto report sent for {symbol}.")
+
+
 if __name__ == "__main__":
     print("شروع بررسی بازار طلا...")
     analyze()
+    print("شروع بررسی ارزهای دیجیتال...")
+    for crypto_symbol, crypto_name in CRYPTO_ASSETS.items():
+        try:
+            analyze_crypto(crypto_symbol, crypto_name)
+        except Exception as error:
+            print(f"خطا در بررسی {crypto_symbol}: {error}")
+            send_telegram(
+                f"⚠️ خطا در بررسی {crypto_name} ({crypto_symbol})\n"
+                f"{type(error).__name__}: {error}\n"
+                "در بررسی بعدی دوباره تلاش می‌کنم."
+            )
