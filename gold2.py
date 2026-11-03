@@ -5,11 +5,11 @@ from datetime import datetime, timezone
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 CHAT_ID = "601146458"
 BASE = "https://biquote.io/api/XAUUSD/ohlc"
-BYBIT_KLINES = "https://api.bybit.com/v5/market/kline"
+TOOBIT_KLINES = "https://api.toobit.com/quote/v1/klines"
 CRYPTO_ASSETS = {
-    "XRPUSDT": "ریپل",
-    "DOGEUSDT": "دوج‌کوین",
-    "TRXUSDT": "ترون",
+    "XRP-SWAP-USDT": "ریپل",
+    "DOGE-SWAP-USDT": "دوج‌کوین",
+    "TRX-SWAP-USDT": "ترون",
 }
 
 
@@ -33,35 +33,36 @@ def get_candles(interval):
 
 
 def get_crypto_candles(symbol, interval):
-    bybit_interval = {"15m": "15", "1h": "60"}.get(interval)
-    if bybit_interval is None:
+    if interval not in ("15m", "1h"):
         raise ValueError(f"بازه زمانی پشتیبانی نمی‌شود: {interval}")
 
+    interval_minutes = 15 if interval == "15m" else 60
+    now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+    start_ms = now_ms - 300 * interval_minutes * 60 * 1000
+
     response = requests.get(
-        BYBIT_KLINES,
+        TOOBIT_KLINES,
         params={
-            "category": "linear",
             "symbol": symbol,
-            "interval": bybit_interval,
+            "interval": interval,
+            "startTime": start_ms,
+            "endTime": now_ms,
             "limit": 300,
         },
         timeout=30,
     )
     response.raise_for_status()
-    payload = response.json()
-    if payload.get("retCode") != 0:
-        raise RuntimeError(f"خطای Bybit برای {symbol}: {payload.get('retMsg', 'unknown error')}")
+    rows = response.json()
+    if not isinstance(rows, list):
+        raise RuntimeError(f"پاسخ نامعتبر Toobit برای {symbol}: {rows}")
 
-    rows = payload.get("result", {}).get("list", [])
-    now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
-    candle_ms = int(bybit_interval) * 60 * 1000
-    # Bybit returns candles newest-first: start, open, high, low, close, volume, turnover.
-    closed = [row for row in rows if int(row[0]) + candle_ms <= now_ms]
+    # Toobit Klines: open time, open, high, low, close, volume, close time, ...
+    closed = [row for row in rows if len(row) >= 7 and int(row[6]) < now_ms]
     closed.sort(key=lambda row: int(row[0]))
     if len(closed) < 110:
-        raise RuntimeError(f"کندل کافی برای {symbol} در بازه {interval} نیست")
+        raise RuntimeError(f"کندل کافی از Toobit برای {symbol} در بازه {interval} دریافت نشد؛ تعداد: {len(closed)}")
 
-    latest_close_ms = int(closed[-1][0]) + candle_ms
+    latest_close_ms = int(closed[-1][6])
     latest_age = (now_ms - latest_close_ms) / 60000
     print(f"{symbol} {interval}: آخرین کندل بسته‌شده {latest_age:.1f} دقیقه قبل")
     max_age = 35 if interval == "15m" else 75
