@@ -121,4 +121,44 @@ def analyze():
         direction = "BUY"
     elif (
         fast_1h < slow_1h
-        and fast_15
+        and fast_15m < slow_15m
+        and 35 < current_rsi < 50
+    ):
+        direction = "SELL"
+
+    print("Price:", price)
+    print("RSI:", round(current_rsi, 2))
+    print("ATR:", round(current_atr, 3))
+    print("Signal:", direction or "NO TRADE")
+
+    if direction is None or current_atr <= 0:
+        return
+
+    risk = 1.5 * current_atr
+    if direction == "BUY":
+        stop_loss = price - risk
+        target_1 = price + 2 * risk
+        target_2 = price + 3 * risk
+    else:
+        stop_loss = price + risk
+        target_1 = price - 2 * risk
+        target_2 = price - 3 * risk
+
+    message = (
+        "🥇 GOLD XAU/USD\n\n"
+        f"📊 Signal: {direction}\n"
+        f"💰 Entry: {price:.2f}\n"
+        f"🛑 Stop Loss: {stop_loss:.2f}\n"
+        f"🎯 Target 1: {target_1:.2f}\n"
+        f"🎯 Target 2: {target_2:.2f}\n"
+        f"📈 RSI: {current_rsi:.1f}\n"
+        f"⏱ Time: {candle_id}\n\n"
+        "⚠️ سیگنال آزمایشی؛ سودآوری تأیید نشده است."
+    )
+    send_telegram(message)
+    print("Signal message sent.")
+
+
+if __name__ == "__main__":
+    print("شروع بررسی بازار طلا...")
+    analyze()
