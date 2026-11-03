@@ -21,17 +21,21 @@ def get_candles(interval):
     if len(bars) < 110:
         raise RuntimeError(f"کندل کافی نیست: {interval}")
 
-    latest = datetime.fromisoformat(
+    # openTime is the candle's START time, not its close time.
+    # Compare freshness using the expected candle close time.
+    latest_open = datetime.fromisoformat(
         bars[-1]["openTime"].replace("Z", "+00:00")
     )
+    candle_minutes = 15 if interval == "15m" else 60
+    latest_close = latest_open.timestamp() + candle_minutes * 60
     age_minutes = (
-        datetime.now(timezone.utc) - latest
-    ).total_seconds() / 60
+        datetime.now(timezone.utc).timestamp() - latest_close
+    ) / 60
 
-    print(f"سن آخرین کندل {interval}: {age_minutes:.1f} دقیقه")
-    max_age = 35 if interval == "15m" else 90
+    print(f"سن آخرین کندل بسته‌شده {interval}: {age_minutes:.1f} دقیقه")
+    max_age = 35 if interval == "15m" else 75
     if age_minutes < -5 or age_minutes > max_age:
-        raise RuntimeError(f"اطلاعات {interval} قدیمی است")
+        raise RuntimeError(f"اطلاعات {interval} واقعاً قدیمی است")
 
     return bars
 
