@@ -102,6 +102,15 @@ def send_telegram(message):
         raise RuntimeError(f"Telegram API error: {result}")
 
 
+def format_price(value):
+    """نمایش قیمت با تعداد رقم اعشار متناسب با ارزش نماد."""
+    if abs(value) >= 100:
+        return f"{value:.2f}"
+    if abs(value) >= 1:
+        return f"{value:.4f}"
+    return f"{value:.6f}"
+
+
 def analyze():
     candles_15m = get_candles("15m")
     candles_1h = get_candles("1h")
@@ -140,15 +149,13 @@ def analyze():
     else:
         stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
     message = (
-        "🥇 GOLD XAU/USD\n\n"
-        f"📊 Signal: {direction}\n"
-        f"💰 Entry: {price:.2f}\n"
-        f"🛑 Stop Loss: {stop_loss:.2f}\n"
-        f"🎯 Target 1: {target_1:.2f}\n"
-        f"🎯 Target 2: {target_2:.2f}\n"
-        f"📈 RSI: {current_rsi:.1f}\n"
-        f"⏱ Time: {candle_id}\n\n"
-        "⚠️ سیگنال آزمایشی؛ سودآوری تأیید نشده است."
+        "🥇 سیگنال طلا | XAU/USD\n\n"
+        f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
+        f"💰 قیمت ورود: {format_price(price)}\n"
+        f"🎯 حد سود اول: {format_price(target_1)}\n"
+        f"🛑 حد ضرر: {format_price(stop_loss)}\n\n"
+        f"⏱ زمان سیگنال: {candle_id}\n"
+        "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
     )
     send_telegram(message)
     print("Signal message sent.")
@@ -192,15 +199,13 @@ def analyze_crypto(symbol, persian_name):
         else:
             stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
         message = (
-            f"🪙 سیگنال آزمایشی | {persian_name} ({symbol})\n\n"
-            f"📊 جهت: {'خرید' if direction == 'BUY' else 'فروش'} ({direction})\n"
-            f"💰 ورود: {price:.8f} USDT\n"
-            f"🛑 حد ضرر: {stop_loss:.8f}\n"
-            f"🎯 هدف اول: {target_1:.8f}\n"
-            f"🎯 هدف دوم: {target_2:.8f}\n"
-            f"📈 RSI: {current_rsi:.1f}\n"
-            f"⏱ زمان کندل: {candle_id}\n\n"
-            "⚠️ سیگنال آزمایشی؛ سودآوری تأیید نشده است."
+            f"🪙 سیگنال {persian_name} | {symbol}\n\n"
+            f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
+            f"💰 قیمت ورود: {format_price(price)} USDT\n"
+            f"🎯 حد سود اول: {format_price(target_1)} USDT\n"
+            f"🛑 حد ضرر: {format_price(stop_loss)} USDT\n\n"
+            f"⏱ زمان سیگنال: {candle_id}\n"
+            "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
         )
     send_telegram(message)
     print(f"Telegram crypto report sent for {symbol}.")
