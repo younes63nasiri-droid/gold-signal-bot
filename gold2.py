@@ -32,7 +32,7 @@ def get_candles(interval):
     return bars
 
 
-dedef get_crypto_candles(symbol, interval):
+def get_crypto_candles(symbol, interval):
     bybit_interval = {"15m": "15", "1h": "60"}.get(interval)
     if bybit_interval is None:
         raise ValueError(f"بازه زمانی پشتیبانی نمی‌شود: {interval}")
