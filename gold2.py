@@ -86,6 +86,18 @@ def analyze():
     print("Price:", price, "RSI:", round(current_rsi, 2), "ATR:", round(current_atr, 3))
     print("Signal:", direction or "NO TRADE")
     if direction is None or current_atr <= 0:
+        status_message = (
+            "🥇 گزارش ربات طلا | XAU/USD\n\n"
+            "🟡 فعلاً موقعیت معاملاتی معتبری وجود ندارد.\n"
+            f"💰 قیمت بررسی‌شده: {price:.2f}\n"
+            f"📈 RSI: {current_rsi:.1f}\n"
+            f"📊 ATR: {current_atr:.3f}\n"
+            f"⏱ زمان کندل: {candle_id}\n\n"
+            "ربات فعال است و در بررسی بعدی دوباره بازار را تحلیل می‌کند.\n"
+            "⚠️ این گزارش توصیه مالی نیست."
+        )
+        send_telegram(status_message)
+        print("No-trade status message sent.")
         return
     risk = 1.5 * current_atr
     if direction == "BUY":
