@@ -373,29 +373,22 @@ def analyze_crypto(symbol, persian_name):
             stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
         else:
             stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
-    else:
-        risk = 1.5 * current_atr
-        if direction == "BUY":
-            stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
-        else:
-            stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
         leverage = dynamic_gold_leverage(price, stop_loss)
         message = (
-            f"🪙 سیگنال {persian_name} | {symbol}\\n\\n"
-            f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\\n"
-            f"💰 قیمت ورود: {format_price(price)} USDT\\n"
-            f"🎯 حد سود اول: {format_price(target_1)} USDT\\n"
-            f"🛑 حد ضرر: {format_price(stop_loss)} USDT\\n"
-            f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (حداکثر ۱۰x)\\n"
-            "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\\n\\n"
-            f"⏱ زمان سیگنال: {candle_id}\\n"
+            f"🪙 سیگنال {persian_name} | {symbol}\n\n"
+            f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
+            f"💰 قیمت ورود: {format_price(price)} USDT\n"
+            f"🎯 حد سود اول: {format_price(target_1)} USDT\n"
+            f"🛑 حد ضرر: {format_price(stop_loss)} USDT\n"
+            f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (حداکثر ۱۰x)\n"
+            "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\n\n"
+            f"⏱ زمان سیگنال: {candle_id}\n"
             "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
         )
     send_telegram(message)
     if direction is not None and current_atr > 0:
         save_pending_crypto_signal(symbol, price, direction, candle_id)
     print(f"Telegram crypto report sent for {symbol}.")
-
 
 if __name__ == "__main__":
     print("شروع بررسی بازار طلا...")
