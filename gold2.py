@@ -149,68 +149,9 @@ def format_price(value):
     return f"{value:.6f}"
 
 
-def load_gold_trade_state():
-    token = os.environ.get("GITHUB_TOKEN", "").strip()
-    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
-    if not token or not repository:
-        raise RuntimeError("دسترسی ذخیره وضعیت سیگنال طلا تنظیم نشده است.")
-    url = f"https://api.github.com/repos/{repository}/contents/gold_trade_state.json"
-    response = requests.get(url, headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"}, timeout=20)
-    if response.status_code == 404:
-        return {}, None
-    response.raise_for_status()
-    import base64
-    import json
-    payload = response.json()
-    content = base64.b64decode(payload["content"]).decode("utf-8")
-    return json.loads(content), payload["sha"]
-
-
-def save_gold_trade_state(state, sha):
-    import base64
-    import json
-    token = os.environ.get("GITHUB_TOKEN", "").strip()
-    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
-    branch = os.environ.get("GITHUB_REF_NAME", "main")
-    url = f"https://api.github.com/repos/{repository}/contents/gold_trade_state.json"
-    content = base64.b64encode(json.dumps(state, ensure_ascii=False, indent=2).encode("utf-8")).decode("ascii")
-    payload = {"message": "Update pending gold signal state", "content": content, "branch": branch}
-    if sha:
-        payload["sha"] = sha
-    response = requests.put(url, headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"}, json=payload, timeout=20)
-    response.raise_for_status()
-
-
-def process_pending_gold_entry(candles):
-    state, sha = load_gold_trade_state()
-    if not state:
-        return
-    signal_candle = state.get("candle_id")
-    later = [bar for bar in candles if bar["openTime"] > signal_candle]
-    if not later:
-        return
-    check_bar = later[0]
-    entry = float(state["entry"])
-    touched = float(check_bar["low"]) <= entry <= float(check_bar["high"])
-    if touched:
-        send_telegram(
-            "🥇 وضعیت سیگنال طلا | XAU/USD\n\n"
-            f"✅ قیمت ورود {format_price(entry)} لمس شد.\n"
-            "مهلت اعتبار سیگنال پایان یافت؛ وضعیت ورود را خودتان بررسی کنید."
-        )
-    else:
-        send_telegram(
-            "🥇 لغو سیگنال طلا | XAU/USD\n\n"
-            f"❌ قیمت ورود {format_price(entry)} در مهلت ۱۵ دقیقه‌ای نرسید.\n"
-            "سیگنال منقضی شد؛ وارد این معامله نشوید."
-        )
-    save_gold_trade_state({}, sha)
-
-
 def analyze():
     candles_15m = get_candles("15m")
     candles_1h = get_candles("1h")
-    process_pending_gold_entry(candles_15m)
     closes_15m = [bar["close"] for bar in candles_15m]
     closes_1h = [bar["close"] for bar in candles_1h]
     fast_1h, slow_1h = ema(closes_1h, 50), ema(closes_1h, 100)
@@ -245,25 +186,16 @@ def analyze():
         stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
     else:
         stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
-
-    stop_distance_pct = (risk / price) * 100
-    leverage = min(10.0, max(1.0, 10.0 / stop_distance_pct))
-    leverage_text = f"{leverage:.1f}x"
-
     message = (
         "🥇 سیگنال طلا | XAU/USD\n\n"
         f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
         f"💰 قیمت ورود: {format_price(price)}\n"
         f"🎯 حد سود اول: {format_price(target_1)}\n"
-        f"🛑 حد ضرر: {format_price(stop_loss)}\n"
-        f"⚖️ اهرم پیشنهادی متغیر: {leverage_text} (حداکثر 10x)\n\n"
-        "⏳ اعتبار قیمت ورود: ۱۵ دقیقه؛ اگر قیمت نرسید، پیام لغو ارسال می‌شود.\n"
+        f"🛑 حد ضرر: {format_price(stop_loss)}\n\n"
         f"⏱ زمان سیگنال: {candle_id}\n"
-        "⚠️ اهرم صرفاً بر اساس فاصله حد ضرر محاسبه شده؛ سیگنال آزمایشی است."
+        "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
     )
     send_telegram(message)
-    state, sha = load_gold_trade_state()
-    save_gold_trade_state({"candle_id": candle_id, "entry": price, "direction": direction}, sha)
     print("Signal message sent.")
 
 
