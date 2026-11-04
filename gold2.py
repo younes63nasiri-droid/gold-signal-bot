@@ -65,16 +65,22 @@ def get_crypto_candles(symbol, interval):
     if not isinstance(rows, list):
         raise RuntimeError(f"پاسخ نامعتبر Toobit برای {symbol}: {rows}")
 
-    # Toobit Klines: open time, open, high, low, close, volume, close time, ...
-    closed = [row for row in rows if len(row) >= 7 and int(row[6]) < now_ms]
-    closed.sort(key=lambda row: int(row[0]))
+    # Toobit identifies each candle by its open timestamp. Derive its
+    # scheduled close from openTime + interval instead of trusting closeTime,
+    # which can be inconsistent across contract market responses.
+    interval_ms = interval_minutes * 60 * 1000
+    valid_rows = [row for row in rows if isinstance(row, (list, tuple)) and len(row) >= 5]
+    valid_rows.sort(key=lambda row: int(row[0]))
+    closed = [
+        row for row in valid_rows
+        if int(row[0]) + interval_ms <= now_ms
+    ]
     if len(closed) < 110:
         raise RuntimeError(f"کندل کافی از Toobit برای {symbol} در بازه {interval} دریافت نشد؛ تعداد: {len(closed)}")
 
     latest_open_raw = closed[-1][0]
-    latest_close_raw = closed[-1][6]
     latest_open_ms = int(latest_open_raw)
-    latest_close_ms = int(latest_close_raw)
+    latest_close_ms = latest_open_ms + interval_ms
     latest_age = (now_ms - latest_close_ms) / 60000
     print(
         f"TOOBIT_DIAG symbol={symbol} interval={interval} rows={len(rows)} "
@@ -82,8 +88,7 @@ def get_crypto_candles(symbol, interval):
         f"now_utc={datetime.fromtimestamp(now_ms / 1000, timezone.utc).isoformat()} "
         f"last_open_raw={latest_open_raw} "
         f"last_open_utc={datetime.fromtimestamp(latest_open_ms / 1000, timezone.utc).isoformat()} "
-        f"last_close_raw={latest_close_raw} "
-        f"last_close_utc={datetime.fromtimestamp(latest_close_ms / 1000, timezone.utc).isoformat()} "
+        f"derived_close_utc={datetime.fromtimestamp(latest_close_ms / 1000, timezone.utc).isoformat()} "
         f"age_minutes={latest_age:.2f}"
     )
     print(f"{symbol} {interval}: آخرین کندل بسته‌شده {latest_age:.1f} دقیقه قبل")
