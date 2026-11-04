@@ -267,12 +267,15 @@ def analyze():
         stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
     else:
         stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
+    leverage = dynamic_gold_leverage(price, stop_loss)
     message = (
         "🥇 سیگنال طلا | XAU/USD\n\n"
         f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
         f"💰 قیمت ورود: {format_price(price)}\n"
         f"🎯 حد سود اول: {format_price(target_1)}\n"
-        f"🛑 حد ضرر: {format_price(stop_loss)}\n\n"
+        f"🛑 حد ضرر: {format_price(stop_loss)}\n"
+        f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (حداکثر ۱۰x)\n"
+        "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\n\n"
         f"⏱ زمان سیگنال: {candle_id}\n"
         "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
     )
