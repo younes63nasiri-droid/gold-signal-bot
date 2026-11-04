@@ -1,4 +1,6 @@
 import os
+import json
+import base64
 import requests
 from datetime import datetime, timezone
 
@@ -149,9 +151,85 @@ def format_price(value):
     return f"{value:.6f}"
 
 
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
+STATE_PATH = "gold_signal_state.json"
+GITHUB_CONTENTS_API = "https://api.github.com/repos/younes63nasiri-droid/gold-signal-bot/contents/" + STATE_PATH
+
+
+def load_gold_state():
+    if not GITHUB_TOKEN:
+        raise RuntimeError("توکن دسترسی ذخیره وضعیت گیت‌هاب تنظیم نشده است.")
+    response = requests.get(
+        GITHUB_CONTENTS_API,
+        headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"},
+        timeout=20,
+    )
+    if response.status_code == 404:
+        return None, None
+    response.raise_for_status()
+    payload = response.json()
+    return json.loads(base64.b64decode(payload["content"]).decode("utf-8")), payload["sha"]
+
+
+def save_gold_state(state, sha=None):
+    if not GITHUB_TOKEN:
+        raise RuntimeError("توکن دسترسی ذخیره وضعیت گیت‌هاب تنظیم نشده است.")
+    content = base64.b64encode(json.dumps(state, ensure_ascii=False).encode("utf-8")).decode("ascii")
+    body = {"message": "Update gold signal tracking state", "content": content}
+    if sha:
+        body["sha"] = sha
+    response = requests.put(
+        GITHUB_CONTENTS_API,
+        headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"},
+        json=body,
+        timeout=20,
+    )
+    response.raise_for_status()
+
+
+def dynamic_gold_leverage(entry, stop_loss):
+    stop_pct = abs(entry - stop_loss) / entry
+    if stop_pct <= 0:
+        return 1
+    # Aim to keep the stop-distance loss near 1% of margin; cap leverage at 10x.
+    return max(1, min(10, round(0.01 / stop_pct, 1)))
+
+
+def expire_previous_gold_signal(candles):
+    state, sha = load_gold_state()
+    if not state:
+        return
+    previous_candle = state.get("candle_id")
+    later_bars = [bar for bar in candles if bar["openTime"] > previous_candle]
+    if not later_bars:
+        return
+    first = later_bars[0]
+    entry = float(state["entry"])
+    touched = first["low"] <= entry <= first["high"]
+    if not touched:
+        send_telegram(
+            "⛔ لغو سیگنال طلا | XAU/USD\\n\\n"
+            f"قیمت ورود {format_price(entry)} در مهلت ۱۵ دقیقه‌ای لمس نشد.\\n"
+            "سیگنال منقضی شد؛ وارد معامله نشوید."
+        )
+    else:
+        print("Gold entry price was reached during the validity candle.")
+    # Clear state after the first completed candle following the signal.
+    save_gold_state({"status": "clear"}, sha)
+
+
+def save_pending_gold_signal(entry, direction, candle_id):
+    state, sha = load_gold_state()
+    save_gold_state(
+        {"status": "pending", "entry": entry, "direction": direction, "candle_id": candle_id},
+        sha,
+    )
+
+
 def analyze():
     candles_15m = get_candles("15m")
     candles_1h = get_candles("1h")
+    expire_previous_gold_signal(candles_15m)
     closes_15m = [bar["close"] for bar in candles_15m]
     closes_1h = [bar["close"] for bar in candles_1h]
     fast_1h, slow_1h = ema(closes_1h, 50), ema(closes_1h, 100)
@@ -196,6 +274,7 @@ def analyze():
         "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
     )
     send_telegram(message)
+    save_pending_gold_signal(price, direction, candle_id)
     print("Signal message sent.")
 
 
