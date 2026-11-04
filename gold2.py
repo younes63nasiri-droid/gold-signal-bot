@@ -325,7 +325,7 @@ def expire_previous_crypto_signal(symbol, persian_name, candles):
     first = later_bars[0]
     entry = float(state["entry"])
     if not (first["low"] <= entry <= first["high"]):
-        send_telegram(f"⛔ لغو سیگنال {persian_name} | {symbol}\\n\\nقیمت ورود {format_price(entry)} در مهلت ۱۵ دقیقه‌ای لمس نشد.\\nسیگنال منقضی شد؛ وارد معامله نشوید.")
+        send_telegram(f"⛔ لغو سیگنال {persian_name} | {symbol}\n\nقیمت ورود {format_price(entry)} در مهلت ۱۵ دقیقه‌ای لمس نشد.\nسیگنال منقضی شد؛ وارد معامله نشوید.")
     states[symbol] = {"status": "clear"}
     save_crypto_states(states, sha)
 
