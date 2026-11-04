@@ -211,8 +211,8 @@ def expire_previous_gold_signal(candles):
     touched = first["low"] <= entry <= first["high"]
     if not touched:
         send_telegram(
-            "⛔ لغو سیگنال طلا | XAU/USD\\n\\n"
-            f"قیمت ورود {format_price(entry)} در مهلت ۱۵ دقیقه‌ای لمس نشد.\\n"
+            "⛔ لغو سیگنال طلا | XAU/USD\n\n"
+            f"قیمت ورود {format_price(entry)} در مهلت ۱۵ دقیقه‌ای لمس نشد.\n"
             "سیگنال منقضی شد؛ وارد معامله نشوید."
         )
     else:
