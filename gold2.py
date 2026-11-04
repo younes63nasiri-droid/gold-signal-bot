@@ -168,7 +168,10 @@ def load_gold_state():
         return None, None
     response.raise_for_status()
     payload = response.json()
-    return json.loads(base64.b64decode(payload["content"]).decode("utf-8")), payload["sha"]
+    state = json.loads(base64.b64decode(payload["content"]).decode("utf-8"))
+    if state.get("status") != "pending":
+        return None, payload["sha"]
+    return state, payload["sha"]
 
 
 def save_gold_state(state, sha=None):
