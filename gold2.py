@@ -289,9 +289,56 @@ def analyze():
     print("Signal message sent.")
 
 
+
+CRYPTO_STATE_PATH = "crypto_signal_state.json"
+CRYPTO_STATE_API = "https://api.github.com/repos/younes63nasiri-droid/gold-signal-bot/contents/" + CRYPTO_STATE_PATH
+
+
+def load_crypto_states():
+    if not GITHUB_TOKEN:
+        raise RuntimeError("توکن دسترسی ذخیره وضعیت گیت‌هاب تنظیم نشده است.")
+    response = requests.get(CRYPTO_STATE_API, headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}, timeout=20)
+    if response.status_code == 404:
+        return {}, None
+    response.raise_for_status()
+    payload = response.json()
+    return json.loads(base64.b64decode(payload["content"]).decode("utf-8")), payload["sha"]
+
+
+def save_crypto_states(states, sha=None):
+    content = base64.b64encode(json.dumps(states, ensure_ascii=False).encode("utf-8")).decode("ascii")
+    body = {"message": "Update crypto signal tracking state", "content": content}
+    if sha:
+        body["sha"] = sha
+    response = requests.put(CRYPTO_STATE_API, headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}, json=body, timeout=20)
+    response.raise_for_status()
+
+
+def expire_previous_crypto_signal(symbol, persian_name, candles):
+    states, sha = load_crypto_states()
+    state = states.get(symbol)
+    if not state or state.get("status") != "pending":
+        return
+    later_bars = [bar for bar in candles if bar["openTime"] > state["candle_id"]]
+    if not later_bars:
+        return
+    first = later_bars[0]
+    entry = float(state["entry"])
+    if not (first["low"] <= entry <= first["high"]):
+        send_telegram(f"⛔ لغو سیگنال {persian_name} | {symbol}\\n\\nقیمت ورود {format_price(entry)} در مهلت ۱۵ دقیقه‌ای لمس نشد.\\nسیگنال منقضی شد؛ وارد معامله نشوید.")
+    states[symbol] = {"status": "clear"}
+    save_crypto_states(states, sha)
+
+
+def save_pending_crypto_signal(symbol, entry, direction, candle_id):
+    states, sha = load_crypto_states()
+    states[symbol] = {"status": "pending", "entry": entry, "direction": direction, "candle_id": candle_id}
+    save_crypto_states(states, sha)
+
 def analyze_crypto(symbol, persian_name):
     candles_15m = get_crypto_candles(symbol, "15m")
     candles_1h = get_crypto_candles(symbol, "1h")
+    expire_previous_crypto_signal(symbol, persian_name, candles_15m)
     closes_15m = [bar["close"] for bar in candles_15m]
     closes_1h = [bar["close"] for bar in candles_1h]
 
@@ -326,16 +373,27 @@ def analyze_crypto(symbol, persian_name):
             stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
         else:
             stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
+    else:
+        risk = 1.5 * current_atr
+        if direction == "BUY":
+            stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
+        else:
+            stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
+        leverage = dynamic_gold_leverage(price, stop_loss)
         message = (
-            f"🪙 سیگنال {persian_name} | {symbol}\n\n"
-            f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
-            f"💰 قیمت ورود: {format_price(price)} USDT\n"
-            f"🎯 حد سود اول: {format_price(target_1)} USDT\n"
-            f"🛑 حد ضرر: {format_price(stop_loss)} USDT\n\n"
-            f"⏱ زمان سیگنال: {candle_id}\n"
+            f"🪙 سیگنال {persian_name} | {symbol}\\n\\n"
+            f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\\n"
+            f"💰 قیمت ورود: {format_price(price)} USDT\\n"
+            f"🎯 حد سود اول: {format_price(target_1)} USDT\\n"
+            f"🛑 حد ضرر: {format_price(stop_loss)} USDT\\n"
+            f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (حداکثر ۱۰x)\\n"
+            "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\\n\\n"
+            f"⏱ زمان سیگنال: {candle_id}\\n"
             "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
         )
     send_telegram(message)
+    if direction is not None and current_atr > 0:
+        save_pending_crypto_signal(symbol, price, direction, candle_id)
     print(f"Telegram crypto report sent for {symbol}.")
 
 
