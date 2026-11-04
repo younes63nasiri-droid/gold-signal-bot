@@ -37,7 +37,14 @@ def get_crypto_candles(symbol, interval):
         raise ValueError(f"بازه زمانی پشتیبانی نمی‌شود: {interval}")
 
     interval_minutes = 15 if interval == "15m" else 60
-    now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+    # Use Toobit's own clock so candle freshness checks are not affected by
+    # clock skew on the GitHub Actions runner.
+    time_response = requests.get("https://api.toobit.com/api/v1/time", timeout=15)
+    time_response.raise_for_status()
+    server_time = time_response.json()
+    if not isinstance(server_time, dict) or "serverTime" not in server_time:
+        raise RuntimeError(f"زمان سرور Toobit نامعتبر است: {server_time}")
+    now_ms = int(server_time["serverTime"])
     start_ms = now_ms - 300 * interval_minutes * 60 * 1000
 
     response = requests.get(
