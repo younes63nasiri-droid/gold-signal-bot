@@ -1,1 +1,1 @@
-{"TRX-SWAP-USDT": {"status": "clear"}, "XRP-SWAP-USDT": {"status": "pending", "entry": 1.1794, "direction": "SELL", "candle_id": "2026-11-06T21:45:00+00:00"}, "DOGE-SWAP-USDT": {"status": "clear"}}
+{"TRX-SWAP-USDT": {"status": "clear"}, "XRP-SWAP-USDT": {"status": "pending", "entry": 1.1794, "direction": "SELL", "candle_id": "2026-11-06T21:45:00+00:00"}, "DOGE-SWAP-USDT": {"status": "pending", "entry": 0.07278, "direction": "SELL", "candle_id": "2026-11-06T21:45:00+00:00"}}
