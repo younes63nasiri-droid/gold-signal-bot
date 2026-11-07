@@ -446,7 +446,19 @@ def analyze_crypto(symbol, persian_name):
 
 if __name__ == "__main__":
     print("شروع بررسی بازار طلا...")
-    analyze()
+    try:
+        analyze()
+    except Exception as error:
+        print(f"خطا در بررسی طلا: {error}")
+        try:
+            send_telegram(
+                f"⚠️ خطا در بررسی طلا | XAU/USD\\n"
+                f"{type(error).__name__}: {error}\\n"
+                "بررسی ارزهای دیجیتال بدون توقف ادامه پیدا می‌کند."
+            )
+        except Exception as telegram_error:
+            print(f"ارسال گزارش خطای طلا ناموفق بود: {telegram_error}")
+
     print("شروع بررسی ارزهای دیجیتال...")
     for crypto_symbol, crypto_name in CRYPTO_ASSETS.items():
         try:
