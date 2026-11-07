@@ -37,13 +37,13 @@ def get_candles(interval):
     except Exception as error:
         print(f"BiQuote {interval} خطا داد: {error}; تلاش با منبع جایگزین.")
 
-    # Fallback: Yahoo Finance XAU/USD chart feed (15m and 1h OHLC).
+    # Fallback: Yahoo Finance COMEX gold futures (GC=F) chart feed (15m and 1h OHLC); this is a futures proxy, not spot XAU/USD.
     yahoo_interval = "15m" if interval == "15m" else "1h"
-    url = "https://query1.finance.yahoo.com/v8/finance/chart/XAUUSD=X"
+    url = "https://query2.finance.yahoo.com/v8/finance/chart/GC=F"
     response = requests.get(
         url,
         params={"range": "1mo", "interval": yahoo_interval},
-        headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"},
+        headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126.0.0.0 Safari/537.36", "Accept": "application/json"},
         timeout=25,
     )
     response.raise_for_status()
@@ -51,7 +51,7 @@ def get_candles(interval):
     result = (payload.get("chart") or {}).get("result")
     if not result:
         detail = (payload.get("chart") or {}).get("error")
-        raise RuntimeError(f"منبع جایگزین Yahoo داده‌ای نداد: {detail}")
+        raise RuntimeError(f"منبع جایگزین Yahoo GC=F داده‌ای نداد: {detail}")
 
     timestamps = result[0].get("timestamp") or []
     quote = result[0]["indicators"]["quote"][0]
@@ -82,7 +82,7 @@ def get_candles(interval):
 
     latest_open = datetime.fromisoformat(bars[-1]["openTime"])
     age_minutes = (now - latest_open.timestamp() - interval_seconds) / 60
-    print(f"Yahoo fallback {interval}: {len(bars)} کندل؛ آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه قبل")
+    print(f"Yahoo GC=F fallback {interval}: {len(bars)} کندل؛ آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه قبل")
     if age_minutes < -5 or age_minutes > max_age:
         raise RuntimeError(f"داده Yahoo برای {interval} هم قدیمی است: {age_minutes:.1f} دقیقه")
     return bars
