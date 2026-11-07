@@ -7,6 +7,8 @@ from datetime import datetime, timezone
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 CHAT_ID = "601146458"
 BASE = "https://biquote.io/api/XAUUSD/ohlc"
+BINANCE_KLINES = "https://api.binance.com/api/v3/klines"
+GOLD_PROXY_SYMBOL = "PAXGUSDT"
 TOOBIT_KLINES = "https://api.toobit.com/quote/v1/klines"
 CRYPTO_ASSETS = {
     "XRP-SWAP-USDT": "ریپل",
@@ -20,7 +22,7 @@ def get_candles(interval):
     max_age = 35 if interval == "15m" else 75
     now = datetime.now(timezone.utc).timestamp()
 
-    # Primary source: BiQuote
+    # Primary source: BiQuote spot XAU/USD
     try:
         response = requests.get(BASE, params={"interval": interval, "limit": 1000}, timeout=20)
         response.raise_for_status()
@@ -37,54 +39,44 @@ def get_candles(interval):
     except Exception as error:
         print(f"BiQuote {interval} خطا داد: {error}; تلاش با منبع جایگزین.")
 
-    # Fallback: Yahoo Finance COMEX gold futures (GC=F) chart feed (15m and 1h OHLC); this is a futures proxy, not spot XAU/USD.
-    yahoo_interval = "15m" if interval == "15m" else "1h"
-    url = "https://query2.finance.yahoo.com/v8/finance/chart/GC=F"
+    # Fallback: Binance PAXG/USDT (gold-backed token proxy; not spot XAU/USD).
+    # Avoid Yahoo Finance, which returned HTTP 429 rate limits.
     response = requests.get(
-        url,
-        params={"range": "1mo", "interval": yahoo_interval},
-        headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126.0.0.0 Safari/537.36", "Accept": "application/json"},
+        BINANCE_KLINES,
+        params={"symbol": GOLD_PROXY_SYMBOL, "interval": interval, "limit": 500},
+        headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"},
         timeout=25,
     )
     response.raise_for_status()
-    payload = response.json()
-    result = (payload.get("chart") or {}).get("result")
-    if not result:
-        detail = (payload.get("chart") or {}).get("error")
-        raise RuntimeError(f"منبع جایگزین Yahoo GC=F داده‌ای نداد: {detail}")
+    rows = response.json()
+    if not isinstance(rows, list):
+        raise RuntimeError(f"پاسخ نامعتبر Binance برای {GOLD_PROXY_SYMBOL}: {rows}")
 
-    timestamps = result[0].get("timestamp") or []
-    quote = result[0]["indicators"]["quote"][0]
     interval_seconds = candle_minutes * 60
     bars = []
-    for index, stamp in enumerate(timestamps):
+    for row in rows:
         try:
-            open_price = quote["open"][index]
-            high = quote["high"][index]
-            low = quote["low"][index]
-            close = quote["close"][index]
-            if None in (open_price, high, low, close):
-                continue
-            if stamp + interval_seconds > now:
+            open_ms = int(row[0])
+            if open_ms / 1000 + interval_seconds > now:
                 continue
             bars.append({
-                "openTime": datetime.fromtimestamp(stamp, timezone.utc).isoformat(),
-                "high": float(high),
-                "low": float(low),
-                "close": float(close),
+                "openTime": datetime.fromtimestamp(open_ms / 1000, timezone.utc).isoformat(),
+                "high": float(row[2]),
+                "low": float(row[3]),
+                "close": float(row[4]),
             })
         except (IndexError, TypeError, ValueError):
             continue
 
     bars.sort(key=lambda bar: bar["openTime"])
     if len(bars) < 110:
-        raise RuntimeError(f"کندل کافی از Yahoo برای {interval} دریافت نشد؛ تعداد: {len(bars)}")
+        raise RuntimeError(f"کندل کافی از Binance برای {GOLD_PROXY_SYMBOL} در {interval} دریافت نشد؛ تعداد: {len(bars)}")
 
     latest_open = datetime.fromisoformat(bars[-1]["openTime"])
     age_minutes = (now - latest_open.timestamp() - interval_seconds) / 60
-    print(f"Yahoo GC=F fallback {interval}: {len(bars)} کندل؛ آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه قبل")
+    print(f"Binance {GOLD_PROXY_SYMBOL} fallback {interval}: {len(bars)} کندل؛ آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه قبل")
     if age_minutes < -5 or age_minutes > max_age:
-        raise RuntimeError(f"داده Yahoo برای {interval} هم قدیمی است: {age_minutes:.1f} دقیقه")
+        raise RuntimeError(f"داده Binance برای {interval} هم قدیمی است: {age_minutes:.1f} دقیقه")
     return bars
 
 
