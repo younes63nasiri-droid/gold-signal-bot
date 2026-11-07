@@ -16,21 +16,75 @@ CRYPTO_ASSETS = {
 
 
 def get_candles(interval):
-    response = requests.get(BASE, params={"interval": interval, "limit": 1000}, timeout=30)
+    candle_minutes = 15 if interval == "15m" else 60
+    max_age = 35 if interval == "15m" else 75
+    now = datetime.now(timezone.utc).timestamp()
+
+    # Primary source: BiQuote
+    try:
+        response = requests.get(BASE, params={"interval": interval, "limit": 1000}, timeout=20)
+        response.raise_for_status()
+        bars = response.json()["bars"]
+        bars = [bar for bar in bars if not bar.get("isOpen", False)]
+        bars.sort(key=lambda bar: bar["openTime"])
+        if len(bars) >= 110:
+            latest_open = datetime.fromisoformat(bars[-1]["openTime"].replace("Z", "+00:00"))
+            age_minutes = (now - latest_open.timestamp() - candle_minutes * 60) / 60
+            print(f"BiQuote {interval}: سن آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه")
+            if -5 <= age_minutes <= max_age:
+                return bars
+        print(f"BiQuote {interval} قدیمی یا ناقص است؛ تلاش با منبع جایگزین.")
+    except Exception as error:
+        print(f"BiQuote {interval} خطا داد: {error}; تلاش با منبع جایگزین.")
+
+    # Fallback: Yahoo Finance XAU/USD chart feed (15m and 1h OHLC).
+    yahoo_interval = "15m" if interval == "15m" else "1h"
+    url = "https://query1.finance.yahoo.com/v8/finance/chart/XAUUSD=X"
+    response = requests.get(
+        url,
+        params={"range": "1mo", "interval": yahoo_interval},
+        headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"},
+        timeout=25,
+    )
     response.raise_for_status()
-    bars = response.json()["bars"]
-    bars = [bar for bar in bars if not bar.get("isOpen", False)]
+    payload = response.json()
+    result = (payload.get("chart") or {}).get("result")
+    if not result:
+        detail = (payload.get("chart") or {}).get("error")
+        raise RuntimeError(f"منبع جایگزین Yahoo داده‌ای نداد: {detail}")
+
+    timestamps = result[0].get("timestamp") or []
+    quote = result[0]["indicators"]["quote"][0]
+    interval_seconds = candle_minutes * 60
+    bars = []
+    for index, stamp in enumerate(timestamps):
+        try:
+            open_price = quote["open"][index]
+            high = quote["high"][index]
+            low = quote["low"][index]
+            close = quote["close"][index]
+            if None in (open_price, high, low, close):
+                continue
+            if stamp + interval_seconds > now:
+                continue
+            bars.append({
+                "openTime": datetime.fromtimestamp(stamp, timezone.utc).isoformat(),
+                "high": float(high),
+                "low": float(low),
+                "close": float(close),
+            })
+        except (IndexError, TypeError, ValueError):
+            continue
+
     bars.sort(key=lambda bar: bar["openTime"])
     if len(bars) < 110:
-        raise RuntimeError(f"کندل کافی نیست: {interval}")
-    latest_open = datetime.fromisoformat(bars[-1]["openTime"].replace("Z", "+00:00"))
-    candle_minutes = 15 if interval == "15m" else 60
-    latest_close = latest_open.timestamp() + candle_minutes * 60
-    age_minutes = (datetime.now(timezone.utc).timestamp() - latest_close) / 60
-    print(f"سن آخرین کندل بسته‌شده {interval}: {age_minutes:.1f} دقیقه")
-    max_age = 35 if interval == "15m" else 75
+        raise RuntimeError(f"کندل کافی از Yahoo برای {interval} دریافت نشد؛ تعداد: {len(bars)}")
+
+    latest_open = datetime.fromisoformat(bars[-1]["openTime"])
+    age_minutes = (now - latest_open.timestamp() - interval_seconds) / 60
+    print(f"Yahoo fallback {interval}: {len(bars)} کندل؛ آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه قبل")
     if age_minutes < -5 or age_minutes > max_age:
-        raise RuntimeError(f"اطلاعات {interval} واقعاً قدیمی است")
+        raise RuntimeError(f"داده Yahoo برای {interval} هم قدیمی است: {age_minutes:.1f} دقیقه")
     return bars
 
 
