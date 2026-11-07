@@ -7,8 +7,8 @@ from datetime import datetime, timezone
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 CHAT_ID = "601146458"
 BASE = "https://biquote.io/api/XAUUSD/ohlc"
-BINANCE_KLINES = "https://api.binance.com/api/v3/klines"
-GOLD_PROXY_SYMBOL = "PAXGUSDT"
+KRAKEN_OHLC = "https://api.kraken.com/0/public/OHLC"
+GOLD_PROXY_PAIR = "PAXGUSD"
 TOOBIT_KLINES = "https://api.toobit.com/quote/v1/klines"
 CRYPTO_ASSETS = {
     "XRP-SWAP-USDT": "ریپل",
@@ -39,28 +39,34 @@ def get_candles(interval):
     except Exception as error:
         print(f"BiQuote {interval} خطا داد: {error}; تلاش با منبع جایگزین.")
 
-    # Fallback: Binance PAXG/USDT (gold-backed token proxy; not spot XAU/USD).
-    # Avoid Yahoo Finance, which returned HTTP 429 rate limits.
+    # Fallback: Kraken PAXG/USD OHLC. PAXG is a gold-backed token proxy,
+    # not identical to spot XAU/USD. Kraken returns the current candle last; exclude it.
+    kraken_interval = 15 if interval == "15m" else 60
     response = requests.get(
-        BINANCE_KLINES,
-        params={"symbol": GOLD_PROXY_SYMBOL, "interval": interval, "limit": 500},
+        KRAKEN_OHLC,
+        params={"pair": GOLD_PROXY_PAIR, "interval": kraken_interval},
         headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"},
         timeout=25,
     )
     response.raise_for_status()
-    rows = response.json()
-    if not isinstance(rows, list):
-        raise RuntimeError(f"پاسخ نامعتبر Binance برای {GOLD_PROXY_SYMBOL}: {rows}")
-
-    interval_seconds = candle_minutes * 60
+    payload = response.json()
+    errors = payload.get("error") or []
+    if errors:
+        raise RuntimeError(f"خطای Kraken برای {GOLD_PROXY_PAIR}: {errors}")
+    result = payload.get("result") or {}
+    pair_key = next((key for key in result if key != "last"), None)
+    if not pair_key:
+        raise RuntimeError(f"Kraken برای {GOLD_PROXY_PAIR} داده‌ای برنگرداند.")
+    rows = result[pair_key]
     bars = []
+    interval_seconds = candle_minutes * 60
     for row in rows:
         try:
-            open_ms = int(row[0])
-            if open_ms / 1000 + interval_seconds > now:
+            open_ts = int(row[0])
+            if open_ts + interval_seconds > now:
                 continue
             bars.append({
-                "openTime": datetime.fromtimestamp(open_ms / 1000, timezone.utc).isoformat(),
+                "openTime": datetime.fromtimestamp(open_ts, timezone.utc).isoformat(),
                 "high": float(row[2]),
                 "low": float(row[3]),
                 "close": float(row[4]),
@@ -70,13 +76,12 @@ def get_candles(interval):
 
     bars.sort(key=lambda bar: bar["openTime"])
     if len(bars) < 110:
-        raise RuntimeError(f"کندل کافی از Binance برای {GOLD_PROXY_SYMBOL} در {interval} دریافت نشد؛ تعداد: {len(bars)}")
-
+        raise RuntimeError(f"کندل کافی از Kraken برای {GOLD_PROXY_PAIR} در {interval} دریافت نشد؛ تعداد: {len(bars)}")
     latest_open = datetime.fromisoformat(bars[-1]["openTime"])
     age_minutes = (now - latest_open.timestamp() - interval_seconds) / 60
-    print(f"Binance {GOLD_PROXY_SYMBOL} fallback {interval}: {len(bars)} کندل؛ آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه قبل")
+    print(f"Kraken {GOLD_PROXY_PAIR} fallback {interval}: {len(bars)} کندل؛ آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه قبل")
     if age_minutes < -5 or age_minutes > max_age:
-        raise RuntimeError(f"داده Binance برای {interval} هم قدیمی است: {age_minutes:.1f} دقیقه")
+        raise RuntimeError(f"داده Kraken برای {interval} هم قدیمی است: {age_minutes:.1f} دقیقه")
     return bars
 
 
