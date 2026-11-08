@@ -4,7 +4,7 @@ import gold2
 
 OWNER_REPO = "younes63nasiri-droid/gold-signal-bot"
 STATE_PATH = "paper_trading_state.json"
-STATE_URL = f"https://api.github.com/repos/{OWNER_REPO}/contents/{STATE_PATH}"
+STATE_URL = f"https://api.github.com/repos/{OWNER_REPO}/contents/{STATE_PATH}?ref=paper-trading-demo"
 GH_TOKEN = os.environ["GITHUB_TOKEN"]
 TG_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = "601146458"
