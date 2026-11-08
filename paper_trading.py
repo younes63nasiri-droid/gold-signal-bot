@@ -34,7 +34,7 @@ def load_state():
 
 def save_state(state, sha):
     raw = json.dumps(state, ensure_ascii=False, indent=2).encode()
-    body = {"message": "Update paper trading state", "content": base64.b64encode(raw).decode()}
+    body = {"message": "Update paper trading state", "content": base64.b64encode(raw).decode(), "branch": "paper-trading-demo"}
     if sha:
         body["sha"] = sha
     r = requests.put(STATE_URL, headers=gh_headers(), json=body, timeout=20)
