@@ -15,9 +15,9 @@ FEE_RATE = 0.0006
 
 ASSETS = {
     "XAU/USD (PAXG proxy)": ("gold", None),
-    "XRP-SWAP-USDT": ("crypto", "ریپل"),
-    "DOGE-SWAP-USDT": ("crypto", "دوج‌کوین"),
-    "TRX-SWAP-USDT": ("crypto", "ترون"),
+    "ریپل (XRP-SWAP-USDT)": ("crypto", "XRP-SWAP-USDT"),
+    "دوج‌کوین (DOGE-SWAP-USDT)": ("crypto", "DOGE-SWAP-USDT"),
+    "ترون (TRX-SWAP-USDT)": ("crypto", "TRX-SWAP-USDT"),
 }
 
 def gh_headers():
