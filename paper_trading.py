@@ -111,7 +111,7 @@ def main():
             qty = min(qty_by_risk, qty_by_leverage)
             if qty <= 0:
                 continue
-            leverage = (qty * entry) / max(state["balance"] * 0.1, 1.0)
+            leverage = (qty * entry) / max(state["balance"], 1.0)
             leverage = min(MAX_LEVERAGE, max(1.0, leverage))
             entry_fee = abs(entry * qty) * FEE_RATE
             state["balance"] -= entry_fee
