@@ -1,5 +1,5 @@
 {
-  "balance": 92161.11423273842,
+  "balance": 91389.92196260602,
   "positions": {
     "ریپل (XRP-SWAP-USDT)": {
       "side": "SHORT",
@@ -30,18 +30,8 @@
       "entry_fee": 87.32324300719898,
       "opened_at": "2026-11-12T02:15:00Z",
       "leverage": 1.5724227466360083
-    },
-    "ترون (TRX-SWAP-USDT)": {
-      "side": "SHORT",
-      "entry": 0.31701,
-      "stop": 0.317295,
-      "target": 0.31644,
-      "qty": 1622275.0998311422,
-      "entry_fee": 308.56645763848223,
-      "opened_at": "2026-11-12T02:15:00+00:00",
-      "leverage": 5.5615789473683135
     }
   },
-  "closed_trades": 25,
-  "realized_pnl": -3918.1328417607065
+  "closed_trades": 26,
+  "realized_pnl": -4689.325111893102
 }
