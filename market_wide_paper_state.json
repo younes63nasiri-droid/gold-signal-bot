@@ -14,7 +14,8 @@
       "opened_candle": 1794575700000,
       "opened_at": "2026-11-13T13:24:47.854732+00:00",
       "score": 84.77,
-      "spread_pct": 0.0089
+      "spread_pct": 0.0089,
+      "last_mark": 112.01
     }
   },
   "closed_trades": 0,
@@ -24,10 +25,10 @@
   "unrealized_pnl": -24.77873589164803,
   "equity": 99950.44252821669,
   "total_pnl": -49.55747178330785,
-  "last_scan": "2026-11-13T13:24:47.854778+00:00",
+  "last_scan": "2026-11-13T13:25:25.925001+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 299,
+    "liquid": 296,
     "analyzed": 60,
     "qualified": 10
   }
