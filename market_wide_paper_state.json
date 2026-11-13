@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "balance": 100000,
+  "realized_pnl": 0,
+  "positions": {},
+  "closed_trades": 0,
+  "wins": 0,
+  "losses": 0,
+  "created_at": "2026-11-13T13:16:16.017Z"
+}
