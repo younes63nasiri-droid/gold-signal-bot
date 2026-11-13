@@ -11,15 +11,16 @@ TIMEOUT = 20
 # ESPN public scoreboard coverage for the first working version.
 # Additional leagues/sports are added only after a stable data source is verified.
 FEEDS = [
-    ("فوتبال انگلیس", f"{BASE}/soccer/eng.1/scoreboard"),
-    ("فوتبال اسپانیا", f"{BASE}/soccer/esp.1/scoreboard"),
-    ("فوتبال ایتالیا", f"{BASE}/soccer/ita.1/scoreboard"),
-    ("فوتبال آلمان", f"{BASE}/soccer/ger.1/scoreboard"),
-    ("فوتبال فرانسه", f"{BASE}/soccer/fra.1/scoreboard"),
-    ("لیگ قهرمانان اروپا", f"{BASE}/soccer/uefa.champions/scoreboard"),
+    ("فوتبال جهان (مسابقات پوشش‌داده‌شده ESPN)", f"{BASE}/soccer/all/scoreboard"),
     ("بسکتبال NBA", f"{BASE}/basketball/nba/scoreboard"),
+    ("بسکتبال WNBA", f"{BASE}/basketball/wnba/scoreboard"),
+    ("تنیس ATP", f"{BASE}/tennis/atp/scoreboard"),
+    ("تنیس WTA", f"{BASE}/tennis/wta/scoreboard"),
+    ("والیبال قهرمانی جهان زنان", f"{BASE}/volleyball/fivb.w/scoreboard"),
+    ("والیبال قهرمانی جهان مردان", f"{BASE}/volleyball/fivb.m/scoreboard"),
+    ("بیسبال MLB", f"{BASE}/baseball/mlb/scoreboard"),
+    ("هاکی NHL", f"{BASE}/hockey/nhl/scoreboard"),
 ]
-
 def fetch_events(label, url, date_str):
     response = requests.get(url, params={"dates": date_str}, headers=HEADERS, timeout=TIMEOUT)
     response.raise_for_status()
