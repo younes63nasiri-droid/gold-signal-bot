@@ -6,5 +6,15 @@
   "closed_trades": 0,
   "wins": 0,
   "losses": 0,
-  "created_at": "2026-11-13T13:16:16.017Z"
+  "created_at": "2026-11-13T13:16:16.017Z",
+  "unrealized_pnl": 0.0,
+  "equity": 100000.0,
+  "total_pnl": 0.0,
+  "last_scan": "2026-11-13T13:17:13.860280+00:00",
+  "last_scan_counts": {
+    "contracts": 778,
+    "liquid": 288,
+    "analyzed": 40,
+    "qualified": 0
+  }
 }
