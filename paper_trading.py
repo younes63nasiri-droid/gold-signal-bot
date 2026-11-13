@@ -30,6 +30,13 @@ def load_state():
     r.raise_for_status()
     obj = r.json()
     state = json.loads(base64.b64decode(obj["content"]).decode("utf-8"))
+    if not state.get("accounting_version"):
+        open_entry_fees = sum(float(p.get("entry_fee", 0.0)) for p in state.get("positions", {}).values())
+        old_closed_fees = max(0.0, START_BALANCE + float(state.get("realized_pnl", 0.0)) - float(state.get("balance", START_BALANCE)) - open_entry_fees)
+        state["realized_pnl"] = float(state.get("realized_pnl", 0.0)) - old_closed_fees
+        state["wins"] = 0
+        state["losses"] = 0
+        state["accounting_version"] = 2
     return state, obj["sha"]
 
 def save_state(state, sha):
@@ -70,10 +77,14 @@ def close_position(state, label, pos, price, reason):
     side_sign = 1 if pos["side"] == "LONG" else -1
     gross = (price - pos["entry"]) * pos["qty"] * side_sign
     exit_fee = abs(price * pos["qty"]) * FEE_RATE
-    pnl = gross - exit_fee
-    state["balance"] += pnl
+    pnl = gross - exit_fee - float(pos.get("entry_fee", 0.0))
+    state["balance"] += gross - exit_fee
     state["realized_pnl"] += pnl
     state["closed_trades"] += 1
+    if pnl >= 0:
+        state["wins"] = int(state.get("wins", 0)) + 1
+    else:
+        state["losses"] = int(state.get("losses", 0)) + 1
     del state["positions"][label]
     return (f"🔴 بسته‌شدن معامله آزمایشی | {label}\n"
             f"علت: {reason}\nورود: {pos['entry']:.6g}\nخروج: {price:.6g}\n"
@@ -127,13 +138,30 @@ def main():
             )
         except Exception as e:
             notices.append(f"⚠️ خطای بررسی آزمایشی {label}: {type(e).__name__}: {e}")
+    unrealized = 0.0
+    for label, pos in state.get("positions", {}).items():
+        try:
+            kind, symbol = ASSETS[label]
+            bars = gold2.get_candles("15m") if kind == "gold" else gold2.get_crypto_candles(symbol, "15m")
+            mark = float(bars[-1]["close"])
+            sign = 1 if pos["side"] == "LONG" else -1
+            gross = (mark - float(pos["entry"])) * float(pos["qty"]) * sign
+            unrealized += gross - abs(mark * float(pos["qty"])) * FEE_RATE
+        except Exception as e:
+            print(f"MARK_TO_MARKET_ERROR {label}: {e}")
+    state["last_unrealized_pnl"] = unrealized
+    state["last_equity"] = float(state["balance"]) + unrealized
+    state["last_total_pnl"] = state["last_equity"] - START_BALANCE
     save_state(state, sha)
     for note in notices:
         telegram(note)
     if notices:
         telegram(f"📊 خلاصه حساب آزمایشی\nموجودی: {state['balance']:.2f} USDT\n"
-                 f"سود/زیان تحقق‌یافته: {state['realized_pnl']:+.2f} USDT\n"
-                 f"معاملات بسته‌شده: {state['closed_trades']}\n"
+                 f"سود/زیان تحقق‌یافته خالص: {state['realized_pnl']:+.2f} USDT\n"
+                 f"سود/زیان باز تقریبی: {state['last_unrealized_pnl']:+.2f} USDT\n"
+                 f"ارزش کل حساب: {state['last_equity']:.2f} USDT\n"
+                 f"کل سود/زیان نسبت به شروع: {state['last_total_pnl']:+.2f} USDT\n"
+                 f"معاملات بسته‌شده: {state['closed_trades']} (برد جدید: {state.get('wins',0)}، باخت جدید: {state.get('losses',0)})\n"
                  f"معاملات باز: {len(state['positions'])}\n"
                  "این حساب شبیه‌سازی است و هیچ سفارش واقعی به صرافی ارسال نمی‌کند.")
 
