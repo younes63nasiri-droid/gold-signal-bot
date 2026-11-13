@@ -38,6 +38,6 @@ jobs:
       - name: Scan all Toobit USDT perpetuals and paper trade
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.GOLD_TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID: ${{ secrets.GOLD_TELEGRAM_CHAT_ID }}
           GITHUB_TOKEN: ${{ github.token }}
         run: python market_wide_paper.py
