@@ -66,12 +66,46 @@ def collect():
         unique[key] = item
     return sorted(unique.values(), key=lambda x: x["start"]), errors
 
-def send_telegram(message):
+def resolve_chat_id():
     if not TOKEN:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret تنظیم نشده است.")
+    # Confirm which bot the GitHub secret belongs to, then discover the
+    # private chat that most recently messaged this exact bot.
+    me = requests.get(f"https://api.telegram.org/bot{TOKEN}/getMe", timeout=TIMEOUT)
+    me.raise_for_status()
+    me_data = me.json()
+    if not me_data.get("ok"):
+        raise RuntimeError(f"Telegram getMe failed: {me_data}")
+    bot_username = me_data["result"].get("username", "unknown")
+    print(f"VIVA token belongs to @{bot_username}")
+
+    updates = requests.get(
+        f"https://api.telegram.org/bot{TOKEN}/getUpdates",
+        params={"limit": 20, "allowed_updates": ["message"]},
+        timeout=TIMEOUT,
+    )
+    updates.raise_for_status()
+    update_data = updates.json()
+    if not update_data.get("ok"):
+        raise RuntimeError(f"Telegram getUpdates failed: {update_data}")
+    private_chats = []
+    for update in update_data.get("result", []):
+        msg = update.get("message") or update.get("edited_message") or {}
+        chat = msg.get("chat") or {}
+        if chat.get("type") == "private" and chat.get("id") is not None:
+            private_chats.append(str(chat["id"]))
+    if private_chats:
+        chosen = private_chats[-1]
+        print(f"Using private chat id discovered from incoming message: {chosen}")
+        return chosen
+    print(f"No incoming private chat update found; using configured chat id: {CHAT_ID}")
+    return CHAT_ID
+
+def send_telegram(message):
+    target_chat_id = resolve_chat_id()
     response = requests.post(
         f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-        data={"chat_id": CHAT_ID, "text": message, "disable_web_page_preview": True},
+        data={"chat_id": target_chat_id, "text": message, "disable_web_page_preview": True},
         timeout=TIMEOUT,
     )
     if response.status_code != 200:
