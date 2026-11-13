@@ -2,6 +2,7 @@ import os
 import time
 import requests
 from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "601146458").strip()
@@ -184,7 +185,7 @@ def main():
             fav = item["favorite"]
             probability = fav["probability"] * 100
             level = "🟢 احتمال بازار بالاتر" if probability >= 72 else "🟡 احتمال بازار متوسط"
-            local_time = item["start"].astimezone().strftime("%H:%M")
+            local_time = item["start"].astimezone(ZoneInfo("Asia/Tehran")).strftime("%H:%M")
             lines += [
                 f"{level} • #{index}",
                 f"🏟 {item['home']} 🆚 {item['away']}",
