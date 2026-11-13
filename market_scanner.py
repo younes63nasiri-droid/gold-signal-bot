@@ -98,8 +98,10 @@ def _closed_candles(symbol: str, interval: str) -> list[dict]:
         if not isinstance(row, (list, tuple)) or len(row) < 8:
             continue
         open_ms = int(row[0])
-        close_ms = int(row[6])
-        if close_ms >= now_ms:
+        # In Toobit's USDT-M contract klines, field 6 is deprecated
+        # and may be zero. Derive the scheduled close from open time.
+        close_ms = open_ms + duration_ms
+        if close_ms > now_ms:
             continue
         bars.append({
             "open_time": open_ms,
@@ -265,7 +267,7 @@ def scan_market() -> dict:
     return {
         "contracts_found": len(contracts),
         "liquid_contracts": len(liquid),
-        "analyzed_contracts": min(len(liquid), MAX_CANDLE_CANDIDATES) - len(errors),
+        "analyzed_contracts": min(len(liquid), MAX_CANDLE_CANDIDATES),
         "candidates": ranked[:10],
         "best": best,
         "errors": errors[:10],
