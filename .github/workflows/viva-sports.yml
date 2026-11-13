@@ -15,8 +15,8 @@ jobs:
           python-version: "3.12"
       - name: Scan public sports feeds
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.VIVA_TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.VIVA_TELEGRAM_CHAT_ID }}
         run: python sports_monitor.py
       - name: Save machine-readable report
         uses: actions/upload-artifact@v4
