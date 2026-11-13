@@ -21,6 +21,36 @@ FEEDS = [
     ("بیسبال MLB", f"{BASE}/baseball/mlb/scoreboard"),
     ("هاکی NHL", f"{BASE}/hockey/nhl/scoreboard"),
 ]
+def american_implied_probability(value):
+    try:
+        odds = float(value)
+    except (TypeError, ValueError):
+        return None
+    if odds == 0:
+        return None
+    return (-odds / (-odds + 100)) if odds < 0 else (100 / (odds + 100))
+
+def extract_market_favorite(competition, competitors):
+    odds_items = competition.get("odds") or []
+    if not odds_items:
+        return None
+    market = odds_items[0]
+    candidates = []
+    for side in ("home", "away"):
+        team_odds = market.get(f"{side}TeamOdds") or {}
+        probability = american_implied_probability(team_odds.get("moneyLine"))
+        team = next((x.get("team", {}).get("displayName") for x in competitors
+                     if x.get("homeAway") == side), None)
+        if probability is not None and team:
+            candidates.append((probability, team))
+    if not candidates:
+        return None
+    probability, team = max(candidates)
+    if probability < 0.65:
+        return None
+    return {"team": team, "probability": probability,
+            "provider": market.get("provider", {}).get("name", "ESPN odds")}
+
 def fetch_events(label, url, date_str):
     response = requests.get(url, params={"dates": date_str}, headers=HEADERS, timeout=TIMEOUT)
     response.raise_for_status()
@@ -46,6 +76,7 @@ def fetch_events(label, url, date_str):
             "away": names.get("away", "نامشخص"),
             "start": kickoff,
             "name": event.get("name", ""),
+            "favorite": extract_market_favorite(comp, competitors),
         })
     return events
 
@@ -116,20 +147,26 @@ def send_telegram(message):
 
 def main():
     events, errors = collect()
-    lines = ["🧠 VIVA AI | گزارش اسکن مسابقات", ""]
-    if events:
-        for item in events[:25]:
+    picks = [event for event in events if event.get("favorite")]
+    lines = ["🧠 VIVA AI | خلاصه تحلیل", ""]
+    if picks:
+        lines.append("⭐ برگزیده‌های بازار (احتمال ضمنی ضرایب حداقل ۶۵٪):")
+        for item in sorted(picks, key=lambda x: x["favorite"]["probability"], reverse=True)[:5]:
             local = item["start"].astimezone().strftime("%m-%d %H:%M")
-            lines.append(f"🏟 {item['sport']}\n{item['home']} — {item['away']}\n🕒 {local}")
+            favorite = item["favorite"]
+            lines.append(
+                f"• {item['home']} — {item['away']} | انتخاب بازار: {favorite['team']} "
+                f"({favorite['probability']*100:.0f}٪) | {local}"
+            )
     else:
-        lines.append("در بازه ۴۸ ساعت آینده مسابقه‌ای از منابع فعلی پیدا نشد.")
+        lines.append("فعلاً پیش‌بینی قابل‌اتکا ندارم؛ ضرایب معتبر برای هیچ مسابقه‌ای دریافت نشد.")
     lines += [
         "",
-        "⚠️ این نسخه فقط مسابقات و زمان شروع را از منبع داده بررسی می‌کند.",
-        "هنوز ضریب معتبر DerbyBet و آمار کافی برای محاسبه Value Bet متصل نشده؛ بنابراین هیچ شرطی پیشنهاد نمی‌دهد و هیچ شرطی ثبت نمی‌کند.",
+        "توجه: درصدها احتمال ضمنی ضرایب بازارند، نه تضمین برد و نه پیش‌بینی مستقل.",
+        "اگر داده یا ضریب معتبر نباشد، VIVA عمداً پیشنهاد نمی‌دهد.",
     ]
     if errors:
-        lines += ["", "منابع ناموفق: " + "؛ ".join(errors[:5])]
+        lines.append("منابع ناموفق: " + "؛ ".join(errors[:4]))
     send_telegram("\n".join(lines))
 
 if __name__ == "__main__":
