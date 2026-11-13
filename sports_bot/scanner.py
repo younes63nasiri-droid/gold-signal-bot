@@ -74,9 +74,11 @@ def send_telegram(message):
         data={"chat_id": CHAT_ID, "text": message, "disable_web_page_preview": True},
         timeout=TIMEOUT,
     )
-    response.raise_for_status()
-    if not response.json().get("ok"):
-        raise RuntimeError("Telegram sendMessage ناموفق بود.")
+    if response.status_code != 200:
+        raise RuntimeError(f"Telegram HTTP {response.status_code}: {response.text[:1000]}")
+    result = response.json()
+    if not result.get("ok"):
+        raise RuntimeError(f"Telegram API error: {result}")
 
 def main():
     events, errors = collect()
