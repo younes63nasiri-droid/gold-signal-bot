@@ -19,7 +19,7 @@ BOOK_TICKER = f"{BASE}/quote/v1/contract/ticker/bookTicker"
 KLINES = f"{BASE}/quote/v1/klines"
 
 # Scan the full contract list, then spend candle requests only on liquid markets.
-MAX_CANDLE_CANDIDATES = 500
+MAX_CANDLE_CANDIDATES = 60
 MIN_QUOTE_VOLUME_24H = 500_000.0
 MAX_SPREAD_PCT = 0.15
 CANDLE_LIMIT = 120
@@ -67,7 +67,7 @@ def discover_contracts() -> list[dict]:
             contract.get("status") == "TRADING"
             and contract.get("quoteAsset") == "USDT"
             and symbol.endswith("-SWAP-USDT")
-            and contract.get("inverse") is False
+            and contract.get("inverse") in (False, "false", 0, None)
         ):
             result.append(contract)
     return result
@@ -265,7 +265,7 @@ def scan_market() -> dict:
     return {
         "contracts_found": len(contracts),
         "liquid_contracts": len(liquid),
-        "analyzed_contracts": min(len(liquid), MAX_CANDLE_CANDIDATES),
+        "analyzed_contracts": min(len(liquid), MAX_CANDLE_CANDIDATES) - len(errors),
         "candidates": ranked[:10],
         "best": best,
         "errors": errors[:10],
