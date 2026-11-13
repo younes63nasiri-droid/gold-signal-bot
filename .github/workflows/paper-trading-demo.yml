@@ -32,6 +32,6 @@ jobs:
 
       - name: Run paper trading simulator only
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.GOLD_TELEGRAM_BOT_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
         run: python paper_trading.py
