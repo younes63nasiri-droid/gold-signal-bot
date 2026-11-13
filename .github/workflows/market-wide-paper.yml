@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: python -m pip install requests
 
+      - name: Check Python syntax
+        run: python -m py_compile market_scanner.py market_wide_paper.py
+
       - name: Scan all Toobit USDT perpetuals and paper trade
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
