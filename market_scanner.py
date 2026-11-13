@@ -19,13 +19,14 @@ BOOK_TICKER = f"{BASE}/quote/v1/contract/ticker/bookTicker"
 KLINES = f"{BASE}/quote/v1/klines"
 
 # Scan the full contract list, then spend candle requests only on liquid markets.
-MAX_CANDLE_CANDIDATES = 40
+MAX_CANDLE_CANDIDATES = 500
 MIN_QUOTE_VOLUME_24H = 500_000.0
 MAX_SPREAD_PCT = 0.15
 CANDLE_LIMIT = 120
 REQUEST_TIMEOUT = 15
 SESSION = requests.Session()
 SESSION.headers.update({"User-Agent": "paper-market-scanner/1.0"})
+SERVER_TIME_MS = None
 
 
 def _get(url: str, params: dict | None = None) -> Any:
@@ -90,7 +91,7 @@ def _closed_candles(symbol: str, interval: str) -> list[dict]:
     rows = _get(KLINES, {"symbol": symbol, "interval": interval, "limit": CANDLE_LIMIT})
     if not isinstance(rows, list):
         raise RuntimeError(f"Unexpected kline response for {symbol} {interval}")
-    now_ms = int(_get(f"{BASE}/api/v1/time")["serverTime"])
+    now_ms = SERVER_TIME_MS if SERVER_TIME_MS is not None else int(_get(f"{BASE}/api/v1/time")["serverTime"])
     duration_ms = 15 * 60_000 if interval == "15m" else 60 * 60_000
     bars = []
     for row in rows:
@@ -224,6 +225,8 @@ def _analyze(symbol: str, ticker: dict, book: dict) -> dict | None:
 
 def scan_market() -> dict:
     """Return ranked candidates and one best eligible setup, or no-trade."""
+    global SERVER_TIME_MS
+    SERVER_TIME_MS = int(_get(f"{BASE}/api/v1/time")["serverTime"])
     contracts = discover_contracts()
     tickers = _ticker_map()
     books = _book_map()
