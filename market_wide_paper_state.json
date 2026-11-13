@@ -10,10 +10,10 @@
   "unrealized_pnl": 0.0,
   "equity": 100000.0,
   "total_pnl": 0.0,
-  "last_scan": "2026-11-13T13:23:47.635027+00:00",
+  "last_scan": "2026-11-13T13:24:10.879821+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 294,
+    "liquid": 291,
     "analyzed": 0,
     "qualified": 0
   }
