@@ -1,0 +1,27 @@
+name: VIVA AI Sports Monitor
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */2 * * *"
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Scan public sports feeds
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python sports_monitor.py
+      - name: Save machine-readable report
+        uses: actions/upload-artifact@v4
+        with:
+          name: viva-sports-report
+          path: report.json
+          if-no-files-found: error
+          retention-days: 14
