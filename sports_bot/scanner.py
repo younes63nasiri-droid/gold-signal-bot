@@ -87,6 +87,7 @@ def market_favorite(fixture):
                     "team": name,
                     "probability": fair_prob,
                     "book": book.get("title") or book.get("key") or "Sportsbook",
+                    "decimal_odds": (1 + 100 / abs(float(next(o["price"] for o in outcomes if isinstance(o, dict) and o.get("name") == name)))) if float(next(o["price"] for o in outcomes if isinstance(o, dict) and o.get("name") == name)) < 0 else (1 + float(next(o["price"] for o in outcomes if isinstance(o, dict) and o.get("name") == name)) / 100),
                     "updated": updated,
                 }
     if best and best["probability"] >= 0.65:
@@ -175,31 +176,39 @@ def main():
     picks = [e for e in events if e.get("favorite")]
     picks.sort(key=lambda e: e["favorite"]["probability"], reverse=True)
 
-    lines = ["🧠 VIVA AI | خلاصه تحلیل", ""]
+    lines = ["🧠 VIVA AI | پیش‌بینی مسابقات", ""]
     if picks:
-        lines.append("⭐ گزینه‌های بازار با احتمال ضمنی تعدیل‌شده حداقل ۶۵٪:")
-        for item in picks[:5]:
+        lines.append("⭐ انتخاب‌های برتر بر اساس ضرایب تازه بازار")
+        lines.append("━━━━━━━━━━━━━━━━━━")
+        for index, item in enumerate(picks[:8], 1):
             fav = item["favorite"]
-            local_time = item["start"].astimezone().strftime("%m-%d %H:%M")
-            lines.append(
-                f"• {item['home']} — {item['away']} | انتخاب بازار: {fav['team']} "
-                f"({fav['probability']*100:.0f}٪) | {fav['book']} | {local_time}"
-            )
+            probability = fav["probability"] * 100
+            level = "🟢 احتمال بازار بالاتر" if probability >= 72 else "🟡 احتمال بازار متوسط"
+            local_time = item["start"].astimezone().strftime("%H:%M")
+            lines += [
+                f"{level} • #{index}",
+                f"🏟 {item['home']} 🆚 {item['away']}",
+                f"🕒 ساعت شروع: {local_time}",
+                f"🎯 انتخاب بازار: {fav['team']} برنده",
+                f"💎 ضریب اعشاری: {fav['decimal_odds']:.2f}",
+                f"📊 احتمال ضمنی تعدیل‌شده بازار: {probability:.0f}٪",
+                f"📝 دلیل انتخاب: در بازار ثبت‌شده، این گزینه بالاترین احتمال تعدیل‌شده را دارد. منبع ضریب: {fav['book']}.",
+                "┄┄┄┄┄┄┄┄┄┄┄┄┄┄",
+            ]
     else:
         lines.append("فعلاً گزینه واجدشرایط پیدا نشد؛ هیچ پیش‌بینی حدسی ارسال نمی‌شود.")
 
     lines += [
-        "",
         f"مسابقات آینده بررسی‌شده: {len(events)} | گزینه‌های واجدشرایط: {len(picks)}",
-        "درصدها از ضرایب چندطرفه بازار و پس از تعدیل حاشیه بازار محاسبه شده‌اند؛ تضمین برد یا مدل مستقل نیستند.",
-        "ضرایب قدیمی‌تر از ۱۵ دقیقه کنار گذاشته می‌شوند.",
-        "منبع ضرایب: OddsLink Public Board (دسترسی عمومی، بدون کلید API).",
+        "",
+        "⚠️ این‌ها انتخاب‌های مبتنی بر بازارند، نه پیش‌بینی مستقل یا تضمین برد.",
+        "آمارهایی مثل xG، فرم اخیر و مصدومیت فقط در صورت اتصال منبع معتبر جداگانه گزارش می‌شوند؛ چیزی حدس زده نمی‌شود.",
+        "ضرایب قدیمی‌تر از ۱۵ دقیقه حذف می‌شوند.",
         "وضعیت منابع: " + "؛ ".join(stats),
     ]
     if errors:
         lines.append("جزئیات خطا: " + "؛ ".join(errors[:4]))
     send_telegram("\n".join(lines))
-
 
 if __name__ == "__main__":
     main()
