@@ -1,4 +1,4 @@
-name: Paper Trading Demo
+name: Market Wide Paper Trading
 
 on:
   schedule:
@@ -9,18 +9,18 @@ permissions:
   contents: write
 
 concurrency:
-  group: paper-trading-demo
+  group: market-wide-paper-trading
   cancel-in-progress: false
 
 jobs:
   simulate:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
     steps:
-      - name: Checkout isolated demo branch
+      - name: Checkout market-wide paper branch
         uses: actions/checkout@v4
         with:
-          ref: paper-trading-demo
+          ref: market-wide-paper-scanner
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,8 +30,9 @@ jobs:
       - name: Install dependencies
         run: python -m pip install requests
 
-      - name: Run paper trading simulator only
+      - name: Run market-wide paper trader
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
-        run: python paper_trading.py
+          TELEGRAM_CHAT_ID: ${{ vars.TELEGRAM_CHAT_ID }}
+        run: python market_wide_paper.py
