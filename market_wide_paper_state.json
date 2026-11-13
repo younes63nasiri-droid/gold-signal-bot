@@ -1,34 +1,33 @@
 {
   "version": 1,
-  "balance": 99975.22126410835,
-  "realized_pnl": 0,
+  "balance": 99560.80039127979,
+  "realized_pnl": -399.76747178329606,
   "positions": {
-    "MSTR-SWAP-USDT": {
+    "XAG-SWAP-USDT": {
       "direction": "SHORT",
-      "entry": 112.01,
-      "stop": 112.95928571428571,
-      "target": 110.11142857142858,
-      "qty": 368.6982693754729,
-      "entry_fee": 24.77873589164803,
-      "leverage": 0.41,
-      "opened_candle": 1794575700000,
-      "opened_at": "2026-11-13T13:24:47.854732+00:00",
-      "score": 84.77,
-      "spread_pct": 0.0089,
-      "last_mark": 112.01
+      "entry": 49.69,
+      "stop": 49.95357142857143,
+      "target": 49.16285714285714,
+      "qty": 1322.6047137893129,
+      "entry_fee": 39.432136936914574,
+      "leverage": 0.66,
+      "opened_candle": 1794579300000,
+      "opened_at": "2026-11-13T14:29:13.009387+00:00",
+      "score": 87.15,
+      "spread_pct": 0.0201
     }
   },
-  "closed_trades": 0,
+  "closed_trades": 1,
   "wins": 0,
-  "losses": 0,
+  "losses": 1,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -24.77873589164803,
-  "equity": 99950.44252821669,
-  "total_pnl": -49.55747178330785,
-  "last_scan": "2026-11-13T13:25:25.925001+00:00",
+  "unrealized_pnl": -39.432136936914574,
+  "equity": 99521.36825434287,
+  "total_pnl": -478.6317456571269,
+  "last_scan": "2026-11-13T14:29:13.009421+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 296,
+    "liquid": 300,
     "analyzed": 60,
     "qualified": 10
   }
