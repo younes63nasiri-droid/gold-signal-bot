@@ -11,6 +11,19 @@ BASE = "https://oddslink.app/v1/public/board"
 HEADERS = {"User-Agent": "VIVA-AI-Sports/0.4"}
 TEHRAN = ZoneInfo("Asia/Tehran")
 MIN_ODDS = 1.48
+MAX_ODDS = 15.00  # Reject malformed/prediction-market prices masquerading as decimal odds.
+EXCLUDED_BOOKS = ("polymarket", "kalshi", "matchbook")
+
+def valid_decimal_odds(value):
+    try:
+        odds = float(value)
+    except (TypeError, ValueError):
+        return False
+    return MIN_ODDS <= odds <= MAX_ODDS
+
+def allowed_bookmaker(name):
+    label = str(name or "").strip().lower()
+    return bool(label) and not any(blocked in label for blocked in EXCLUDED_BOOKS)
 
 # Only requested competitions. Matching is deliberately fail-closed:
 # if the feed does not identify a competition, that fixture is not selected.
@@ -212,7 +225,7 @@ def collect_oddslink_authenticated(tomorrow):
                                 price = float(outcome.get("price"))
                             except (TypeError, ValueError):
                                 continue
-                            if price < MIN_ODDS:
+                            if not valid_decimal_odds(price) or not allowed_bookmaker(book.get("title") or book.get("key")):
                                 continue
                             picks.append({
                                 "sport": sport_label,
@@ -271,7 +284,7 @@ def odds_api_market_candidates(event_odds):
                         price = float(raw_price)
                     except (TypeError, ValueError):
                         continue
-                    if price < MIN_ODDS:
+                    if not valid_decimal_odds(price) or not allowed_bookmaker(book_name):
                         continue
                     if side == "home":
                         selection = str(event_odds.get("home", "میزبان"))
@@ -482,7 +495,7 @@ def main():
     lines = [
         "🧠 VIVA AI | پیش‌بینی مسابقات فردا",
         f"📅 {tomorrow.isoformat()} | ارسال ۲۲:۰۰ تهران",
-        f"💎 حداقل ضریب: {MIN_ODDS:.2f}",
+        f"💎 بازه ضرایب مجاز: {MIN_ODDS:.2f} تا {MAX_ODDS:.2f}",
         "━━━━━━━━━━━━━━━━━━",
     ]
     if picks:
@@ -504,6 +517,7 @@ def main():
         "بازارهای فعلی این منبع: نتیجه، هندیکپ و مجموع گل/امتیاز؛ کرنر، خطا، کارت، VAR و گل‌زن بازیکن در فید عمومی فعلی ارائه نمی‌شوند.",
         "لیگ زنان اسپانیا/آلمان، لیگ‌های ایران/امارات/عربستان و J2 فقط وقتی مسابقه می‌گیرند که فید نام رقابت را مشخص کند.",
         "NBA اسکن نمی‌شود؛ بسکتبال ژاپن از منابعی بررسی می‌شود که لیگ B.League را در فهرست مسابقات ارائه کنند.",
+        "ضرایب خارج از بازه ۱٫۴۸ تا ۱۵ و بازارهای پیش‌بینی/صرافی حذف می‌شوند.",
         "این خروجی تحلیل قطعی یا تضمین نتیجه نیست.",
         "وضعیت منابع: " + "؛ ".join(stats),
     ]
