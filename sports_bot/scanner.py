@@ -663,28 +663,32 @@ def main():
 
     should_send = next_send is None or now >= next_send.astimezone(timezone.utc)
     if should_send and available:
-        chosen = random.choice(available)
-        identity = pick_identity(chosen)
-        local_time = chosen["start"].astimezone(TEHRAN).strftime("%H:%M")
+        # Send up to three distinct eligible picks in one batch.
+        chosen_picks = random.sample(available, k=min(3, len(available)))
         market_names = {"h2h": "نتیجه مسابقه", "h2h_3_way": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع گل/امتیاز"}
-        point = f" ({chosen['point']})" if chosen.get("point") is not None else ""
+        sent_lines = []
+        for index, chosen in enumerate(chosen_picks, 1):
+            identity = pick_identity(chosen)
+            local_time = chosen["start"].astimezone(TEHRAN).strftime("%H:%M")
+            point = f" ({chosen['point']})" if chosen.get("point") is not None else ""
+            sent_lines.append(
+                f"#{index} {chosen['home']} 🆚 {chosen['away']}\n"
+                f"🏆 {chosen.get('league') or 'رقابت تأییدشده'} | 🕒 {local_time} تهران\n"
+                f"🎯 {market_names.get(chosen['market'], chosen['market'])}: {chosen['selection']}{point}\n"
+                f"💎 ضریب: {chosen['odds']:.2f} | منبع: {chosen['book']}"
+            )
+            sent[identity] = now.isoformat()
+            state.setdefault("pending", {})[identity] = {**chosen, "sent_at": now.isoformat()}
         message = (
-            "🧠 VIVA AI | پیش‌بینی تصادفی\n"
-            f"🏟 {chosen['home']} 🆚 {chosen['away']}\n"
-            f"🏆 {chosen.get('league') or 'رقابت تأییدشده'}\n"
-            f"🕒 شروع: {local_time} تهران\n"
-            f"🎯 {market_names.get(chosen['market'], chosen['market'])}: {chosen['selection']}{point}\n"
-            f"💎 ضریب: {chosen['odds']:.2f} | منبع: {chosen['book']}\n"
-            "این پیش‌بینی تضمین نتیجه نیست."
+            "🧠 VIVA AI | سه پیش‌بینی تصادفی\n"
+            + "\n━━━━━━━━━━━━━━━━━━\n".join(sent_lines)
+            + "\n\nهر انتخاب فقط یک‌بار ارسال می‌شود.\n"
+            "این پیش‌بینی‌ها تضمین نتیجه نیستند."
         )
         send_telegram(message)
-        sent[identity] = now.isoformat()
-        state.setdefault("pending", {})[identity] = {
-            **chosen, "sent_at": now.isoformat()
-        }
         delay = random.randint(MIN_SEND_MINUTES, MAX_SEND_MINUTES)
         state["next_send_at"] = (now + timedelta(minutes=delay)).isoformat()
-        print("SENT_PICK:", identity, "NEXT_RANDOM_MINUTES:", delay)
+        print("SENT_PICKS:", len(chosen_picks), "NEXT_RANDOM_MINUTES:", delay)
     elif should_send:
         # Retry the search soon when there are no qualifying fixtures.
         state["next_send_at"] = (now + timedelta(minutes=30)).isoformat()
