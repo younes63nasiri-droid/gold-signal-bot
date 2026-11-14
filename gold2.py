@@ -2,6 +2,7 @@ import os
 import json
 import base64
 import requests
+import market_scanner as market_scanner
 from datetime import datetime, timezone
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
@@ -10,11 +11,6 @@ BASE = "https://biquote.io/api/XAUUSD/ohlc"
 KRAKEN_OHLC = "https://api.kraken.com/0/public/OHLC"
 GOLD_PROXY_PAIR = "PAXGUSD"
 TOOBIT_KLINES = "https://api.toobit.com/quote/v1/klines"
-CRYPTO_ASSETS = {
-    "XRP-SWAP-USDT": "ریپل",
-    "DOGE-SWAP-USDT": "دوج‌کوین",
-    "TRX-SWAP-USDT": "ترون",
-}
 
 
 def get_candles(interval):
@@ -340,106 +336,50 @@ def analyze():
     print("Signal message sent.")
 
 
-
-CRYPTO_STATE_PATH = "crypto_signal_state.json"
-CRYPTO_STATE_API = "https://api.github.com/repos/younes63nasiri-droid/gold-signal-bot/contents/" + CRYPTO_STATE_PATH
-
-
-def load_crypto_states():
-    if not GITHUB_TOKEN:
-        raise RuntimeError("توکن دسترسی ذخیره وضعیت گیت‌هاب تنظیم نشده است.")
-    response = requests.get(CRYPTO_STATE_API, headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}, timeout=20)
-    if response.status_code == 404:
-        return {}, None
-    response.raise_for_status()
-    payload = response.json()
-    return json.loads(base64.b64decode(payload["content"]).decode("utf-8")), payload["sha"]
-
-
-def save_crypto_states(states, sha=None):
-    content = base64.b64encode(json.dumps(states, ensure_ascii=False).encode("utf-8")).decode("ascii")
-    body = {"message": "Update crypto signal tracking state", "content": content}
-    if sha:
-        body["sha"] = sha
-    response = requests.put(CRYPTO_STATE_API, headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}, json=body, timeout=20)
-    response.raise_for_status()
-
-
-def expire_previous_crypto_signal(symbol, persian_name, candles):
-    states, sha = load_crypto_states()
-    state = states.get(symbol)
-    if not state or state.get("status") != "pending":
-        return
-    later_bars = [bar for bar in candles if bar["openTime"] > state["candle_id"]]
-    if not later_bars:
-        return
-    first = later_bars[0]
-    entry = float(state["entry"])
-    if not (first["low"] <= entry <= first["high"]):
-        send_telegram(f"⛔ لغو سیگنال {persian_name} | {symbol}\n\nقیمت ورود {format_price(entry)} در مهلت ۱۵ دقیقه‌ای لمس نشد.\nسیگنال منقضی شد؛ وارد معامله نشوید.")
-    states[symbol] = {"status": "clear"}
-    save_crypto_states(states, sha)
-
-
-def save_pending_crypto_signal(symbol, entry, direction, candle_id):
-    states, sha = load_crypto_states()
-    states[symbol] = {"status": "pending", "entry": entry, "direction": direction, "candle_id": candle_id}
-    save_crypto_states(states, sha)
-
-def analyze_crypto(symbol, persian_name):
-    candles_15m = get_crypto_candles(symbol, "15m")
-    candles_1h = get_crypto_candles(symbol, "1h")
-    expire_previous_crypto_signal(symbol, persian_name, candles_15m)
-    closes_15m = [bar["close"] for bar in candles_15m]
-    closes_1h = [bar["close"] for bar in candles_1h]
-
-    fast_1h, slow_1h = ema(closes_1h, 50), ema(closes_1h, 100)
-    fast_15m, slow_15m = ema(closes_15m, 50), ema(closes_15m, 100)
-    current_rsi = rsi(closes_15m)
-    current_atr = atr(candles_15m)
-    price = closes_15m[-1]
-    candle_id = candles_15m[-1]["openTime"]
-
-    direction = None
-    if fast_1h > slow_1h and fast_15m > slow_15m and 50 < current_rsi < 65:
-        direction = "BUY"
-    elif fast_1h < slow_1h and fast_15m < slow_15m and 35 < current_rsi < 50:
-        direction = "SELL"
-
-    print(f"{symbol}: price={price}, RSI={current_rsi:.2f}, ATR={current_atr:.8f}, signal={direction or 'NO TRADE'}")
-    if direction is None or current_atr <= 0:
-        message = (
-            f"🪙 گزارش ارز دیجیتال | {persian_name} ({symbol})\n\n"
-            "🟡 فعلاً موقعیت معاملاتی معتبری وجود ندارد.\n"
-            f"💰 قیمت بررسی‌شده: {price:.8f} USDT\n"
-            f"📈 RSI: {current_rsi:.1f}\n"
-            f"📊 ATR: {current_atr:.8f}\n"
-            f"⏱ زمان کندل: {candle_id}\n\n"
-            "ربات در بررسی بعدی دوباره بازار را تحلیل می‌کند.\n"
-            "⚠️ این گزارش توصیه مالی نیست."
+def analyze_best_crypto_market():
+    """اسکن بازار قراردادهای پرپچوال USDT توبیت و ارسال فقط بهترین فرصت."""
+    scan = market_scanner.scan_market()
+    best = scan.get("best")
+    header = (
+        "🪙 بهترین فرصت ارز دیجیتال | اسکن بازار توبیت\n\n"
+        f"🔎 قراردادهای فعال بررسی‌شده: {scan.get('contracts_found', 0)}\n"
+        f"💧 بازارهای نقدشونده: {scan.get('liquid_contracts', 0)}\n"
+        f"📊 بررسی تکنیکال: {scan.get('analyzed_contracts', 0)} نماد\n"
+    )
+    if not best:
+        send_telegram(
+            header
+            + "\n🟡 فعلاً هیچ موقعیت قدرتمندی پیدا نشد.\n"
+            + "برای جلوگیری از سیگنال ضعیف، ورود پیشنهاد نمی‌شود.\n"
+            + "ربات در نوبت بعدی دوباره بازار را اسکن می‌کند."
         )
-    else:
-        risk = 1.5 * current_atr
-        if direction == "BUY":
-            stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
-        else:
-            stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
-        leverage = dynamic_gold_leverage(price, stop_loss)
-        message = (
-            f"🪙 سیگنال {persian_name} | {symbol}\n\n"
-            f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
-            f"💰 قیمت ورود: {format_price(price)} USDT\n"
-            f"🎯 حد سود اول: {format_price(target_1)} USDT\n"
-            f"🛑 حد ضرر: {format_price(stop_loss)} USDT\n"
-            f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (حداکثر ۱۰x)\n"
-            "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\n\n"
-            f"⏱ زمان سیگنال: {candle_id}\n"
-            "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
-        )
+        print("No qualifying crypto opportunity.")
+        return
+
+    symbol = best["symbol"]
+    direction = best["direction"]
+    entry = float(best["entry"])
+    stop = float(best["stop"])
+    target = float(best["target"])
+    stop_pct = abs(entry - stop) / entry if entry else 1.0
+    leverage = max(1.0, min(float(best.get("leverage_cap", 3)), round(0.01 / stop_pct, 1))) if stop_pct > 0 else 1.0
+    message = (
+        header
+        + "\n🏆 بهترین موقعیت فعلی بازار\n"
+        + f"🪙 نماد: {symbol}\n"
+        + f"📍 جهت: {'خرید' if direction == 'LONG' else 'فروش'}\n"
+        + f"⭐ امتیاز کیفیت: {best['score']}\n"
+        + f"💰 ورود: {format_price(entry)} USDT\n"
+        + f"🎯 حد سود: {format_price(target)} USDT\n"
+        + f"🛑 حد ضرر: {format_price(stop)} USDT\n"
+        + f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (سقف 3x)\n"
+        + f"📈 RSI: {best['rsi']} | ATR: {best['atr_pct']}%\n"
+        + f"💧 حجم معاملات ۲۴ساعته: {best['quote_volume_24h']:.0f} USDT\n"
+        + "\n⚠️ فقط سیگنال تحلیلی است؛ سفارش واقعی ثبت نمی‌شود."
+    )
     send_telegram(message)
-    if direction is not None and current_atr > 0:
-        save_pending_crypto_signal(symbol, price, direction, candle_id)
-    print(f"Telegram crypto report sent for {symbol}.")
+    print(f"Best crypto opportunity sent: {symbol} {direction} score={best['score']}")
+
 
 if __name__ == "__main__":
     print("شروع بررسی بازار طلا...")
@@ -456,14 +396,16 @@ if __name__ == "__main__":
         except Exception as telegram_error:
             print(f"ارسال گزارش خطای طلا ناموفق بود: {telegram_error}")
 
-    print("شروع بررسی ارزهای دیجیتال...")
-    for crypto_symbol, crypto_name in CRYPTO_ASSETS.items():
+    print("شروع اسکن کل بازار ارز دیجیتال...")
+    try:
+        analyze_best_crypto_market()
+    except Exception as error:
+        print(f"خطا در اسکن بازار ارز دیجیتال: {error}")
         try:
-            analyze_crypto(crypto_symbol, crypto_name)
-        except Exception as error:
-            print(f"خطا در بررسی {crypto_symbol}: {error}")
             send_telegram(
-                f"⚠️ خطا در بررسی {crypto_name} ({crypto_symbol})\n"
-                f"{type(error).__name__}: {error}\n"
-                "در بررسی بعدی دوباره تلاش می‌کنم."
+                f"⚠️ خطا در اسکن بازار ارز دیجیتال\\n"
+                f"{type(error).__name__}: {error}\\n"
+                "در اجرای بعدی دوباره تلاش می‌کنم."
             )
+        except Exception as telegram_error:
+            print(f"ارسال گزارش خطای اسکن ناموفق بود: {telegram_error}")
