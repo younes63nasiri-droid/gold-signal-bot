@@ -7,208 +7,237 @@ from zoneinfo import ZoneInfo
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "601146458").strip()
 TIMEOUT = 18
-ODDSLINK = "https://oddslink.app/v1/public/board"
-HEADERS = {"User-Agent": "VIVA-AI-Sports/0.3"}
-SPORTS = [
-    ("فوتبال", "soccer"),
-    ("NBA", "nba"),
-    ("WNBA", "wnba"),
-    ("تنیس", "tennis"),
-    ("بیسبال", "mlb"),
-    ("هاکی", "nhl"),
-]
+BASE = "https://oddslink.app/v1/public/board"
+HEADERS = {"User-Agent": "VIVA-AI-Sports/0.4"}
+TEHRAN = ZoneInfo("Asia/Tehran")
+MIN_ODDS = 1.48
 
+# Only requested competitions. Matching is deliberately fail-closed:
+# if the feed does not identify a competition, that fixture is not selected.
+LEAGUES = {
+    "england": ("premier league", "english premier league"),
+    "spain": ("la liga", "laliga", "primera division"),
+    "germany": ("bundesliga",),
+    "italy": ("serie a", "serie a"),
+    "france": ("ligue 1", "league 1"),
+    "champions": ("uefa champions league", "champions league"),
+    "europa": ("uefa europa league", "europa league"),
+    "conference": ("uefa conference league", "conference league"),
+    "iran": ("persian gulf pro league", "iran pro league", "iranian pro league", "league 1 iran"),
+    "uae": ("uae pro league", "arabian gulf league", "united arab emirates"),
+    "saudi": ("saudi pro league", "roshn saudi league"),
+    "women_spain": ("liga f", "liga f femenina", "spanish women's", "primera division femenina"),
+    "women_germany": ("frauen-bundesliga", "women bundesliga", "google pixel frauen-bundesliga"),
+    "japan2": ("j2 league", "japan j2", "j league 2"),
+}
+WOMEN_HINTS = ("women", "woman", "femen", "frauen", "womens")
+NATIONAL_HINTS = ("uefa nations league", "fifa world cup", "world cup qualifier",
+                  "international friendly", "friendly international", "afc asian cup",
+                  "africa cup of nations", "copa america", "euro", "world cup",
+                  "national team", "nations league")
 
-def american_probability(value):
-    try:
-        odds = float(value)
-    except (TypeError, ValueError):
-        return None
-    if odds == 0:
-        return None
-    return (-odds / (-odds + 100)) if odds < 0 else (100 / (odds + 100))
-
+SPORTS = [("فوتبال", "soccer"), ("بسکتبال", "nba")]
 
 def parse_time(value):
     if not value:
         return None
     try:
-        return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
     except (ValueError, TypeError):
         return None
 
+def american_to_decimal(value):
+    try:
+        n = float(value)
+    except (TypeError, ValueError):
+        return None
+    if n == 0:
+        return None
+    return 1 + (100 / abs(n) if n < 0 else n / 100)
 
-def market_favorite(fixture):
-    best = None
-    books = fixture.get("bookmakers") or []
-    for book in books:
-        if not isinstance(book, dict):
-            continue
-        # Use actual sportsbooks; exclude prediction markets and exchanges.
-        if book.get("kind") not in (None, "sportsbook"):
+def competition_text(fixture):
+    parts = []
+    for key in ("league", "competition", "tournament", "sport_title", "league_name", "competition_name"):
+        value = fixture.get(key)
+        if isinstance(value, dict):
+            parts.extend(str(value.get(k, "")) for k in ("title", "name", "key"))
+        elif value:
+            parts.append(str(value))
+    return " ".join(parts).lower()
+
+def allowed_competition(fixture):
+    label = competition_text(fixture)
+    if not label:
+        return False
+    # Women competitions are restricted to Spain and Germany only.
+    if any(h in label for h in WOMEN_HINTS):
+        return any(h in label for h in LEAGUES["women_spain"] + LEAGUES["women_germany"])
+    if any(h in label for h in NATIONAL_HINTS):
+        return True
+    return any(h in label for aliases in LEAGUES.values() for h in aliases)
+
+def get_market_candidates(fixture):
+    candidates = []
+    for book in fixture.get("bookmakers") or []:
+        if not isinstance(book, dict) or book.get("kind") not in (None, "sportsbook"):
             continue
         markets = book.get("markets") or {}
         if isinstance(markets, list):
-            h2h = next((m for m in markets if isinstance(m, dict) and m.get("key") == "h2h"), None)
+            market_items = [(m.get("key"), m) for m in markets if isinstance(m, dict)]
         elif isinstance(markets, dict):
-            h2h = markets.get("h2h")
-        else:
-            h2h = None
-        if isinstance(h2h, list):
-            outcomes = h2h
-            market_updated = None
-        elif isinstance(h2h, dict):
-            outcomes = h2h.get("outcomes") or []
-            market_updated = h2h.get("last_update")
+            market_items = list(markets.items())
         else:
             continue
-
-        updated = parse_time(market_updated or book.get("last_update"))
-        if updated is None:
-            continue
-        age = (datetime.now(timezone.utc) - updated.astimezone(timezone.utc)).total_seconds()
-        if age < -60 or age > 900:
-            continue
-
-        raw = []
-        for outcome in outcomes:
-            if not isinstance(outcome, dict):
+        updated_book = parse_time(book.get("last_update"))
+        for market_key, market in market_items:
+            if market_key not in ("h2h", "spreads", "totals"):
                 continue
-            prob = american_probability(outcome.get("price"))
-            name = outcome.get("name")
-            if prob is not None and name:
-                raw.append((name, prob))
-        total = sum(p for _, p in raw)
-        if total <= 0:
-            continue
-        for name, prob in raw:
-            fair_prob = prob / total
-            if best is None or fair_prob > best["probability"]:
-                best = {
-                    "team": name,
-                    "probability": fair_prob,
+            if isinstance(market, dict):
+                outcomes = market.get("outcomes") or []
+                updated = parse_time(market.get("last_update")) or updated_book
+            elif isinstance(market, list):
+                outcomes, updated = market, updated_book
+            else:
+                continue
+            if updated is None:
+                continue
+            age = (datetime.now(timezone.utc) - updated.astimezone(timezone.utc)).total_seconds()
+            if age < -60 or age > 900:
+                continue
+            for outcome in outcomes:
+                if not isinstance(outcome, dict):
+                    continue
+                odds = american_to_decimal(outcome.get("price"))
+                if odds is None or odds < MIN_ODDS:
+                    continue
+                candidates.append({
+                    "market": market_key,
+                    "selection": str(outcome.get("name", "نامشخص")),
+                    "odds": odds,
+                    "point": outcome.get("point"),
                     "book": book.get("title") or book.get("key") or "Sportsbook",
-                    "decimal_odds": (1 + 100 / abs(float(next(o["price"] for o in outcomes if isinstance(o, dict) and o.get("name") == name)))) if float(next(o["price"] for o in outcomes if isinstance(o, dict) and o.get("name") == name)) < 0 else (1 + float(next(o["price"] for o in outcomes if isinstance(o, dict) and o.get("name") == name)) / 100),
                     "updated": updated,
-                }
-    if best and best["probability"] >= 0.65:
-        return best
-    return None
+                })
+    return candidates
 
+def board_sports():
+    try:
+        r = requests.get(f"{BASE}/sports", headers=HEADERS, timeout=TIMEOUT)
+        r.raise_for_status()
+        return r.json().get("sports", [])
+    except Exception as exc:
+        print("Board sport discovery failed:", type(exc).__name__, str(exc)[:160])
+        return []
 
 def collect():
     now = datetime.now(timezone.utc)
+    tomorrow = (datetime.now(TEHRAN).date() + timedelta(days=1))
     found, errors, stats = [], [], []
-    for index, (label, sport) in enumerate(SPORTS):
+    available = board_sports()
+    available_keys = {x.get("key"): x.get("title", x.get("key", "")) for x in available if isinstance(x, dict)}
+    sports_to_scan = []
+    if "soccer" in available_keys:
+        sports_to_scan.append(("فوتبال", "soccer"))
+    if "nba" in available_keys:
+        sports_to_scan.append(("بسکتبال", "nba"))
+    # Add Japanese domestic basketball only if the provider actually exposes it.
+    for key, title in available_keys.items():
+        text = (str(key) + " " + str(title)).lower()
+        if "japan" in text and ("basket" in text or "b.league" in text or "b league" in text):
+            sports_to_scan.append(("بسکتبال ژاپن", key))
+    for index, (label, sport) in enumerate(sports_to_scan):
         if index:
-            time.sleep(1.05)  # respect the public board's per-address rate limit
+            time.sleep(1.1)
         try:
-            response = requests.get(
-                f"{ODDSLINK}/{sport}",
-                headers=HEADERS,
-                timeout=TIMEOUT,
-            )
+            response = requests.get(f"{BASE}/{sport}", headers=HEADERS, timeout=TIMEOUT)
             response.raise_for_status()
-            payload = response.json()
-            fixtures = payload.get("fixtures") or []
+            fixtures = response.json().get("fixtures") or []
             count = 0
             for fixture in fixtures:
                 if not isinstance(fixture, dict):
                     continue
                 start = parse_time(fixture.get("commence_time"))
-                if start is None or start < now or start > now + timedelta(hours=36):
+                if start is None or start.astimezone(TEHRAN).date() != tomorrow:
+                    continue
+                if sport == "soccer" and not allowed_competition(fixture):
                     continue
                 count += 1
-                favorite = market_favorite(fixture)
-                found.append({
-                    "sport": label,
-                    "home": fixture.get("home_team", "نامشخص"),
-                    "away": fixture.get("away_team", "نامشخص"),
-                    "start": start,
-                    "favorite": favorite,
-                })
-            stats.append(f"{label}: {count} مسابقه")
+                markets = get_market_candidates(fixture)
+                for market in markets:
+                    found.append({
+                        "sport": label,
+                        "home": fixture.get("home_team", "نامشخص"),
+                        "away": fixture.get("away_team", "نامشخص"),
+                        "start": start,
+                        **market,
+                    })
+            stats.append(f"{label}: {count} مسابقه فردا")
         except Exception as exc:
-            errors.append(f"{label}: {type(exc).__name__} {str(exc)[:90]}")
+            errors.append(f"{label}: {type(exc).__name__} {str(exc)[:100]}")
             stats.append(f"{label}: خطا")
-    return found, errors, stats
-
+    if "بسکتبال ژاپن" not in [x[0] for x in sports_to_scan]:
+        stats.append("بسکتبال ژاپن: در فهرست سرویس فعلی موجود نیست")
+    return found, errors, stats, tomorrow
 
 def resolve_chat_id():
     if not TOKEN:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret تنظیم نشده است.")
     me = requests.get(f"https://api.telegram.org/bot{TOKEN}/getMe", timeout=TIMEOUT)
     me.raise_for_status()
-    data = me.json()
-    if not data.get("ok"):
-        raise RuntimeError(f"Telegram getMe failed: {data}")
-    print("VIVA Telegram bot verified: @" + data["result"].get("username", "unknown"))
-
-    updates = requests.get(
-        f"https://api.telegram.org/bot{TOKEN}/getUpdates",
-        params={"limit": 20, "allowed_updates": ["message"]},
-        timeout=TIMEOUT,
-    )
+    if not me.json().get("ok"):
+        raise RuntimeError("Telegram getMe failed")
+    updates = requests.get(f"https://api.telegram.org/bot{TOKEN}/getUpdates",
+                           params={"limit": 20, "allowed_updates": ["message"]}, timeout=TIMEOUT)
     updates.raise_for_status()
-    update_data = updates.json()
-    for update in reversed(update_data.get("result", [])):
+    for update in reversed(updates.json().get("result", [])):
         msg = update.get("message") or update.get("edited_message") or {}
         chat = msg.get("chat") or {}
         if chat.get("type") == "private" and chat.get("id") is not None:
             return str(chat["id"])
     return CHAT_ID
 
-
 def send_telegram(message):
     target = resolve_chat_id()
-    response = requests.post(
-        f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-        data={"chat_id": target, "text": message, "disable_web_page_preview": True},
-        timeout=TIMEOUT,
-    )
+    response = requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage",
+                             data={"chat_id": target, "text": message, "disable_web_page_preview": True},
+                             timeout=TIMEOUT)
     response.raise_for_status()
-    result = response.json()
-    if not result.get("ok"):
-        raise RuntimeError(f"Telegram API error: {result}")
-
+    if not response.json().get("ok"):
+        raise RuntimeError("Telegram sendMessage failed")
 
 def main():
-    events, errors, stats = collect()
-    picks = [e for e in events if e.get("favorite")]
-    picks.sort(key=lambda e: e["favorite"]["probability"], reverse=True)
-
-    lines = ["🧠 VIVA AI | پیش‌بینی مسابقات", ""]
+    picks, errors, stats, tomorrow = collect()
+    picks.sort(key=lambda x: x["odds"])
+    lines = [
+        "🧠 VIVA AI | پیش‌بینی مسابقات فردا",
+        f"📅 {tomorrow.isoformat()} | ارسال ۲۲:۰۰ تهران",
+        f"💎 حداقل ضریب: {MIN_ODDS:.2f}",
+        "━━━━━━━━━━━━━━━━━━",
+    ]
     if picks:
-        lines.append("⭐ انتخاب‌های برتر بر اساس ضرایب تازه بازار")
-        lines.append("━━━━━━━━━━━━━━━━━━")
-        for index, item in enumerate(picks[:8], 1):
-            fav = item["favorite"]
-            probability = fav["probability"] * 100
-            level = "🟢 احتمال بازار بالاتر" if probability >= 72 else "🟡 احتمال بازار متوسط"
-            local_time = item["start"].astimezone(ZoneInfo("Asia/Tehran")).strftime("%H:%M")
+        for i, p in enumerate(picks[:12], 1):
+            local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
+            market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع امتیاز/گل"}
+            point = f" ({p['point']})" if p.get("point") is not None else ""
             lines += [
-                f"{level} • #{index}",
-                f"🏟 {item['home']} 🆚 {item['away']}",
-                f"🕒 ساعت شروع: {local_time}",
-                f"🎯 انتخاب بازار: {fav['team']} برنده",
-                f"💎 ضریب اعشاری: {fav['decimal_odds']:.2f}",
-                f"📊 احتمال ضمنی تعدیل‌شده بازار: {probability:.0f}٪",
-                f"📝 دلیل انتخاب: در بازار ثبت‌شده، این گزینه بالاترین احتمال تعدیل‌شده را دارد. منبع ضریب: {fav['book']}.",
-                "┄┄┄┄┄┄┄┄┄┄┄┄┄┄",
+                f"#{i} {p['sport']} | {p['home']} 🆚 {p['away']}",
+                f"🕒 {local_time} | 🎯 {market_names.get(p['market'], p['market'])}: {p['selection']}{point}",
+                f"💎 ضریب: {p['odds']:.2f} | منبع: {p['book']}",
+                "────────────",
             ]
     else:
-        lines.append("فعلاً گزینه واجدشرایط پیدا نشد؛ هیچ پیش‌بینی حدسی ارسال نمی‌شود.")
-
+        lines.append("امشب گزینه‌ای با ضریب ۱٫۴۸ به بالا در رقابت‌های قابل‌تأیید پیدا نشد؛ پیش‌بینی حدسی ارسال نمی‌شود.")
     lines += [
-        f"مسابقات آینده بررسی‌شده: {len(events)} | گزینه‌های واجدشرایط: {len(picks)}",
-        "",
-        "⚠️ این‌ها انتخاب‌های مبتنی بر بازارند، نه پیش‌بینی مستقل یا تضمین برد.",
-        "آمارهایی مثل xG، فرم اخیر و مصدومیت فقط در صورت اتصال منبع معتبر جداگانه گزارش می‌شوند؛ چیزی حدس زده نمی‌شود.",
-        "ضرایب قدیمی‌تر از ۱۵ دقیقه حذف می‌شوند.",
+        f"گزینه‌های واجدشرایط: {len(picks)}",
+        "بازارهای فعلی این منبع: نتیجه، هندیکپ و مجموع گل/امتیاز؛ کرنر، خطا، کارت، VAR و گل‌زن بازیکن در فید عمومی فعلی ارائه نمی‌شوند.",
+        "لیگ زنان اسپانیا/آلمان، لیگ‌های ایران/امارات/عربستان و J2 فقط وقتی مسابقه می‌گیرند که فید نام رقابت را مشخص کند.",
+        "بسکتبال ژاپن فقط در صورت ارائه کلید مسابقات از سوی منبع فعال می‌شود؛ در غیر این صورت به‌عنوان پوشش‌نداده‌شده گزارش می‌شود.",
+        "این خروجی تحلیل قطعی یا تضمین نتیجه نیست.",
         "وضعیت منابع: " + "؛ ".join(stats),
     ]
     if errors:
-        lines.append("جزئیات خطا: " + "؛ ".join(errors[:4]))
+        lines.append("خطاها: " + "؛ ".join(errors[:4]))
     send_telegram("\n".join(lines))
 
 if __name__ == "__main__":
