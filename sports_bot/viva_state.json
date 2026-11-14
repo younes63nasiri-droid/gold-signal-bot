@@ -2,7 +2,10 @@
   "sent": {
     "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": "2026-11-14T19:49:32.342848+00:00",
     "soccer:armenia-latvia:2026-11-15|soccer|Latvia|Armenia|totals|Under|1.75": "2026-11-14T19:49:32.342848+00:00",
-    "soccer:albania-belarus:2026-11-15|soccer|Belarus|Albania|spreads|Albania|-1": "2026-11-14T19:49:32.342848+00:00"
+    "soccer:albania-belarus:2026-11-15|soccer|Belarus|Albania|spreads|Albania|-1": "2026-11-14T19:49:32.342848+00:00",
+    "soccer:faroeislands-moldova:2026-11-16|soccer|Faroe Islands|Moldova|totals|Under|1.75": "2026-11-14T21:50:12.123459+00:00",
+    "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|h2h|Netherlands|None": "2026-11-14T21:50:12.123459+00:00",
+    "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|2.0": "2026-11-14T21:50:12.123459+00:00"
   },
   "pending": {
     "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": {
@@ -52,8 +55,56 @@
       "book": "Cloudbet",
       "updated": "2026-11-14T19:48:30+00:00",
       "sent_at": "2026-11-14T19:49:32.342848+00:00"
+    },
+    "soccer:faroeislands-moldova:2026-11-16|soccer|Faroe Islands|Moldova|totals|Under|1.75": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:faroeislands-moldova:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Faroe Islands",
+      "away": "Moldova",
+      "start": "2026-11-16T15:00:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 2.56,
+      "point": 1.75,
+      "book": "Pinnacle",
+      "updated": "2026-11-14T21:50:00+00:00",
+      "sent_at": "2026-11-14T21:50:12.123459+00:00"
+    },
+    "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|h2h|Netherlands|None": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:germany-netherlands:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Germany",
+      "away": "Netherlands",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "h2h",
+      "selection": "Netherlands",
+      "odds": 3.8,
+      "point": null,
+      "book": "bet365",
+      "updated": "2026-11-14T21:49:40+00:00",
+      "sent_at": "2026-11-14T21:50:12.123459+00:00"
+    },
+    "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|2.0": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:albacete-celtavigob:2026-11-16",
+      "league": "la liga 2 - spain  spain_la_liga_2 soccer",
+      "home": "Albacete",
+      "away": "Celta Vigo B",
+      "start": "2026-11-16T19:30:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 3.6,
+      "point": 2.0,
+      "book": "SportBet",
+      "updated": "2026-11-14T21:49:50+00:00",
+      "sent_at": "2026-11-14T21:50:12.123459+00:00"
     }
   },
-  "next_send_at": "2026-11-14T21:23:32.342848+00:00",
+  "next_send_at": "2026-11-14T23:01:12.123459+00:00",
   "settled": {}
 }
