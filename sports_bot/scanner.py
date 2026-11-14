@@ -582,13 +582,30 @@ def grade_pick(pick, score):
         return None
     if market == "totals":
         total = home_score + away_score
-        if total == point:
-            return "برگشت"
         if selection in ("over", "بالای"):
-            return "برد" if total > point else "باخت"
-        if selection in ("under", "زیر"):
-            return "برد" if total < point else "باخت"
-        return None
+            signed = total - point
+        elif selection in ("under", "زیر"):
+            signed = point - total
+        else:
+            return None
+        # Asian quarter totals split the stake over the two adjacent half-lines.
+        fraction = round(point % 0.5, 2)
+        if fraction in (0.25, 0.75):
+            lower = point - 0.25 if fraction == 0.25 else point - 0.25
+            upper = point + 0.25
+            a = total - lower if selection in ("over", "بالای") else lower - total
+            b = total - upper if selection in ("over", "بالای") else upper - total
+            outcomes = ["برد" if x > 0 else ("برگشت" if x == 0 else "باخت") for x in (a, b)]
+            if outcomes.count("برد") == 2:
+                return "برد کامل"
+            if outcomes.count("باخت") == 2:
+                return "باخت"
+            if "برد" in outcomes and "برگشت" in outcomes:
+                return "نیم‌برد"
+            if "باخت" in outcomes and "برگشت" in outcomes:
+                return "نیم‌باخت"
+            return "برگشت"
+        return "برد" if signed > 0 else ("باخت" if signed < 0 else "برگشت")
     if market == "spreads":
         if selection == home or selection in home:
             margin = home_score + point - away_score
@@ -630,12 +647,21 @@ def check_pending_results(state):
                 settled[key] = {**item, "score": score, "verdict": verdict,
                                 "settled_at": datetime.now(timezone.utc).isoformat()}
                 pending.pop(key, None)
+                results = list(settled.values())
+                wins = sum(1 for x in results if x.get("verdict") in ("برد", "برد کامل", "نیم‌برد"))
+                losses = sum(1 for x in results if x.get("verdict") in ("باخت", "نیم‌باخت"))
+                pushes = sum(1 for x in results if x.get("verdict") == "برگشت")
+                graded = wins + losses + pushes
+                rate = (wins / graded * 100) if graded else 0.0
                 send_telegram(
-                    "📊 VIVA | نتیجه پیش‌بینی\n"
-                    f"{item.get('home')} 🆚 {item.get('away')}\n"
-                    f"پیش‌بینی: {item.get('selection')} {item.get('point') or ''}\n"
-                    f"نتیجه نهایی: {score.get('home')} - {score.get('away')}\n"
-                    f"ارزیابی: {verdict}"
+                    "📊 VIVA | نتیجه پیش‌بینی\\n"
+                    f"{item.get('home')} 🆚 {item.get('away')}\\n"
+                    f"پیش‌بینی: {item.get('selection')} {item.get('point') or ''}\\n"
+                    f"نتیجه نهایی: {score.get('home')} - {score.get('away')}\\n"
+                    f"ارزیابی: {verdict}\\n"
+                    "━━━━━━━━━━━━━━━━━━\\n"
+                    f"آمار ثبت‌شده: {graded} | برد: {wins} | باخت: {losses} | برگشت: {pushes}\\n"
+                    f"درصد برد: {rate:.1f}%"
                 )
         except Exception as exc:
             print("RESULT_CHECK_ERROR:", sport_key, type(exc).__name__, str(exc)[:140])
