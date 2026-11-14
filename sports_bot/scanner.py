@@ -170,9 +170,15 @@ def odds_api_market_candidates(event_odds):
                         continue
                     if price < MIN_ODDS:
                         continue
+                    if side == "home":
+                        selection = str(event_odds.get("home", "میزبان"))
+                    elif side == "away":
+                        selection = str(event_odds.get("away", "میهمان"))
+                    else:
+                        selection = "مساوی" if side == "draw" else side
                     results.append({
                         "market": market_key,
-                        "selection": side,
+                        "selection": selection,
                         "odds": price,
                         "point": point,
                         "book": book_name,
