@@ -1,5 +1,8 @@
 import os
 import time
+import json
+import random
+import subprocess
 import requests
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
@@ -11,7 +14,10 @@ BASE = "https://oddslink.app/v1/public/board"
 HEADERS = {"User-Agent": "VIVA-AI-Sports/0.4"}
 TEHRAN = ZoneInfo("Asia/Tehran")
 MIN_ODDS = 1.48
-MAX_ODDS = 5.00  # Reject malformed/prediction-market prices masquerading as decimal odds.
+MAX_ODDS = 5.00
+STATE_FILE = "sports_bot/viva_state.json"
+MIN_SEND_MINUTES = 45
+MAX_SEND_MINUTES = 150  # Reject malformed/prediction-market prices masquerading as decimal odds.
 EXCLUDED_BOOKS = ("polymarket", "kalshi", "matchbook")
 
 def valid_decimal_odds(value):
@@ -245,6 +251,9 @@ def collect_oddslink_authenticated(tomorrow):
                                 continue
                             picks.append({
                                 "sport": sport_label,
+                                "sport_key": sport_key,
+                                "event_id": str(fixture.get("id", "")),
+                                "league": competition_text(fixture),
                                 "home": fixture.get("home_team", "نامشخص"),
                                 "away": fixture.get("away_team", "نامشخص"),
                                 "start": start,
@@ -383,6 +392,9 @@ def collect_odds_api(tomorrow):
                     for market in odds_api_market_candidates(odds_event):
                         picks.append({
                             "sport": label,
+                            "sport_key": sport,
+                            "event_id": str(event.get("id", "")),
+                            "league": league_name,
                             "home": event.get("home", "نامشخص"),
                             "away": event.get("away", "نامشخص"),
                             "start": start,
@@ -436,6 +448,9 @@ def collect():
                 for market in markets:
                     found.append({
                         "sport": label,
+                        "sport_key": sport,
+                        "event_id": str(fixture.get("id", "")),
+                        "league": competition_text(fixture),
                         "home": fixture.get("home_team", "نامشخص"),
                         "away": fixture.get("away_team", "نامشخص"),
                         "start": start,
@@ -505,43 +520,190 @@ def send_telegram(message):
     if not response.json().get("ok"):
         raise RuntimeError("Telegram sendMessage failed")
 
+def load_state():
+    try:
+        with open(STATE_FILE, "r", encoding="utf-8") as handle:
+            state = json.load(handle)
+            if isinstance(state, dict):
+                return state
+    except (OSError, json.JSONDecodeError):
+        pass
+    return {"sent": {}, "pending": {}, "next_send_at": None, "settled": {}}
+
+
+def save_state(state):
+    os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+    with open(STATE_FILE, "w", encoding="utf-8") as handle:
+        json.dump(state, handle, ensure_ascii=False, indent=2)
+    # Persist deduplication and settlement state between GitHub Actions runs.
+    try:
+        subprocess.run(["git", "config", "user.name", "VIVA Bot"], check=True, capture_output=True)
+        subprocess.run(["git", "config", "user.email", "viva-bot@users.noreply.github.com"], check=True, capture_output=True)
+        subprocess.run(["git", "add", STATE_FILE], check=True, capture_output=True)
+        changed = subprocess.run(["git", "diff", "--cached", "--quiet"])
+        if changed.returncode == 1:
+            subprocess.run(["git", "commit", "-m", "Update VIVA sent picks and results"], check=True, capture_output=True)
+            subprocess.run(["git", "push", "origin", "HEAD:main"], check=True, capture_output=True)
+    except Exception as exc:
+        print("STATE_PERSISTENCE_ERROR:", type(exc).__name__, str(exc)[:180])
+        raise
+
+
+def pick_identity(pick):
+    return "|".join(str(pick.get(k, "")) for k in (
+        "event_id", "sport_key", "home", "away", "market", "selection", "point"
+    ))
+
+
+def grade_pick(pick, score):
+    try:
+        home_score, away_score = int(score["home"]), int(score["away"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    market = pick.get("market")
+    selection = str(pick.get("selection", "")).strip().lower()
+    point = float(pick["point"]) if pick.get("point") is not None else 0.0
+    home = str(pick.get("home", "")).strip().lower()
+    away = str(pick.get("away", "")).strip().lower()
+    if market in ("h2h", "h2h_3_way"):
+        if home_score == away_score:
+            actual = "draw"
+        elif home_score > away_score:
+            actual = home
+        else:
+            actual = away
+        if selection in ("draw", "tie", "مساوی"):
+            return "برد" if actual == "draw" else "باخت"
+        if selection == home or selection in home:
+            return "برد" if actual == home else "باخت"
+        if selection == away or selection in away:
+            return "برد" if actual == away else "باخت"
+        return None
+    if market == "totals":
+        total = home_score + away_score
+        if total == point:
+            return "برگشت"
+        if selection in ("over", "بالای"):
+            return "برد" if total > point else "باخت"
+        if selection in ("under", "زیر"):
+            return "برد" if total < point else "باخت"
+        return None
+    if market == "spreads":
+        if selection == home or selection in home:
+            margin = home_score + point - away_score
+        elif selection == away or selection in away:
+            margin = away_score + point - home_score
+        else:
+            return None
+        return "برد" if margin > 0 else ("باخت" if margin < 0 else "برگشت")
+    return None
+
+
+def check_pending_results(state):
+    pending = state.setdefault("pending", {})
+    settled = state.setdefault("settled", {})
+    by_sport = {}
+    for key, item in list(pending.items()):
+        sport_key = item.get("sport_key") or "soccer"
+        event_id = item.get("event_id")
+        if event_id:
+            by_sport.setdefault(sport_key, []).append((key, item))
+    for sport_key, rows in by_sport.items():
+        try:
+            data = oddslink_authenticated_get(
+                f"sports/{sport_key}/events",
+                {"eventIds": ",".join(item["event_id"] for _, item in rows)},
+            )
+            events = data.get("events", data.get("data", [])) if isinstance(data, dict) else data
+            event_map = {str(e.get("id")): e for e in events or [] if isinstance(e, dict)}
+            for key, item in rows:
+                event = event_map.get(str(item["event_id"]), {})
+                if str(event.get("status", "")).lower() != "finished":
+                    continue
+                score = event.get("score")
+                if not isinstance(score, dict):
+                    continue
+                verdict = grade_pick(item, score)
+                if verdict is None:
+                    continue
+                settled[key] = {**item, "score": score, "verdict": verdict,
+                                "settled_at": datetime.now(timezone.utc).isoformat()}
+                pending.pop(key, None)
+                send_telegram(
+                    "📊 VIVA | نتیجه پیش‌بینی\n"
+                    f"{item.get('home')} 🆚 {item.get('away')}\n"
+                    f"پیش‌بینی: {item.get('selection')} {item.get('point') or ''}\n"
+                    f"نتیجه نهایی: {score.get('home')} - {score.get('away')}\n"
+                    f"ارزیابی: {verdict}"
+                )
+        except Exception as exc:
+            print("RESULT_CHECK_ERROR:", sport_key, type(exc).__name__, str(exc)[:140])
+
+
 def main():
-    raw_picks, errors, stats, tomorrow = collect()
+    state = load_state()
+    check_pending_results(state)
+
+    now = datetime.now(timezone.utc)
+    next_send = parse_time(state.get("next_send_at"))
+    raw_picks, errors, stats, target_date = collect()
     picks = deduplicate_picks(raw_picks)
-    # Higher available price is better for the same selection.
-    picks.sort(key=lambda x: x["odds"])
-    lines = [
-        "🧠 VIVA AI | پیش‌بینی مسابقات فردا",
-        f"📅 {tomorrow.isoformat()} | ارسال ۲۲:۰۰ تهران",
-        f"💎 بازه ضرایب مجاز: {MIN_ODDS:.2f} تا {MAX_ODDS:.2f}",
-        "━━━━━━━━━━━━━━━━━━",
-    ]
-    if picks:
-        for i, p in enumerate(picks[:12], 1):
-            local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
-            market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع امتیاز/گل"}
-            point = f" ({p['point']})" if p.get("point") is not None else ""
-            lines += [
-                f"#{i} {p['sport']} | {p['home']} 🆚 {p['away']}",
-                f"🕒 {local_time} | 🎯 {market_names.get(p['market'], p['market'])}: {p['selection']}{point}",
-                f"💎 ضریب: {p['odds']:.2f} | منبع: {p['book']}",
-                "────────────",
-            ]
+    # Keep only upcoming fixtures and picks never sent before.
+    sent = state.setdefault("sent", {})
+    available = []
+    for pick in picks:
+        if not pick.get("event_id"):
+            continue
+        if pick["start"].astimezone(timezone.utc) <= now:
+            continue
+        identity = pick_identity(pick)
+        if identity not in sent:
+            available.append(pick)
+
+    should_send = next_send is None or now >= next_send.astimezone(timezone.utc)
+    if should_send and available:
+        chosen = random.choice(available)
+        identity = pick_identity(chosen)
+        local_time = chosen["start"].astimezone(TEHRAN).strftime("%H:%M")
+        market_names = {"h2h": "نتیجه مسابقه", "h2h_3_way": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع گل/امتیاز"}
+        point = f" ({chosen['point']})" if chosen.get("point") is not None else ""
+        message = (
+            "🧠 VIVA AI | پیش‌بینی تصادفی\n"
+            f"🏟 {chosen['home']} 🆚 {chosen['away']}\n"
+            f"🏆 {chosen.get('league') or 'رقابت تأییدشده'}\n"
+            f"🕒 شروع: {local_time} تهران\n"
+            f"🎯 {market_names.get(chosen['market'], chosen['market'])}: {chosen['selection']}{point}\n"
+            f"💎 ضریب: {chosen['odds']:.2f} | منبع: {chosen['book']}\n"
+            "این پیش‌بینی تضمین نتیجه نیست."
+        )
+        send_telegram(message)
+        sent[identity] = now.isoformat()
+        state.setdefault("pending", {})[identity] = {
+            **chosen, "sent_at": now.isoformat()
+        }
+        delay = random.randint(MIN_SEND_MINUTES, MAX_SEND_MINUTES)
+        state["next_send_at"] = (now + timedelta(minutes=delay)).isoformat()
+        print("SENT_PICK:", identity, "NEXT_RANDOM_MINUTES:", delay)
+    elif should_send:
+        # Retry the search soon when there are no qualifying fixtures.
+        state["next_send_at"] = (now + timedelta(minutes=30)).isoformat()
+        print("NO_NEW_ELIGIBLE_PICKS")
     else:
-        lines.append("امشب گزینه‌ای با ضریب ۱٫۴۸ به بالا در رقابت‌های قابل‌تأیید پیدا نشد؛ پیش‌بینی حدسی ارسال نمی‌شود.")
-    lines += [
-        f"گزینه‌های یکتا پس از حذف تکرار ضرایب سایت‌ها: {len(picks)}",
-        f"نقل‌قول‌های خام بازار از همه سایت‌ها: {len(raw_picks)}",
-        "بازارهای فعلی این منبع: نتیجه، هندیکپ و مجموع گل/امتیاز؛ کرنر، خطا، کارت، VAR و گل‌زن بازیکن در فید عمومی فعلی ارائه نمی‌شوند.",
-        "لیگ زنان اسپانیا/آلمان، لیگ‌های ایران/امارات/عربستان و J2 فقط وقتی مسابقه می‌گیرند که فید نام رقابت را مشخص کند.",
-        "NBA اسکن نمی‌شود؛ بسکتبال ژاپن از منابعی بررسی می‌شود که لیگ B.League را در فهرست مسابقات ارائه کنند.",
-        "ضرایب خارج از بازه ۱٫۴۸ تا ۱۵ و بازارهای پیش‌بینی/صرافی حذف می‌شوند.",
-        "این خروجی تحلیل قطعی یا تضمین نتیجه نیست.",
-        "وضعیت منابع: " + "؛ ".join(stats),
-    ]
-    if errors:
-        lines.append("خطاها: " + "؛ ".join(errors[:4]))
-    send_telegram("\n".join(lines))
+        print("WAITING_FOR_RANDOM_SEND_WINDOW:", state.get("next_send_at"))
+
+    # Keep state bounded without losing pending picks or recent duplicate protection.
+    if len(sent) > 3000:
+        keep = dict(list(sent.items())[-2500:])
+        for key in state.get("pending", {}):
+            if key in sent:
+                keep[key] = sent[key]
+        state["sent"] = keep
+    if len(state.get("settled", {})) > 2000:
+        state["settled"] = dict(list(state["settled"].items())[-1500:])
+
+    save_state(state)
+
+
 
 if __name__ == "__main__":
     main()
