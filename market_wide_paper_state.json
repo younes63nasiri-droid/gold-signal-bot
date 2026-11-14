@@ -15,7 +15,7 @@
       "opened_at": "2026-11-14T03:29:37.796335+00:00",
       "score": 85.26,
       "spread_pct": 0.0047,
-      "last_mark": 0.0042545
+      "last_mark": 0.0042221
     },
     "DODOX-SWAP-USDT": {
       "direction": "LONG",
@@ -28,20 +28,21 @@
       "opened_candle": 1794629700000,
       "opened_at": "2026-11-14T04:26:34.033248+00:00",
       "score": 84.41,
-      "spread_pct": 0.0033
+      "spread_pct": 0.0033,
+      "last_mark": 0.030756
     }
   },
   "closed_trades": 6,
   "wins": 2,
   "losses": 4,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 49.460890518400795,
-  "equity": 99673.38429164646,
-  "total_pnl": -326.6157083535363,
-  "last_scan": "2026-11-14T04:26:34.033284+00:00",
+  "unrealized_pnl": 535.8700092416985,
+  "equity": 100159.79341036976,
+  "total_pnl": 159.79341036976257,
+  "last_scan": "2026-11-14T05:19:17.017228+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 260,
+    "liquid": 247,
     "analyzed": 60,
     "qualified": 10
   }
