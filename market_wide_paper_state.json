@@ -15,7 +15,7 @@
       "opened_at": "2026-11-14T17:26:35.408529+00:00",
       "score": 77.21,
       "spread_pct": 0.0158,
-      "last_mark": 0.012342
+      "last_mark": 0.012144
     },
     "SOXS-SWAP-USDT": {
       "direction": "LONG",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-14T21:02:26.650300+00:00",
       "score": 95.96,
       "spread_pct": 0.0184,
-      "last_mark": 54.69
+      "last_mark": 55.28
     }
   },
   "closed_trades": 14,
   "wins": 9,
   "losses": 5,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 66.39976675415845,
-  "equity": 103981.84882124602,
-  "total_pnl": 3981.8488212460215,
-  "last_scan": "2026-11-14T22:19:06.723882+00:00",
+  "unrealized_pnl": 295.65017587777015,
+  "equity": 104211.09923036964,
+  "total_pnl": 4211.09923036964,
+  "last_scan": "2026-11-14T23:00:55.485249+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 271,
+    "liquid": 273,
     "analyzed": 60,
     "qualified": 10
   }
