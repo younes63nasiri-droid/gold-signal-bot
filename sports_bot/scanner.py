@@ -130,6 +130,114 @@ def board_sports():
         print("Board sport discovery failed:", type(exc).__name__, str(exc)[:160])
         return []
 
+
+ODDS_API_KEY = os.getenv("ODDS_API_KEY", "").strip()
+ODDS_API_BASE = "https://api.odds-api.io/v3"
+
+def odds_api_get(path, params):
+    response = requests.get(f"{ODDS_API_BASE}/{path}", params=params, timeout=TIMEOUT)
+    response.raise_for_status()
+    data = response.json()
+    if isinstance(data, dict) and data.get("error"):
+        raise RuntimeError(str(data.get("error"))[:160])
+    return data
+
+def odds_api_market_candidates(event_odds):
+    results = []
+    books = event_odds.get("bookmakers") or {}
+    for book_name, markets in books.items():
+        for market in markets or []:
+            name = str(market.get("name", "")).strip().lower()
+            rows = market.get("odds") or []
+            for row in rows:
+                selections = []
+                if name in ("ml", "moneyline", "match result"):
+                    selections = [("home", row.get("home")), ("draw", row.get("draw")), ("away", row.get("away"))]
+                    market_key = "h2h"
+                elif name in ("spread", "handicap", "asian handicap"):
+                    selections = [("home", row.get("home")), ("away", row.get("away"))]
+                    market_key = "spreads"
+                elif name in ("totals", "total", "goals over/under", "points over/under"):
+                    selections = [("over", row.get("over")), ("under", row.get("under"))]
+                    market_key = "totals"
+                else:
+                    continue
+                point = row.get("hdp", row.get("max", row.get("line")))
+                for side, raw_price in selections:
+                    try:
+                        price = float(raw_price)
+                    except (TypeError, ValueError):
+                        continue
+                    if price < MIN_ODDS:
+                        continue
+                    results.append({
+                        "market": market_key,
+                        "selection": side,
+                        "odds": price,
+                        "point": point,
+                        "book": book_name,
+                        "updated": parse_time(market.get("updatedAt")) or datetime.now(timezone.utc),
+                    })
+    return results
+
+def collect_odds_api(tomorrow):
+    if not ODDS_API_KEY:
+        return [], [], ["Odds-API.io: کلید API تنظیم نشده"]
+    picks, stats, errors = [], [], []
+    wanted_sports = (("فوتبال", "football"), ("بسکتبال ژاپن", "basketball"))
+    for label, sport in wanted_sports:
+        try:
+            events = odds_api_get("events", {"apiKey": ODDS_API_KEY, "sport": sport, "limit": 1000})
+            if not isinstance(events, list):
+                raise RuntimeError("فرمت فهرست مسابقات نامعتبر است")
+            selected = []
+            for event in events:
+                league = event.get("league") or {}
+                league_name = league.get("name", "") if isinstance(league, dict) else str(league)
+                start = parse_time(event.get("date"))
+                if start is None or start.astimezone(TEHRAN).date() != tomorrow:
+                    continue
+                fixture = {
+                    "league": league_name,
+                    "home_team": event.get("home", ""),
+                    "away_team": event.get("away", ""),
+                }
+                if sport == "football":
+                    if not allowed_competition(fixture):
+                        continue
+                else:
+                    league_text = str(league_name).lower()
+                    if not ("b.league" in league_text or "b league" in league_text or
+                            "japan" in league_text or "japan" in str(league.get("slug", "") if isinstance(league, dict) else "").lower()):
+                        continue
+                selected.append((event, start, league_name))
+            for offset in range(0, len(selected), 10):
+                batch = selected[offset:offset + 10]
+                payload = odds_api_get("odds/multi", {
+                    "apiKey": ODDS_API_KEY,
+                    "eventIds": ",".join(str(item[0].get("id")) for item in batch),
+                })
+                if isinstance(payload, dict):
+                    payload = payload.get("events") or payload.get("data") or [payload]
+                by_id = {str(item.get("id")): item for item in payload if isinstance(item, dict)}
+                for event, start, league_name in batch:
+                    odds_event = by_id.get(str(event.get("id")), {})
+                    for market in odds_api_market_candidates(odds_event):
+                        picks.append({
+                            "sport": label,
+                            "home": event.get("home", "نامشخص"),
+                            "away": event.get("away", "نامشخص"),
+                            "start": start,
+                            "league": league_name,
+                            **market,
+                        })
+            stats.append(f"Odds-API.io {label}: {len(selected)} مسابقه واجدشرایط")
+        except Exception as exc:
+            errors.append(f"Odds-API.io {label}: {type(exc).__name__} {str(exc)[:110]}")
+            stats.append(f"Odds-API.io {label}: خطا")
+    return picks, errors, stats
+
+
 def collect():
     now = datetime.now(timezone.utc)
     tomorrow = (datetime.now(TEHRAN).date() + timedelta(days=1))
@@ -180,7 +288,11 @@ def collect():
             errors.append(f"{label}: {type(exc).__name__} {str(exc)[:100]}")
             stats.append(f"{label}: خطا")
     if "بسکتبال ژاپن" not in [x[0] for x in sports_to_scan]:
-        stats.append("بسکتبال ژاپن: در فهرست سرویس فعلی موجود نیست")
+        stats.append("بسکتبال ژاپن در OddsLink: در فهرست سرویس فعلی موجود نیست")
+    extra_picks, extra_errors, extra_stats = collect_odds_api(tomorrow)
+    found.extend(extra_picks)
+    errors.extend(extra_errors)
+    stats.extend(extra_stats)
     return found, errors, stats, tomorrow
 
 def deduplicate_picks(picks):
@@ -258,7 +370,7 @@ def main():
         f"نقل‌قول‌های خام بازار از همه سایت‌ها: {len(raw_picks)}",
         "بازارهای فعلی این منبع: نتیجه، هندیکپ و مجموع گل/امتیاز؛ کرنر، خطا، کارت، VAR و گل‌زن بازیکن در فید عمومی فعلی ارائه نمی‌شوند.",
         "لیگ زنان اسپانیا/آلمان، لیگ‌های ایران/امارات/عربستان و J2 فقط وقتی مسابقه می‌گیرند که فید نام رقابت را مشخص کند.",
-        "بسکتبال NBA اسکن نمی‌شود؛ فقط لیگ بسکتبال ژاپن (B.League) در صورت ارائه کلید معتبر از سوی منبع بررسی می‌شود.",
+        "NBA اسکن نمی‌شود؛ بسکتبال ژاپن از منابعی بررسی می‌شود که لیگ B.League را در فهرست مسابقات ارائه کنند.",
         "این خروجی تحلیل قطعی یا تضمین نتیجه نیست.",
         "وضعیت منابع: " + "؛ ".join(stats),
     ]
