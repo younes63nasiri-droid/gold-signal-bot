@@ -2,7 +2,8 @@ name: VIVA AI Sports Scanner
 
 on:
   schedule:
-    - cron: "17 */2 * * *"
+    # 22:00 Asia/Tehran (UTC+3:30) = 18:30 UTC
+    - cron: "30 18 * * *"
   workflow_dispatch:
 
 permissions:
@@ -27,7 +28,9 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: python -m pip install requests
-      - name: Scan upcoming fixtures
+      - name: Validate scanner
+        run: python -m py_compile sports_bot/scanner.py
+      - name: Scan tomorrow's permitted fixtures
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
