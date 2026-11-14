@@ -190,10 +190,27 @@ def collect_odds_api(tomorrow):
     if not ODDS_API_KEY:
         return [], [], ["Odds-API.io: کلید API تنظیم نشده"]
     picks, stats, errors = [], [], []
+    # The official API requires an explicit bookmaker list for /odds/multi.
+    try:
+        selected = odds_api_get("bookmakers/selected", {"apiKey": ODDS_API_KEY})
+        if isinstance(selected, dict):
+            selected = selected.get("bookmakers") or selected.get("data") or []
+        bookmaker_names = [
+            str(x.get("name", "")).strip() for x in (selected or [])
+            if isinstance(x, dict) and x.get("name")
+        ]
+        if not bookmaker_names:
+            raise RuntimeError("هیچ سایت شرط‌بندی در پنل API انتخاب نشده؛ حداقل یک Bookmaker انتخاب کن")
+        bookmaker_names = bookmaker_names[:30]
+    except Exception as exc:
+        return [], [], [f"Odds-API.io bookmakers: {type(exc).__name__} {str(exc)[:120]}"]
     wanted_sports = (("فوتبال", "football"), ("بسکتبال ژاپن", "basketball"))
     for label, sport in wanted_sports:
         try:
-            events = odds_api_get("events", {"apiKey": ODDS_API_KEY, "sport": sport, "limit": 1000})
+            events = odds_api_get("events", {
+                "apiKey": ODDS_API_KEY, "sport": sport, "status": "pending",
+                "limit": 1000
+            })
             if not isinstance(events, list):
                 raise RuntimeError("فرمت فهرست مسابقات نامعتبر است")
             selected = []
@@ -222,6 +239,7 @@ def collect_odds_api(tomorrow):
                 payload = odds_api_get("odds/multi", {
                     "apiKey": ODDS_API_KEY,
                     "eventIds": ",".join(str(item[0].get("id")) for item in batch),
+                    "bookmakers": ",".join(bookmaker_names),
                 })
                 if isinstance(payload, dict):
                     payload = payload.get("events") or payload.get("data") or [payload]
