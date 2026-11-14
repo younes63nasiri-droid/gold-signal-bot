@@ -139,12 +139,15 @@ def collect():
     sports_to_scan = []
     if "soccer" in available_keys:
         sports_to_scan.append(("فوتبال", "soccer"))
-    if "nba" in available_keys:
-        sports_to_scan.append(("بسکتبال", "nba"))
-    # Add Japanese domestic basketball only if the provider actually exposes it.
+    # Do NOT scan NBA: the requested basketball competition is Japan's B.League only.
+    # Accept provider keys/titles that explicitly identify B.League or Japanese basketball.
     for key, title in available_keys.items():
-        text = (str(key) + " " + str(title)).lower()
-        if "japan" in text and ("basket" in text or "b.league" in text or "b league" in text):
+        label = (str(key) + " " + str(title)).lower().replace("-", " ")
+        is_japan_basketball = (
+            "b.league" in label or "b league" in label or
+            ("japan" in label and ("basket" in label or "b1" in label or "b2" in label or "b3" in label))
+        )
+        if is_japan_basketball:
             sports_to_scan.append(("بسکتبال ژاپن", key))
     for index, (label, sport) in enumerate(sports_to_scan):
         if index:
@@ -180,6 +183,26 @@ def collect():
         stats.append("بسکتبال ژاپن: در فهرست سرویس فعلی موجود نیست")
     return found, errors, stats, tomorrow
 
+def deduplicate_picks(picks):
+    # Different bookmakers quoting the same event/market/selection are ONE pick.
+    # Keep the best (highest) decimal price and its bookmaker.
+    unique = {}
+    for pick in picks:
+        key = (
+            pick["sport"],
+            pick["home"],
+            pick["away"],
+            pick["start"].isoformat(),
+            pick["market"],
+            pick["selection"],
+            str(pick.get("point")),
+        )
+        current = unique.get(key)
+        if current is None or pick["odds"] > current["odds"]:
+            unique[key] = pick
+    return list(unique.values())
+
+
 def resolve_chat_id():
     if not TOKEN:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret تنظیم نشده است.")
@@ -207,8 +230,10 @@ def send_telegram(message):
         raise RuntimeError("Telegram sendMessage failed")
 
 def main():
-    picks, errors, stats, tomorrow = collect()
-    picks.sort(key=lambda x: x["odds"])
+    raw_picks, errors, stats, tomorrow = collect()
+    picks = deduplicate_picks(raw_picks)
+    # Higher available price is better for the same selection.
+    picks.sort(key=lambda x: x["odds"], reverse=True)
     lines = [
         "🧠 VIVA AI | پیش‌بینی مسابقات فردا",
         f"📅 {tomorrow.isoformat()} | ارسال ۲۲:۰۰ تهران",
@@ -229,10 +254,11 @@ def main():
     else:
         lines.append("امشب گزینه‌ای با ضریب ۱٫۴۸ به بالا در رقابت‌های قابل‌تأیید پیدا نشد؛ پیش‌بینی حدسی ارسال نمی‌شود.")
     lines += [
-        f"گزینه‌های واجدشرایط: {len(picks)}",
+        f"گزینه‌های یکتا پس از حذف تکرار ضرایب سایت‌ها: {len(picks)}",
+        f"نقل‌قول‌های خام بازار از همه سایت‌ها: {len(raw_picks)}",
         "بازارهای فعلی این منبع: نتیجه، هندیکپ و مجموع گل/امتیاز؛ کرنر، خطا، کارت، VAR و گل‌زن بازیکن در فید عمومی فعلی ارائه نمی‌شوند.",
         "لیگ زنان اسپانیا/آلمان، لیگ‌های ایران/امارات/عربستان و J2 فقط وقتی مسابقه می‌گیرند که فید نام رقابت را مشخص کند.",
-        "بسکتبال ژاپن فقط در صورت ارائه کلید مسابقات از سوی منبع فعال می‌شود؛ در غیر این صورت به‌عنوان پوشش‌نداده‌شده گزارش می‌شود.",
+        "بسکتبال NBA اسکن نمی‌شود؛ فقط لیگ بسکتبال ژاپن (B.League) در صورت ارائه کلید معتبر از سوی منبع بررسی می‌شود.",
         "این خروجی تحلیل قطعی یا تضمین نتیجه نیست.",
         "وضعیت منابع: " + "؛ ".join(stats),
     ]
