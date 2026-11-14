@@ -2,11 +2,11 @@ name: VIVA AI Sports Scanner
 
 on:
   schedule:
-    - cron: "30 18 * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: viva-ai-sports
