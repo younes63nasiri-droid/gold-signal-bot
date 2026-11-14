@@ -1,5 +1,5 @@
 {
-  "balance": 98656.76064602663,
+  "balance": 98635.25508424436,
   "positions": {
     "دوج‌کوین (DOGE-SWAP-USDT)": {
       "side": "SHORT",
@@ -20,6 +20,16 @@
       "entry_fee": 103.1083069965789,
       "opened_at": "2026-11-14T19:00:00+00:00",
       "leverage": 1.7400506921427117
+    },
+    "ریپل (XRP-SWAP-USDT)": {
+      "side": "SHORT",
+      "entry": 0.9529,
+      "stop": 0.9660142857142856,
+      "target": 0.9266714285714286,
+      "qty": 37614.23336177494,
+      "entry_fee": 21.5055617822612,
+      "opened_at": "2026-11-14T19:45:00+00:00",
+      "leverage": 1.0
     }
   },
   "closed_trades": 53,
@@ -27,7 +37,7 @@
   "wins": 10,
   "losses": 5,
   "accounting_version": 2,
-  "last_unrealized_pnl": 302.95403898447694,
-  "last_equity": 98959.7146850111,
-  "last_total_pnl": -1040.2853149888979
+  "last_unrealized_pnl": 81.78422902049508,
+  "last_equity": 98717.03931326486,
+  "last_total_pnl": -1282.9606867351395
 }
