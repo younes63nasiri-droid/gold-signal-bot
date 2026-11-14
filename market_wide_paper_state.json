@@ -15,7 +15,7 @@
       "opened_at": "2026-11-14T03:29:37.796335+00:00",
       "score": 85.26,
       "spread_pct": 0.0047,
-      "last_mark": 0.0042796
+      "last_mark": 0.0042867
     },
     "COIN-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-14T06:14:37.683214+00:00",
       "score": 82.24,
       "spread_pct": 0.1288,
-      "last_mark": 124.05
+      "last_mark": 124.06
     }
   },
   "closed_trades": 7,
   "wins": 3,
   "losses": 4,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -82.62460520768637,
-  "equity": 100188.73364189056,
-  "total_pnl": 188.73364189056156,
-  "last_scan": "2026-11-14T10:39:38.534336+00:00",
+  "unrealized_pnl": -122.35090607800666,
+  "equity": 100149.00734102025,
+  "total_pnl": 149.0073410202458,
+  "last_scan": "2026-11-14T11:17:56.273492+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 243,
+    "liquid": 249,
     "analyzed": 60,
     "qualified": 10
   }
