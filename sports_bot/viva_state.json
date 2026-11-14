@@ -5,7 +5,10 @@
     "soccer:albania-belarus:2026-11-15|soccer|Belarus|Albania|spreads|Albania|-1": "2026-11-14T19:49:32.342848+00:00",
     "soccer:faroeislands-moldova:2026-11-16|soccer|Faroe Islands|Moldova|totals|Under|1.75": "2026-11-14T21:50:12.123459+00:00",
     "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|h2h|Netherlands|None": "2026-11-14T21:50:12.123459+00:00",
-    "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|2.0": "2026-11-14T21:50:12.123459+00:00"
+    "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|2.0": "2026-11-14T21:50:12.123459+00:00",
+    "soccer:kazakhstan-slovakia:2026-11-16|soccer|Kazakhstan|Slovakia|totals|Under|2": "2026-11-14T23:16:53.816993+00:00",
+    "soccer:faroeislands-moldova:2026-11-16|soccer|Faroe Islands|Moldova|spreads|Moldova|-0.25": "2026-11-14T23:16:53.816993+00:00",
+    "soccer:albacetebalompie-celtafortuna:2026-11-16|soccer|Albacete Balompie|RC Celta Fortuna|spreads|Albacete Balompie|-1.0": "2026-11-14T23:16:53.816993+00:00"
   },
   "pending": {
     "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": {
@@ -103,8 +106,56 @@
       "book": "SportBet",
       "updated": "2026-11-14T21:49:50+00:00",
       "sent_at": "2026-11-14T21:50:12.123459+00:00"
+    },
+    "soccer:kazakhstan-slovakia:2026-11-16|soccer|Kazakhstan|Slovakia|totals|Under|2": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:kazakhstan-slovakia:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Kazakhstan",
+      "away": "Slovakia",
+      "start": "2026-11-16T15:00:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 2.65,
+      "point": 2,
+      "book": "Cloudbet",
+      "updated": "2026-11-14T23:16:00+00:00",
+      "sent_at": "2026-11-14T23:16:53.816993+00:00"
+    },
+    "soccer:faroeislands-moldova:2026-11-16|soccer|Faroe Islands|Moldova|spreads|Moldova|-0.25": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:faroeislands-moldova:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Faroe Islands",
+      "away": "Moldova",
+      "start": "2026-11-16T15:00:00+00:00",
+      "market": "spreads",
+      "selection": "Moldova",
+      "odds": 4.31,
+      "point": -0.25,
+      "book": "Pinnacle",
+      "updated": "2026-11-14T23:16:50+00:00",
+      "sent_at": "2026-11-14T23:16:53.816993+00:00"
+    },
+    "soccer:albacetebalompie-celtafortuna:2026-11-16|soccer|Albacete Balompie|RC Celta Fortuna|spreads|Albacete Balompie|-1.0": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:albacetebalompie-celtafortuna:2026-11-16",
+      "league": "la liga 2 - spain  spain_la_liga_2 soccer",
+      "home": "Albacete Balompie",
+      "away": "RC Celta Fortuna",
+      "start": "2026-11-16T19:30:00+00:00",
+      "market": "spreads",
+      "selection": "Albacete Balompie",
+      "odds": 2.04,
+      "point": -1.0,
+      "book": "SBOBET",
+      "updated": "2026-11-14T23:16:00+00:00",
+      "sent_at": "2026-11-14T23:16:53.816993+00:00"
     }
   },
-  "next_send_at": "2026-11-14T23:01:12.123459+00:00",
+  "next_send_at": "2026-11-15T00:59:53.816993+00:00",
   "settled": {}
 }
