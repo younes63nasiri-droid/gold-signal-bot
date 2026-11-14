@@ -1,0 +1,59 @@
+{
+  "sent": {
+    "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": "2026-11-14T19:49:32.342848+00:00",
+    "soccer:armenia-latvia:2026-11-15|soccer|Latvia|Armenia|totals|Under|1.75": "2026-11-14T19:49:32.342848+00:00",
+    "soccer:albania-belarus:2026-11-15|soccer|Belarus|Albania|spreads|Albania|-1": "2026-11-14T19:49:32.342848+00:00"
+  },
+  "pending": {
+    "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:ceuta-tenerife:2026-11-15",
+      "league": "la liga 2 - spain  spain_la_liga_2 soccer",
+      "home": "Tenerife",
+      "away": "AD Ceuta",
+      "start": "2026-11-15T13:00:00+00:00",
+      "market": "spreads",
+      "selection": "Tenerife",
+      "odds": 2.06,
+      "point": -0.75,
+      "book": "4Casters",
+      "updated": "2026-11-14T19:49:20+00:00",
+      "sent_at": "2026-11-14T19:49:32.342848+00:00"
+    },
+    "soccer:armenia-latvia:2026-11-15|soccer|Latvia|Armenia|totals|Under|1.75": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:armenia-latvia:2026-11-15",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Latvia",
+      "away": "Armenia",
+      "start": "2026-11-15T14:00:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 2.66,
+      "point": 1.75,
+      "book": "Betfair",
+      "updated": "2026-11-14T19:49:21.353000+00:00",
+      "sent_at": "2026-11-14T19:49:32.342848+00:00"
+    },
+    "soccer:albania-belarus:2026-11-15|soccer|Belarus|Albania|spreads|Albania|-1": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:albania-belarus:2026-11-15",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Belarus",
+      "away": "Albania",
+      "start": "2026-11-15T17:00:00+00:00",
+      "market": "spreads",
+      "selection": "Albania",
+      "odds": 2.7,
+      "point": -1,
+      "book": "Cloudbet",
+      "updated": "2026-11-14T19:48:30+00:00",
+      "sent_at": "2026-11-14T19:49:32.342848+00:00"
+    }
+  },
+  "next_send_at": "2026-11-14T21:23:32.342848+00:00",
+  "settled": {}
+}
