@@ -25,6 +25,19 @@ def allowed_bookmaker(name):
     label = str(name or "").strip().lower()
     return bool(label) and not any(blocked in label for blocked in EXCLUDED_BOOKS)
 
+def valid_market_line(market, point):
+    if point is None:
+        return True
+    try:
+        line = abs(float(point))
+    except (TypeError, ValueError):
+        return False
+    if market == "totals":
+        return line <= 4.5
+    if market == "spreads":
+        return line <= 2.5
+    return True
+
 # Only requested competitions. Matching is deliberately fail-closed:
 # if the feed does not identify a competition, that fixture is not selected.
 LEAGUES = {
@@ -228,9 +241,7 @@ def collect_oddslink_authenticated(tomorrow):
                             if not valid_decimal_odds(price) or not allowed_bookmaker(book.get("title") or book.get("key")):
                                 continue
                             point = outcome.get("point")
-                            if market["key"] == "totals" and point is not None and abs(float(point)) > 4.5:
-                                continue
-                            if market["key"] == "spreads" and point is not None and abs(float(point)) > 2.5:
+                            if not valid_market_line(market["key"], point):
                                 continue
                             picks.append({
                                 "sport": sport_label,
@@ -291,9 +302,7 @@ def odds_api_market_candidates(event_odds):
                         continue
                     if not valid_decimal_odds(price) or not allowed_bookmaker(book_name):
                         continue
-                    if market_key == "totals" and point is not None and abs(float(point)) > 4.5:
-                        continue
-                    if market_key == "spreads" and point is not None and abs(float(point)) > 2.5:
+                    if not valid_market_line(market_key, point):
                         continue
                     if side == "home":
                         selection = str(event_odds.get("home", "میزبان"))
