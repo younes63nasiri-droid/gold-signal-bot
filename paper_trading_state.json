@@ -1,23 +1,12 @@
 {
-  "balance": 97827.283187381,
-  "positions": {
-    "ریپل (XRP-SWAP-USDT)": {
-      "side": "SHORT",
-      "entry": 0.9966,
-      "stop": 1.0078607142857143,
-      "target": 0.9740785714285715,
-      "qty": 43266.26061764369,
-      "entry_fee": 25.87149319892622,
-      "opened_at": "2026-11-14T05:00:00+00:00",
-      "leverage": 1.0
-    }
-  },
-  "closed_trades": 52,
-  "realized_pnl": -2146.845319420089,
-  "wins": 9,
+  "balance": 98776.41434303399,
+  "positions": {},
+  "closed_trades": 53,
+  "realized_pnl": -1223.5856569660336,
+  "wins": 10,
   "losses": 5,
   "accounting_version": 2,
-  "last_unrealized_pnl": 623.5118124112885,
-  "last_equity": 98450.7949997923,
-  "last_total_pnl": -1549.2050002077012
+  "last_unrealized_pnl": 0.0,
+  "last_equity": 98776.41434303399,
+  "last_total_pnl": -1223.58565696601
 }
