@@ -535,7 +535,13 @@ def load_state():
 def save_state(state):
     os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
     with open(STATE_FILE, "w", encoding="utf-8") as handle:
-        json.dump(state, handle, ensure_ascii=False, indent=2)
+        json.dump(
+            state,
+            handle,
+            ensure_ascii=False,
+            indent=2,
+            default=lambda value: value.isoformat() if isinstance(value, datetime) else str(value),
+        )
     # Persist deduplication and settlement state between GitHub Actions runs.
     try:
         subprocess.run(["git", "config", "user.name", "VIVA Bot"], check=True, capture_output=True)
