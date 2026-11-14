@@ -140,6 +140,7 @@ def get_market_candidates(fixture):
             for outcome in outcomes:
                 if not isinstance(outcome, dict):
                     continue
+                point = outcome.get("point")
                 odds = american_to_decimal(outcome.get("price"))
                 if odds is None or odds < MIN_ODDS:
                     continue
