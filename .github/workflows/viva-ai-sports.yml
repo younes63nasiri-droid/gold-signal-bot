@@ -2,7 +2,7 @@ name: VIVA AI Sports Scanner
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "30 18 * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,15 +20,19 @@ jobs:
       - name: Checkout VIVA branch
         uses: actions/checkout@v4
         with:
-          ref: viva-ai-sports
+          ref: main
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: Install dependencies
         run: python -m pip install requests
+      - name: Validate scanner
+        run: python -m py_compile sports_bot/scanner.py
       - name: Scan fixtures and send Telegram report
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.VIVA_AI_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.VIVA_TELEGRAM_CHAT_ID || '601146458' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || '601146458' }}
+          ODDSLINK_API_KEY: ${{ secrets.ODDSLINK_API_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: python sports_bot/scanner.py
