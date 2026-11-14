@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "balance": 101593.60744500728,
+  "balance": 101560.72826380905,
   "realized_pnl": 1618.8574364608633,
   "positions": {
     "XRP-SWAP-USDT": {
@@ -14,21 +14,35 @@
       "opened_candle": 1794666600000,
       "opened_at": "2026-11-14T14:33:39.459678+00:00",
       "score": 93.0,
-      "spread_pct": 0.0102
+      "spread_pct": 0.0102,
+      "last_mark": 0.9821
+    },
+    "SOXL-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 55.98,
+      "stop": 56.34321428571428,
+      "target": 55.253571428571426,
+      "qty": 978.8966654230144,
+      "entry_fee": 32.8791811982282,
+      "leverage": 0.54,
+      "opened_candle": 1794669300000,
+      "opened_at": "2026-11-14T15:19:31.371872+00:00",
+      "score": 91.43,
+      "spread_pct": 0.0179
     }
   },
   "closed_trades": 9,
   "wins": 5,
   "losses": 4,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -25.249991453599115,
-  "equity": 101568.35745355368,
-  "total_pnl": 1568.3574535536754,
-  "last_scan": "2026-11-14T14:33:39.459721+00:00",
+  "unrealized_pnl": -40.985734858120445,
+  "equity": 101519.74252895094,
+  "total_pnl": 1519.742528950941,
+  "last_scan": "2026-11-14T15:19:31.371924+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 245,
+    "liquid": 244,
     "analyzed": 60,
-    "qualified": 4
+    "qualified": 8
   }
 }
