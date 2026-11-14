@@ -1,49 +1,34 @@
 {
   "version": 1,
-  "balance": 100271.35824709825,
-  "realized_pnl": 325.7873686602414,
+  "balance": 101593.60744500728,
+  "realized_pnl": 1618.8574364608633,
   "positions": {
-    "1000PEPE-SWAP-USDT": {
+    "XRP-SWAP-USDT": {
       "direction": "SHORT",
-      "entry": 0.004269,
-      "stop": 0.004341739285714285,
-      "target": 0.00412352142857143,
-      "qty": 4794576.770013336,
-      "entry_fee": 12.28082893871216,
-      "leverage": 0.21,
-      "opened_candle": 1794626100000,
-      "opened_at": "2026-11-14T03:29:37.796335+00:00",
-      "score": 85.26,
-      "spread_pct": 0.0047,
-      "last_mark": 0.0042746
-    },
-    "COIN-SWAP-USDT": {
-      "direction": "SHORT",
-      "entry": 124.09,
-      "stop": 124.71142857142857,
-      "target": 122.84714285714287,
-      "qty": 566.0984315591494,
-      "entry_fee": 42.148292623304904,
-      "leverage": 0.7,
-      "opened_candle": 1794636000000,
-      "opened_at": "2026-11-14T06:14:37.683214+00:00",
-      "score": 82.24,
-      "spread_pct": 0.1288,
-      "last_mark": 123.25
+      "entry": 0.9825,
+      "stop": 0.9908035714285715,
+      "target": 0.9658928571428572,
+      "qty": 42832.89474741156,
+      "entry_fee": 25.249991453599115,
+      "leverage": 0.41,
+      "opened_candle": 1794666600000,
+      "opened_at": "2026-11-14T14:33:39.459678+00:00",
+      "score": 93.0,
+      "spread_pct": 0.0102
     }
   },
-  "closed_trades": 7,
-  "wins": 3,
+  "closed_trades": 9,
+  "wins": 5,
   "losses": 4,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 394.51313486715566,
-  "equity": 100665.87138196541,
-  "total_pnl": 665.8713819654076,
-  "last_scan": "2026-11-14T13:45:39.924547+00:00",
+  "unrealized_pnl": -25.249991453599115,
+  "equity": 101568.35745355368,
+  "total_pnl": 1568.3574535536754,
+  "last_scan": "2026-11-14T14:33:39.459721+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 237,
+    "liquid": 245,
     "analyzed": 60,
-    "qualified": 10
+    "qualified": 4
   }
 }
