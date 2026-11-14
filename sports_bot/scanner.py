@@ -131,6 +131,109 @@ def board_sports():
         return []
 
 
+
+ODDSLINK_API_KEY = os.getenv("ODDSLINK_API_KEY", "").strip()
+ODDSLINK_API_BASE = "https://oddslink.app/v1"
+
+def oddslink_authenticated_get(path, params=None):
+    response = requests.get(
+        f"{ODDSLINK_API_BASE}/{path.lstrip('/')}",
+        headers={**HEADERS, "X-API-Key": ODDSLINK_API_KEY},
+        params=params or {},
+        timeout=TIMEOUT,
+    )
+    response.raise_for_status()
+    data = response.json()
+    if isinstance(data, dict) and data.get("error"):
+        raise RuntimeError(str(data["error"])[:160])
+    return data
+
+def collect_oddslink_authenticated(tomorrow):
+    if not ODDSLINK_API_KEY:
+        return [], [], ["OddsLink: کلید API تنظیم نشده"]
+    picks, stats, errors = [], [], []
+    try:
+        sports = oddslink_authenticated_get("sports")
+        if isinstance(sports, dict):
+            sports = sports.get("sports") or sports.get("data") or []
+        if not isinstance(sports, list):
+            raise RuntimeError("فرمت فهرست ورزش‌ها نامعتبر است")
+    except Exception as exc:
+        return [], [], [f"OddsLink: {type(exc).__name__} {str(exc)[:120]}"]
+
+    # Aggregate soccer returns all competitions carried by OddsLink.
+    sport_jobs = [("فوتبال", "soccer", True)]
+    for item in sports:
+        if not isinstance(item, dict):
+            continue
+        label = " ".join(str(item.get(k, "")) for k in ("key", "title", "group", "description")).lower()
+        if ("b.league" in label or "b league" in label or
+            ("japan" in label and ("basketball" in label or "basket" in label))):
+            key = str(item.get("key", "")).strip()
+            if key:
+                sport_jobs.append(("بسکتبال ژاپن", key, False))
+
+    for sport_label, sport_key, is_soccer in sport_jobs:
+        try:
+            data = oddslink_authenticated_get(
+                f"sports/{sport_key}/odds",
+                {"oddsFormat": "decimal", "markets": "h2h,spreads,totals"},
+            )
+            if isinstance(data, dict):
+                fixtures = data.get("fixtures") or data.get("data") or []
+            else:
+                fixtures = data
+            count = 0
+            for fixture in fixtures or []:
+                if not isinstance(fixture, dict):
+                    continue
+                start = parse_time(fixture.get("commence_time"))
+                if start is None or start.astimezone(TEHRAN).date() != tomorrow:
+                    continue
+                if is_soccer and not allowed_competition(fixture):
+                    continue
+                count += 1
+                for book in fixture.get("bookmakers") or []:
+                    if not isinstance(book, dict):
+                        continue
+                    for market in book.get("markets") or []:
+                        if not isinstance(market, dict) or market.get("key") not in ("h2h", "spreads", "totals"):
+                            continue
+                        updated = parse_time(market.get("last_update")) or parse_time(book.get("last_update"))
+                        if updated is None:
+                            continue
+                        age = (datetime.now(timezone.utc)-updated.astimezone(timezone.utc)).total_seconds()
+                        if age < -60 or age > 900:
+                            continue
+                        for outcome in market.get("outcomes") or []:
+                            if not isinstance(outcome, dict):
+                                continue
+                            try:
+                                price = float(outcome.get("price"))
+                            except (TypeError, ValueError):
+                                continue
+                            if price < MIN_ODDS:
+                                continue
+                            picks.append({
+                                "sport": sport_label,
+                                "home": fixture.get("home_team", "نامشخص"),
+                                "away": fixture.get("away_team", "نامشخص"),
+                                "start": start,
+                                "market": market["key"],
+                                "selection": str(outcome.get("name", "نامشخص")),
+                                "odds": price,
+                                "point": outcome.get("point"),
+                                "book": book.get("title") or book.get("key") or "OddsLink",
+                                "updated": updated,
+                            })
+            stats.append(f"OddsLink API {sport_label}: {count} مسابقه فردا")
+        except Exception as exc:
+            errors.append(f"OddsLink API {sport_label}: {type(exc).__name__} {str(exc)[:100]}")
+            stats.append(f"OddsLink API {sport_label}: خطا")
+    if len(sport_jobs) == 1:
+        stats.append("بسکتبال ژاپن در فهرست ورزش‌های OddsLink API موجود نیست")
+    return picks, errors, stats
+
 ODDS_API_KEY = os.getenv("ODDS_API_KEY", "").strip()
 ODDS_API_BASE = "https://api.odds-api.io/v3"
 
@@ -313,6 +416,12 @@ def collect():
             stats.append(f"{label}: خطا")
     if "بسکتبال ژاپن" not in [x[0] for x in sports_to_scan]:
         stats.append("بسکتبال ژاپن در OddsLink: در فهرست سرویس فعلی موجود نیست")
+    # Prefer the authenticated OddsLink odds feed when its key is configured.
+    # Keep the public board and Odds-API.io as independent fallbacks/supplementary sources.
+    link_picks, link_errors, link_stats = collect_oddslink_authenticated(tomorrow)
+    found.extend(link_picks)
+    errors.extend(link_errors)
+    stats.extend(link_stats)
     extra_picks, extra_errors, extra_stats = collect_odds_api(tomorrow)
     found.extend(extra_picks)
     errors.extend(extra_errors)
