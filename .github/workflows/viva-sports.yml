@@ -1,8 +1,6 @@
-name: VIVA AI Sports Monitor
+name: VIVA AI Sports Monitor (manual only)
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "17 */2 * * *"
 permissions:
   contents: read
 jobs:
@@ -10,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: viva-ai-sports
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
