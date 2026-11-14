@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "balance": 99631.74475765404,
+  "balance": 99623.92340112806,
   "realized_pnl": -355.97441340726283,
   "positions": {
     "1000PEPE-SWAP-USDT": {
@@ -14,17 +14,31 @@
       "opened_candle": 1794626100000,
       "opened_at": "2026-11-14T03:29:37.796335+00:00",
       "score": 85.26,
-      "spread_pct": 0.0047
+      "spread_pct": 0.0047,
+      "last_mark": 0.0042545
+    },
+    "DODOX-SWAP-USDT": {
+      "direction": "LONG",
+      "entry": 0.029994,
+      "stop": 0.029191178571428573,
+      "target": 0.031599642857142854,
+      "qty": 434606.7283446979,
+      "entry_fee": 7.821356525982521,
+      "leverage": 0.13,
+      "opened_candle": 1794629700000,
+      "opened_at": "2026-11-14T04:26:34.033248+00:00",
+      "score": 84.41,
+      "spread_pct": 0.0033
     }
   },
   "closed_trades": 6,
   "wins": 2,
   "losses": 4,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -12.28082893871216,
-  "equity": 99619.46392871533,
-  "total_pnl": -380.5360712846741,
-  "last_scan": "2026-11-14T03:29:37.796363+00:00",
+  "unrealized_pnl": 49.460890518400795,
+  "equity": 99673.38429164646,
+  "total_pnl": -326.6157083535363,
+  "last_scan": "2026-11-14T04:26:34.033284+00:00",
   "last_scan_counts": {
     "contracts": 778,
     "liquid": 260,
