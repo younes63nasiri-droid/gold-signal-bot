@@ -32,7 +32,10 @@
     "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|3.25": "2026-11-15T14:39:33.654613+00:00",
     "soccer:kazakhstan-slovakia:2026-11-16|soccer|Kazakhstan|Slovakia|totals|Over|3.75": "2026-11-15T16:10:36.369032+00:00",
     "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|totals|Over|2.75": "2026-11-15T16:10:36.369032+00:00",
-    "soccer:scotland-switzerland:2026-11-16|soccer|Switzerland|Scotland|totals|Under|2.25": "2026-11-15T16:10:36.369032+00:00"
+    "soccer:scotland-switzerland:2026-11-16|soccer|Switzerland|Scotland|totals|Under|2.25": "2026-11-15T16:10:36.369032+00:00",
+    "soccer:liechtenstein-lithuania:2026-11-16|soccer|Lithuania|Liechtenstein|totals|Over|3.5": "2026-11-15T17:31:14.602998+00:00",
+    "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|totals|Over|4.0": "2026-11-15T17:31:14.602998+00:00",
+    "soccer:republicofnorthmacedonia-slovenia:2026-11-16|soccer|North Macedonia|Slovenia|totals|Over|3.25": "2026-11-15T17:31:14.602998+00:00"
   },
   "pending": {
     "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": {
@@ -562,8 +565,56 @@
       "book": "Betfair",
       "updated": "2026-11-15T16:10:30+00:00",
       "sent_at": "2026-11-15T16:10:36.369032+00:00"
+    },
+    "soccer:liechtenstein-lithuania:2026-11-16|soccer|Lithuania|Liechtenstein|totals|Over|3.5": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:liechtenstein-lithuania:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Lithuania",
+      "away": "Liechtenstein",
+      "start": "2026-11-16T17:00:00+00:00",
+      "market": "totals",
+      "selection": "Over",
+      "odds": 3.45,
+      "point": 3.5,
+      "book": "Betfair",
+      "updated": "2026-11-15T17:31:05.201000+00:00",
+      "sent_at": "2026-11-15T17:31:14.602998+00:00"
+    },
+    "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|totals|Over|4.0": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:greece-serbia:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Greece",
+      "away": "Serbia",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "totals",
+      "selection": "Over",
+      "odds": 4.63,
+      "point": 4.0,
+      "book": "Betfair",
+      "updated": "2026-11-15T17:31:00+00:00",
+      "sent_at": "2026-11-15T17:31:14.602998+00:00"
+    },
+    "soccer:republicofnorthmacedonia-slovenia:2026-11-16|soccer|North Macedonia|Slovenia|totals|Over|3.25": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:republicofnorthmacedonia-slovenia:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "North Macedonia",
+      "away": "Slovenia",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "totals",
+      "selection": "Over",
+      "odds": 3.85,
+      "point": 3.25,
+      "book": "Betfair",
+      "updated": "2026-11-15T17:31:05.357000+00:00",
+      "sent_at": "2026-11-15T17:31:14.602998+00:00"
     }
   },
-  "next_send_at": "2026-11-15T17:25:36.369032+00:00",
+  "next_send_at": "2026-11-15T19:02:14.602998+00:00",
   "settled": {}
 }
