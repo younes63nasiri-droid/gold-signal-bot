@@ -149,7 +149,7 @@ def get_market_candidates(fixture):
             if updated is None:
                 continue
             age = (datetime.now(timezone.utc) - updated.astimezone(timezone.utc)).total_seconds()
-            if age < -60 or age > 900:
+            if age < -60 or age > 3600:
                 continue
             for outcome in outcomes:
                 if not isinstance(outcome, dict):
@@ -249,7 +249,7 @@ def collect_oddslink_authenticated(tomorrow):
                         if updated is None:
                             continue
                         age = (datetime.now(timezone.utc)-updated.astimezone(timezone.utc)).total_seconds()
-                        if age < -60 or age > 900:
+                        if age < -60 or age > 3600:
                             continue
                         for outcome in market.get("outcomes") or []:
                             if not isinstance(outcome, dict):
