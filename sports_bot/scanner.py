@@ -576,8 +576,13 @@ def collect():
     schedules, schedule_errors = fixture_crosschecks(tomorrow)
     checked = 0
     for pick in found:
-        key = (norm_team(pick.get('home')), norm_team(pick.get('away')))
-        matched = schedules.get(key, set())
+        home_key = norm_team(pick.get('home'))
+        away_key = norm_team(pick.get('away'))
+        key = (home_key, away_key)
+        # Some independent scoreboards reverse home/away for neutral venues.
+        # Accept the reversed pairing as the same fixture, but never a one-team match.
+        matched = set(schedules.get(key, set()))
+        matched.update(schedules.get((away_key, home_key), set()))
         pick['fixture_sources'] = sorted(matched)
         if matched: checked += 1
     stats.append(f'برنامه مسابقات: {len(schedules)} بازی از SofaScore/FotMob/TheSportsDB/ESPN؛ {checked} انتخاب با تأیید مستقل')
