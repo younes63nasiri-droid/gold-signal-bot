@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "balance": 103120.67091201061,
+  "balance": 103092.40477378991,
   "realized_pnl": 3130.9350221691425,
   "positions": {
     "AVAX-SWAP-USDT": {
@@ -15,20 +15,33 @@
       "opened_at": "2026-11-15T03:31:42.035841+00:00",
       "score": 70.26,
       "spread_pct": 0.0141,
-      "last_mark": 7.138
+      "last_mark": 7.121
+    },
+    "BTC-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 64477.7,
+      "stop": 64971.61785714285,
+      "target": 63489.864285714284,
+      "qty": 0.7306437786683697,
+      "entry_fee": 28.266138220707322,
+      "leverage": 0.46,
+      "opened_candle": 1794731400000,
+      "opened_at": "2026-11-15T08:42:07.193573+00:00",
+      "score": 96.86,
+      "spread_pct": 0.0002
     }
   },
   "closed_trades": 19,
   "wins": 10,
   "losses": 9,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -53.53771391425974,
-  "equity": 103067.13319809634,
-  "total_pnl": 3067.133198096344,
-  "last_scan": "2026-11-15T07:47:53.431944+00:00",
+  "unrealized_pnl": -40.93433747683072,
+  "equity": 103051.47043631307,
+  "total_pnl": 3051.470436313073,
+  "last_scan": "2026-11-15T08:42:07.193613+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 279,
+    "liquid": 278,
     "analyzed": 60,
     "qualified": 10
   }
