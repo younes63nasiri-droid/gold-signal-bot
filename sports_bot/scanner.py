@@ -593,6 +593,14 @@ def main():
     cutoff = now_utc + timedelta(minutes=20)
     upcoming = [p for p in picks
                 if p.get("start") and p["start"].astimezone(timezone.utc) > cutoff]
+    # Emit source/filter diagnostics in the Actions log so a zero-pick run
+    # can be traced to provider failures, league filtering, timing, or history.
+    print(f"DIAGNOSTIC raw={len(raw_picks)} unique={len(picks)} upcoming_after_cutoff={len(upcoming)} sent_history={len(sent_ids)}")
+    for item in stats:
+        print("SOURCE:", item)
+    for item in errors:
+        print("SOURCE_ERROR:", item)
+
     # One recommendation per fixture and never resend that fixture on later scans.
     fresh = []
     seen_fixtures = set()
@@ -653,6 +661,7 @@ def main():
         print(f"Telegram sent {min(len(fresh), 5)} new unique picks.")
     else:
         print("No new unique picks; Telegram message skipped.")
+        print("DIAGNOSTIC: no Telegram message is expected on a clean zero-pick scan.")
 
 if __name__ == "__main__":
     main()
