@@ -74,12 +74,23 @@ def american_to_decimal(value):
 
 def competition_text(fixture):
     parts = []
-    for key in ("league", "competition", "tournament", "sport_title", "league_name", "competition_name"):
+    keys = ("league", "competition", "tournament", "sport_title", "league_name",
+            "competition_name", "displayName")
+    for key in keys:
         value = fixture.get(key)
         if isinstance(value, dict):
-            parts.extend(str(value.get(k, "")) for k in ("title", "name", "key"))
+            parts.extend(str(value.get(k, "")) for k in ("title", "name", "key", "displayName"))
         elif value:
             parts.append(str(value))
+    for parent_key in ("event", "fixture", "competition_info"):
+        parent = fixture.get(parent_key)
+        if isinstance(parent, dict):
+            for key in keys:
+                value = parent.get(key)
+                if isinstance(value, dict):
+                    parts.extend(str(value.get(k, "")) for k in ("title", "name", "key", "displayName"))
+                elif value:
+                    parts.append(str(value))
     return " ".join(parts).lower()
 
 def competition_name(fixture):
