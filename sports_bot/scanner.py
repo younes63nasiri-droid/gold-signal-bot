@@ -600,12 +600,17 @@ def main():
     now_utc = datetime.now(timezone.utc)
     cutoff = now_utc + timedelta(minutes=20)
     upcoming = [p for p in picks
-                if p.get("start") and p["start"].astimezone(timezone.utc) > cutoff]
+                if p.get("start")
+                and p["start"].astimezone(timezone.utc) > cutoff
+                # Never publish a recommendation unless an independent fixture
+                # schedule confirms the exact home/away pairing.
+                and bool(p.get("fixture_sources"))]
     # Emit source/filter diagnostics in the Actions log so a zero-pick run
     # can be traced to provider failures, league filtering, timing, or history.
     upcoming_fixture_ids = {fixture_id(p) for p in upcoming}
     already_sent_fixture_ids = upcoming_fixture_ids & sent_ids
-    print(f"DIAGNOSTIC raw={len(raw_picks)} unique={len(picks)} upcoming_picks={len(upcoming)} upcoming_fixtures={len(upcoming_fixture_ids)} already_sent_fixtures={len(already_sent_fixture_ids)} sent_history={len(sent_ids)}")
+    independently_verified = sum(1 for p in picks if p.get("fixture_sources"))
+    print(f"DIAGNOSTIC raw={len(raw_picks)} unique={len(picks)} independently_verified={independently_verified} upcoming_verified={len(upcoming)} upcoming_fixtures={len(upcoming_fixture_ids)} already_sent_fixtures={len(already_sent_fixture_ids)} sent_history={len(sent_ids)}")
     for item in stats:
         print("SOURCE:", item)
     for item in errors:
