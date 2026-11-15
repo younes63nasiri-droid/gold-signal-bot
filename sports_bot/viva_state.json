@@ -23,7 +23,10 @@
     "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|spreads|Malta|-1.0": "2026-11-15T07:39:05.843927+00:00",
     "soccer:liechtenstein-lithuania:2026-11-16|soccer|Lithuania|Liechtenstein|totals|Over|2.25": "2026-11-15T10:19:33.025896+00:00",
     "soccer:bulgaria-estonia:2026-11-16|soccer|Estonia|Bulgaria|totals|Under|2.5": "2026-11-15T10:19:33.025896+00:00",
-    "soccer:iceland-luxembourg:2026-11-16|soccer|Iceland|Luxembourg|totals|Under|3": "2026-11-15T10:19:33.025896+00:00"
+    "soccer:iceland-luxembourg:2026-11-16|soccer|Iceland|Luxembourg|totals|Under|3": "2026-11-15T10:19:33.025896+00:00",
+    "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|totals|Over|4": "2026-11-15T12:50:24.326843+00:00",
+    "soccer:faroeislands-moldova:2026-11-16|soccer|Faroe Islands|Moldova|spreads|Moldova|1": "2026-11-15T12:50:24.326843+00:00",
+    "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|spreads|Greece|-0.75": "2026-11-15T12:50:24.326843+00:00"
   },
   "pending": {
     "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": {
@@ -409,8 +412,56 @@
       "book": "Cloudbet",
       "updated": "2026-11-15T10:19:10+00:00",
       "sent_at": "2026-11-15T10:19:33.025896+00:00"
+    },
+    "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|totals|Over|4": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:germany-netherlands:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Germany",
+      "away": "Netherlands",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "totals",
+      "selection": "Over",
+      "odds": 2.55,
+      "point": 4,
+      "book": "Cloudbet",
+      "updated": "2026-11-15T12:50:00+00:00",
+      "sent_at": "2026-11-15T12:50:24.326843+00:00"
+    },
+    "soccer:faroeislands-moldova:2026-11-16|soccer|Faroe Islands|Moldova|spreads|Moldova|1": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:faroeislands-moldova:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Faroe Islands",
+      "away": "Moldova",
+      "start": "2026-11-16T15:00:00+00:00",
+      "market": "spreads",
+      "selection": "Moldova",
+      "odds": 1.54,
+      "point": 1,
+      "book": "Cloudbet",
+      "updated": "2026-11-15T12:50:00+00:00",
+      "sent_at": "2026-11-15T12:50:24.326843+00:00"
+    },
+    "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|spreads|Greece|-0.75": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:greece-serbia:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Greece",
+      "away": "Serbia",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "spreads",
+      "selection": "Greece",
+      "odds": 1.57,
+      "point": -0.75,
+      "book": "Betfair",
+      "updated": "2026-11-15T12:50:10+00:00",
+      "sent_at": "2026-11-15T12:50:24.326843+00:00"
     }
   },
-  "next_send_at": "2026-11-15T12:29:33.025896+00:00",
+  "next_send_at": "2026-11-15T14:24:24.326843+00:00",
   "settled": {}
 }
