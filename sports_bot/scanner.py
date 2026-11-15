@@ -1,5 +1,6 @@
 import os
 import time
+import statistics
 import requests
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
@@ -40,13 +41,12 @@ LEAGUES = {
     "uae": ("uae pro league", "arabian gulf league", "united arab emirates"),
     "saudi": ("saudi pro league", "roshn saudi league"),
     "women_spain": ("liga f", "liga f femenina", "spanish women's", "primera division femenina"),
-    "women_germany": ("frauen-bundesliga", "women bundesliga", "google pixel frauen-bundesliga"),
     "japan2": ("j2 league", "japan j2", "j league 2"),
 }
 WOMEN_HINTS = ("women", "woman", "femen", "frauen", "womens")
 NATIONAL_HINTS = ("uefa nations league", "fifa world cup", "world cup qualifier",
                   "international friendly", "friendly international", "afc asian cup",
-                  "africa cup of nations", "copa america", "euro", "world cup",
+                  "africa cup of nations", "copa america", "uefa european championship", "world cup",
                   "national team", "nations league")
 
 SPORTS = [("فوتبال", "soccer"), ("بسکتبال", "nba")]
@@ -83,9 +83,9 @@ def allowed_competition(fixture):
     label = competition_text(fixture)
     if not label:
         return False
-    # Women competitions are restricted to Spain and Germany only.
+    # Only Spain women's league is in the requested competition list.
     if any(h in label for h in WOMEN_HINTS):
-        return any(h in label for h in LEAGUES["women_spain"] + LEAGUES["women_germany"])
+        return any(h in label for h in LEAGUES["women_spain"])
     if any(h in label for h in NATIONAL_HINTS):
         return True
     return any(h in label for aliases in LEAGUES.values() for h in aliases)
@@ -490,23 +490,25 @@ def collect():
     return found, errors, stats, tomorrow
 
 def deduplicate_picks(picks):
-    # Different bookmakers quoting the same event/market/selection are ONE pick.
-    # Keep the best (highest) decimal price and its bookmaker.
-    unique = {}
+    # Merge quotes for the same selection across bookmakers. Keep the best
+    # executable price, plus market consensus and quote coverage.
+    grouped = {}
     for pick in picks:
         key = (
-            pick["sport"],
-            pick["home"],
-            pick["away"],
-            pick["start"].isoformat(),
-            pick["market"],
-            pick["selection"],
-            str(pick.get("point")),
+            pick["sport"], pick["home"], pick["away"],
+            pick["start"].isoformat(), pick["market"],
+            pick["selection"], str(pick.get("point")),
         )
-        current = unique.get(key)
-        if current is None or pick["odds"] > current["odds"]:
-            unique[key] = pick
-    return list(unique.values())
+        grouped.setdefault(key, []).append(pick)
+    unique = []
+    for quotes in grouped.values():
+        best = max(quotes, key=lambda item: item["odds"]).copy()
+        prices = [float(item["odds"]) for item in quotes]
+        best["book_count"] = len({str(item.get("book", "")).lower() for item in quotes})
+        best["median_odds"] = statistics.median(prices)
+        best["quote_count"] = len(quotes)
+        unique.append(best)
+    return unique
 
 
 def resolve_chat_id():
@@ -538,9 +540,13 @@ def send_telegram(message):
 def main():
     raw_picks, errors, stats, tomorrow = collect()
     picks = deduplicate_picks(raw_picks)
-    # Rank by market-implied probability (lower decimal odds = higher implied probability).
-    # Deduplication above still keeps the best available price for each exact selection.
-    picks.sort(key=lambda x: (x["odds"], -len(x.get("fixture_sources", []))))
+    # Prioritize independent fixture confirmation and bookmaker quote coverage.
+    # Median odds represent market consensus; best odds remain the price to compare.
+    picks.sort(key=lambda x: (
+        -len(x.get("fixture_sources", [])),
+        -x.get("book_count", 1),
+        x.get("median_odds", x["odds"]),
+    ))
     lines = [
         "🧠 VIVA AI | پیش‌بینی مسابقات فردا",
         f"📅 {tomorrow.isoformat()} | ارسال ۲۲:۰۰ تهران",
