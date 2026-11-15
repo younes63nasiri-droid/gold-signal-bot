@@ -83,13 +83,26 @@ def competition_text(fixture):
     return " ".join(parts).lower()
 
 def competition_name(fixture):
-    for key in ("league", "competition", "tournament", "league_name", "competition_name"):
+    # Providers use different field names and sometimes nest the competition.
+    for key in ("league", "competition", "tournament", "league_name",
+                "competition_name", "sport_title"):
         value = fixture.get(key)
         if isinstance(value, dict):
-            value = value.get("title") or value.get("name") or value.get("key")
-        if value:
-            return str(value).strip()
-    return ""
+            value = (value.get("name") or value.get("title") or
+                     value.get("displayName") or value.get("key"))
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    # Some feeds put the competition label inside a nested event object.
+    for parent_key in ("event", "fixture", "competition_info"):
+        parent = fixture.get(parent_key)
+        if isinstance(parent, dict):
+            for key in ("league", "competition", "tournament", "name", "title"):
+                value = parent.get(key)
+                if isinstance(value, dict):
+                    value = value.get("name") or value.get("title") or value.get("key")
+                if isinstance(value, str) and value.strip():
+                    return value.strip()
+    return "لیگ نامشخص"
 
 def allowed_competition(fixture):
     label = competition_text(fixture)
