@@ -654,14 +654,14 @@ def main():
     ]
     if errors:
         lines.append("⚠️ <i>برخی منابع داده خطا داشتند؛ جزئیات در گزارش اجرا ثبت شده است.</i>")
-        send_telegram("\n".join(lines))
-        sent_ids.update(fixture_id(p) for p in fresh[:5])
-        state_path.parent.mkdir(parents=True, exist_ok=True)
-        state_path.write_text(json.dumps(sorted(sent_ids), ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"Telegram sent {min(len(fresh), 5)} new unique picks.")
-    else:
-        print("No new unique picks; Telegram message skipped.")
-        print("DIAGNOSTIC: no Telegram message is expected on a clean zero-pick scan.")
+
+    # Always send the scan result, including a clean zero-pick status.
+    # Save fixture history only after Telegram confirms successful delivery.
+    send_telegram("\n".join(lines))
+    sent_ids.update(fixture_id(p) for p in fresh[:5])
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps(sorted(sent_ids), ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Telegram sent scan result with {min(len(fresh), 5)} new unique picks.")
 
 if __name__ == "__main__":
     main()
