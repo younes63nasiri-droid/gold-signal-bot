@@ -378,6 +378,45 @@ def collect_odds_api(tomorrow):
     return picks, errors, stats
 
 
+def norm_team(value):
+    import unicodedata
+    value = unicodedata.normalize('NFKD', str(value or '').lower())
+    value = ''.join(ch for ch in value if not unicodedata.combining(ch))
+    return ''.join(ch for ch in value if ch.isalnum())
+
+def fixture_crosschecks(tomorrow):
+    """Independent fixture schedule checks; these feeds do not provide odds."""
+    found, errors = {}, []
+    headers = {**HEADERS, 'User-Agent': 'Mozilla/5.0 (compatible; VIVA-AI-Sports/1.0)'}
+    sources = [
+        ('SofaScore', 'https://www.sofascore.com/api/v1/sport/football/scheduled-events/' + tomorrow.isoformat()),
+        ('FotMob', 'https://www.fotmob.com/api/matches?date=' + tomorrow.strftime('%Y%m%d')),
+    ]
+    for source, url in sources:
+        try:
+            response = requests.get(url, headers=headers, timeout=TIMEOUT)
+            response.raise_for_status()
+            data = response.json()
+            rows = data.get('events', []) if source == 'SofaScore' else data.get('matches', [])
+            for row in rows:
+                if source == 'SofaScore':
+                    home = (row.get('homeTeam') or {}).get('name')
+                    away = (row.get('awayTeam') or {}).get('name')
+                    stamp = row.get('startTimestamp')
+                    if not home or not away or not stamp: continue
+                    start = datetime.fromtimestamp(int(stamp), timezone.utc)
+                else:
+                    h, a = row.get('home') or {}, row.get('away') or {}
+                    home = h.get('name') if isinstance(h, dict) else str(h)
+                    away = a.get('name') if isinstance(a, dict) else str(a)
+                    status = row.get('status') or {}
+                    start = parse_time(status.get('utcTime') or row.get('utcTime'))
+                    if not home or not away or start is None: continue
+                if start.astimezone(TEHRAN).date() != tomorrow: continue
+                found.setdefault((norm_team(home), norm_team(away)), set()).add(source)
+        except Exception as exc:
+            errors.append(f'{source}: {type(exc).__name__} {str(exc)[:90]}')
+    return found, errors
 def collect():
     now = datetime.now(timezone.utc)
     tomorrow = (datetime.now(TEHRAN).date() + timedelta(days=1))
@@ -439,6 +478,15 @@ def collect():
     found.extend(extra_picks)
     errors.extend(extra_errors)
     stats.extend(extra_stats)
+    schedules, schedule_errors = fixture_crosschecks(tomorrow)
+    checked = 0
+    for pick in found:
+        key = (norm_team(pick.get('home')), norm_team(pick.get('away')))
+        matched = schedules.get(key, set())
+        pick['fixture_sources'] = sorted(matched)
+        if matched: checked += 1
+    stats.append(f'برنامه مسابقات: {len(schedules)} بازی از SofaScore/FotMob؛ {checked} انتخاب با تأیید مستقل')
+    errors.extend(schedule_errors)
     return found, errors, stats, tomorrow
 
 def deduplicate_picks(picks):
@@ -507,6 +555,7 @@ def main():
                 f"#{i} {p['sport']} | {p['home']} 🆚 {p['away']}",
                 f"🕒 {local_time} | 🎯 {market_names.get(p['market'], p['market'])}: {p['selection']}{point}",
                 f"💎 ضریب: {p['odds']:.2f} | منبع: {p['book']}",
+                (f"📊 تأیید برنامه: {', '.join(p['fixture_sources'])}" if p.get('fixture_sources') else "📊 تأیید برنامه مستقل: موجود نیست"),
                 "────────────",
             ]
     else:
