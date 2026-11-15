@@ -1,22 +1,8 @@
 {
   "version": 1,
-  "balance": 101808.98259802729,
-  "realized_pnl": 1846.0418069232126,
+  "balance": 101414.18164797779,
+  "realized_pnl": 1461.0468781187246,
   "positions": {
-    "DODOX-SWAP-USDT": {
-      "direction": "LONG",
-      "entry": 0.032763,
-      "stop": 0.0322755,
-      "target": 0.033738000000000004,
-      "qty": 731202.3514343181,
-      "entry_fee": 14.373829584025538,
-      "leverage": 0.24,
-      "opened_candle": 1794754800000,
-      "opened_at": "2026-11-15T15:08:19.072445+00:00",
-      "score": 84.02,
-      "spread_pct": 0.0031,
-      "last_mark": 0.032454
-    },
     "SOXL-SWAP-USDT": {
       "direction": "SHORT",
       "entry": 54.23,
@@ -28,20 +14,34 @@
       "opened_candle": 1794757500000,
       "opened_at": "2026-11-15T15:47:30.501232+00:00",
       "score": 82.38,
-      "spread_pct": 0.0184
+      "spread_pct": 0.0184,
+      "last_mark": 54.52
+    },
+    "SOXS-SWAP-USDT": {
+      "direction": "LONG",
+      "entry": 54.24,
+      "stop": 53.76321428571429,
+      "target": 55.19357142857143,
+      "qty": 742.9895166247076,
+      "entry_fee": 24.179850829034482,
+      "leverage": 0.4,
+      "opened_candle": 1794759300000,
+      "opened_at": "2026-11-15T16:29:30.580288+00:00",
+      "score": 96.38,
+      "spread_pct": 0.0188
     }
   },
-  "closed_trades": 25,
+  "closed_trades": 26,
   "wins": 11,
-  "losses": 14,
+  "losses": 15,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -262.86517057322794,
-  "equity": 101546.11742745405,
-  "total_pnl": 1546.1174274540535,
-  "last_scan": "2026-11-15T15:47:30.501270+00:00",
+  "unrealized_pnl": -249.17352371976438,
+  "equity": 101165.00812425803,
+  "total_pnl": 1165.0081242580345,
+  "last_scan": "2026-11-15T16:29:30.580321+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 256,
+    "liquid": 247,
     "analyzed": 60,
     "qualified": 10
   }
