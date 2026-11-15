@@ -573,9 +573,11 @@ def main():
             p["sport"], norm_team(p["home"]), norm_team(p["away"]),
             p["start"].astimezone(timezone.utc).isoformat(),
         )
-        if fixture_key in seen_fixtures or pick_id(p) in sent_ids:
+        if fixture_key in seen_fixtures:
             continue
         seen_fixtures.add(fixture_key)
+        if pick_id(p) in sent_ids:
+            continue
         fresh.append(p)
         if len(fresh) >= 5:
             break
