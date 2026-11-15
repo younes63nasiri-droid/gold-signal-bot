@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "balance": 103869.53375344502,
+  "balance": 103859.26964328643,
   "realized_pnl": 3876.0699830197163,
   "positions": {
     "BARD-SWAP-USDT": {
@@ -14,21 +14,35 @@
       "opened_candle": 1794709800000,
       "opened_at": "2026-11-15T02:31:25.908949+00:00",
       "score": 59.11,
-      "spread_pct": 0.0901
+      "spread_pct": 0.0901,
+      "last_mark": 0.1115
+    },
+    "AVAX-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 7.12,
+      "stop": 7.271285714285715,
+      "target": 6.817428571428572,
+      "qty": 2402.647509032089,
+      "entry_fee": 10.264110158585085,
+      "leverage": 0.16,
+      "opened_candle": 1794713400000,
+      "opened_at": "2026-11-15T03:31:42.035841+00:00",
+      "score": 70.26,
+      "spread_pct": 0.0141
     }
   },
   "closed_trades": 17,
   "wins": 10,
   "losses": 7,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -6.5362295747471,
-  "equity": 103862.99752387028,
-  "total_pnl": 3862.9975238702755,
-  "last_scan": "2026-11-15T02:31:25.908980+00:00",
+  "unrealized_pnl": -26.58512625710857,
+  "equity": 103832.68451702932,
+  "total_pnl": 3832.6845170293236,
+  "last_scan": "2026-11-15T03:31:42.035879+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 275,
+    "liquid": 279,
     "analyzed": 60,
-    "qualified": 2
+    "qualified": 7
   }
 }
