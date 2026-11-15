@@ -82,6 +82,15 @@ def competition_text(fixture):
             parts.append(str(value))
     return " ".join(parts).lower()
 
+def competition_name(fixture):
+    for key in ("league", "competition", "tournament", "league_name", "competition_name"):
+        value = fixture.get(key)
+        if isinstance(value, dict):
+            value = value.get("title") or value.get("name") or value.get("key")
+        if value:
+            return str(value).strip()
+    return ""
+
 def allowed_competition(fixture):
     label = competition_text(fixture)
     if not label:
@@ -235,6 +244,7 @@ def collect_oddslink_authenticated(tomorrow):
                                 "home": fixture.get("home_team", "نامشخص"),
                                 "away": fixture.get("away_team", "نامشخص"),
                                 "start": start,
+                                "league": competition_name(fixture) or "لیگ نامشخص",
                                 "market": market["key"],
                                 "selection": str(outcome.get("name", "نامشخص")),
                                 "odds": price,
@@ -463,6 +473,7 @@ def collect():
                         "home": fixture.get("home_team", "نامشخص"),
                         "away": fixture.get("away_team", "نامشخص"),
                         "start": start,
+                        "league": competition_name(fixture) or "لیگ نامشخص",
                         **market,
                     })
             stats.append(f"{label}: {count} مسابقه فردا")
@@ -592,7 +603,7 @@ def main():
             status = "🟢 تأیید برنامه: " + "، ".join(p["fixture_sources"]) if p.get("fixture_sources") else "⚪ تأیید مستقل برنامه در دسترس نیست"
             lines += [
                 f"⚽ مسابقه {i}",
-                f"🏆 {p['sport']}",
+                f"🏆 {p['sport']} | {p.get('league') or 'لیگ نامشخص'}",
                 f"🔵 {p['home']}   VS   {p['away']}",
                 f"🕒 {local_time}",
                 "",
