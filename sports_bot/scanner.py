@@ -561,7 +561,24 @@ def main():
         raw += "|" + p["start"].isoformat()
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
-    fresh = [p for p in picks if pick_id(p) not in sent_ids]
+    # Keep only genuinely upcoming fixtures; discard stale/in-play/past start times.
+    now_utc = datetime.now(timezone.utc)
+    upcoming = [p for p in picks
+                if p.get("start") and p["start"].astimezone(timezone.utc) > now_utc + timedelta(minutes=5)]
+    # One recommendation per match, regardless of how many 1X2 outcomes/books exist.
+    fresh = []
+    seen_fixtures = set()
+    for p in upcoming:
+        fixture_key = (
+            p["sport"], norm_team(p["home"]), norm_team(p["away"]),
+            p["start"].astimezone(timezone.utc).isoformat(),
+        )
+        if fixture_key in seen_fixtures or pick_id(p) in sent_ids:
+            continue
+        seen_fixtures.add(fixture_key)
+        fresh.append(p)
+        if len(fresh) >= 5:
+            break
     lines = [
         "🧠 VIVA AI | فرصت‌های جدید مسابقات",
         f"📅 مسابقات تاریخ {tomorrow.isoformat()}",
@@ -569,7 +586,7 @@ def main():
         "━━━━━━━━━━━━━━━━━━",
     ]
     if fresh:
-        for i, p in enumerate(fresh[:12], 1):
+        for i, p in enumerate(fresh[:5], 1):
             local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
             market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع امتیاز/گل"}
             point = f" ({p['point']})" if p.get("point") is not None else ""
@@ -583,7 +600,7 @@ def main():
     else:
         lines.append("فعلاً فرصت جدید و تکرارنشده‌ای با ضریب ۱٫۴۸ به بالا پیدا نشد.")
     lines += [
-        f"فرصت‌های جدید و یکتا برای ارسال: {len(fresh[:12])}",
+        f"فرصت‌های جدید و یکتا برای ارسال: {len(fresh[:5])}",
         f"نقل‌قول‌های خام بازار از همه سایت‌ها: {len(raw_picks)}",
         "بازارهای فعلی این منبع: نتیجه، هندیکپ و مجموع گل/امتیاز؛ کرنر، خطا، کارت، VAR و گل‌زن بازیکن در فید عمومی فعلی ارائه نمی‌شوند.",
         "لیگ زنان اسپانیا/آلمان، لیگ‌های ایران/امارات/عربستان و J2 فقط وقتی مسابقه می‌گیرند که فید نام رقابت را مشخص کند.",
@@ -596,10 +613,10 @@ def main():
         lines.append("خطاها: " + "؛ ".join(errors[:4]))
     if fresh:
         send_telegram("\n".join(lines))
-        sent_ids.update(pick_id(p) for p in fresh[:12])
+        sent_ids.update(pick_id(p) for p in fresh[:5])
         state_path.parent.mkdir(parents=True, exist_ok=True)
         state_path.write_text(json.dumps(sorted(sent_ids), ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"Telegram sent {min(len(fresh), 12)} new unique picks.")
+        print(f"Telegram sent {min(len(fresh), 5)} new unique picks.")
     else:
         print("No new unique picks; Telegram message skipped.")
 
