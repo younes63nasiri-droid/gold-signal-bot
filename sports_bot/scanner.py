@@ -538,8 +538,9 @@ def send_telegram(message):
 def main():
     raw_picks, errors, stats, tomorrow = collect()
     picks = deduplicate_picks(raw_picks)
-    # Higher available price is better for the same selection.
-    picks.sort(key=lambda x: x["odds"], reverse=True)
+    # Rank by market-implied probability (lower decimal odds = higher implied probability).
+    # Deduplication above still keeps the best available price for each exact selection.
+    picks.sort(key=lambda x: (x["odds"], -len(x.get("fixture_sources", []))))
     lines = [
         "🧠 VIVA AI | پیش‌بینی مسابقات فردا",
         f"📅 {tomorrow.isoformat()} | ارسال ۲۲:۰۰ تهران",
