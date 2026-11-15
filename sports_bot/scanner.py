@@ -595,7 +595,9 @@ def main():
                 if p.get("start") and p["start"].astimezone(timezone.utc) > cutoff]
     # Emit source/filter diagnostics in the Actions log so a zero-pick run
     # can be traced to provider failures, league filtering, timing, or history.
-    print(f"DIAGNOSTIC raw={len(raw_picks)} unique={len(picks)} upcoming_after_cutoff={len(upcoming)} sent_history={len(sent_ids)}")
+    upcoming_fixture_ids = {fixture_id(p) for p in upcoming}
+    already_sent_fixture_ids = upcoming_fixture_ids & sent_ids
+    print(f"DIAGNOSTIC raw={len(raw_picks)} unique={len(picks)} upcoming_picks={len(upcoming)} upcoming_fixtures={len(upcoming_fixture_ids)} already_sent_fixtures={len(already_sent_fixture_ids)} sent_history={len(sent_ids)}")
     for item in stats:
         print("SOURCE:", item)
     for item in errors:
