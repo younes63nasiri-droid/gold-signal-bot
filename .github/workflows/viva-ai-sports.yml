@@ -2,12 +2,11 @@ name: VIVA AI Sports Scanner
 
 on:
   schedule:
-    # 22:00 Asia/Tehran (UTC+3:30) = 18:30 UTC
-    - cron: "30 18 * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: viva-ai-sports
@@ -30,10 +29,19 @@ jobs:
         run: python -m pip install requests
       - name: Validate scanner
         run: python -m py_compile sports_bot/scanner.py
-      - name: Scan tomorrow's permitted fixtures
+      - name: Scan and send only new picks
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || '601146458' }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           ODDSLINK_API_KEY: ${{ secrets.ODDSLINK_API_KEY }}
         run: python sports_bot/scanner.py
+      - name: Save sent-pick history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sports_bot/viva_sent.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Record VIVA picks already sent"
+            git push origin HEAD:viva-ai-sports
+          fi
