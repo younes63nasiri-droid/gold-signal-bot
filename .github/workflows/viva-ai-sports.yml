@@ -1,6 +1,10 @@
 name: VIVA AI Sports Scanner
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/viva-ai-sports.yml"
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
