@@ -545,7 +545,8 @@ def resolve_chat_id():
 def send_telegram(message):
     target = resolve_chat_id()
     response = requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-                             data={"chat_id": target, "text": message, "disable_web_page_preview": True},
+                             data={"chat_id": target, "text": message, "parse_mode": "HTML",
+                                   "disable_web_page_preview": True},
                              timeout=TIMEOUT)
     response.raise_for_status()
     if not response.json().get("ok"):
@@ -590,39 +591,48 @@ def main():
         fresh.append(p)
         if len(fresh) >= 5:
             break
+    import html
+    esc = lambda value: html.escape(str(value or ""), quote=False)
     lines = [
-        "✨ VIVA AI  |  پیشنهادهای مسابقات",
-        f"📅 {tomorrow.strftime('%d.%m.%Y')}  •  زمان تهران",
+        "✨ <b>VIVA AI</b>  <i>پیشنهادهای منتخب مسابقات</i>",
+        f"📅 <b>{tomorrow.strftime('%d.%m.%Y')}</b>  |  به وقت تهران",
         "━━━━━━━━━━━━━━━━━━━━",
     ]
     if fresh:
         for i, p in enumerate(fresh[:5], 1):
-            local_time = p["start"].astimezone(TEHRAN).strftime("%d.%m.%Y  |  %H:%M")
+            local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
+            local_date = p["start"].astimezone(TEHRAN).strftime("%d.%m.%Y")
             market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع گل / امتیاز"}
-            point = f" ({p['point']})" if p.get("point") is not None else ""
-            status = "🟢 تأیید برنامه: " + "، ".join(p["fixture_sources"]) if p.get("fixture_sources") else "⚪ تأیید مستقل برنامه در دسترس نیست"
+            point = f" ({esc(p['point'])})" if p.get("point") is not None else ""
+            league = esc(p.get("league") or "لیگ نامشخص")
+            home, away = esc(p["home"]), esc(p["away"])
+            status = ("🟢 <b>برنامه تأییدشده:</b> " + esc("، ".join(p["fixture_sources"]))
+                      if p.get("fixture_sources") else "⚪ <i>تأیید مستقل برنامه موجود نیست</i>")
             lines += [
-                f"⚽ مسابقه {i}",
-                f"🏆 {p['sport']} | {p.get('league') or 'لیگ نامشخص'}",
-                f"🔵 {p['home']}   VS   {p['away']}",
-                f"🕒 {local_time}",
+                f"<b>⚽ مسابقه {i:02d}</b>",
+                f"🏆 <b>{league}</b>",
                 "",
-                f"🎯 نوع پیش‌بینی: {market_names.get(p['market'], p['market'])}",
-                f"📌 پیشنهاد: {p['selection']}{point}",
-                f"💎 ضریب: {p['odds']:.2f}",
-                f"📡 منبع ضریب: {p['book']}",
+                f"🔹 <b>{home}</b>",
+                "<b>          VS</b>",
+                f"🔸 <b>{away}</b>",
+                "",
+                f"🗓 {local_date}　　🕒 <b>{local_time}</b>",
+                "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄",
+                f"🎯 <b>{esc(market_names.get(p['market'], p['market']))}</b>",
+                f"📌 انتخاب: <b>{esc(p['selection'])}{point}</b>",
+                f"💎 ضریب: <b>{p['odds']:.2f}</b>",
+                f"📡 منبع ضریب: {esc(p['book'])}",
                 status,
                 "━━━━━━━━━━━━━━━━━━━━",
             ]
     else:
         lines.append("فعلاً پیشنهاد تازه و تکرارنشده‌ای برای نمایش وجود ندارد.")
     lines += [
-        f"📋 تعداد پیشنهادهای تازه: {len(fresh[:5])}",
-        "ℹ️ این پیام صرفاً تحلیل آماری است و تضمینی برای نتیجه ندارد.",
+        f"📋 <b>تعداد پیشنهادهای تازه: {len(fresh[:5])}</b>",
+        "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
     ]
     if errors:
-        lines.append("⚠️ وضعیت برخی منابع: " + "؛ ".join(errors[:3]))
-    if fresh:
+        lines.append("⚠️ <i>برخی منابع داده خطا داشتند؛ جزئیات در گزارش اجرا ثبت شده است.</i>")
         send_telegram("\n".join(lines))
         sent_ids.update(fixture_id(p) for p in fresh[:5])
         state_path.parent.mkdir(parents=True, exist_ok=True)
