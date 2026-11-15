@@ -14,7 +14,10 @@
     "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|totals|Over|3.75": "2026-11-15T01:23:04.516979+00:00",
     "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|3.5": "2026-11-15T04:27:39.588980+00:00",
     "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|spreads|Germany|-1.0": "2026-11-15T04:27:39.588980+00:00",
-    "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|spreads|Germany|-2.0": "2026-11-15T04:27:39.588980+00:00"
+    "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|spreads|Germany|-2.0": "2026-11-15T04:27:39.588980+00:00",
+    "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|totals|Under|2.75": "2026-11-15T05:25:36.709166+00:00",
+    "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|totals|Over|2.75": "2026-11-15T05:25:36.709166+00:00",
+    "soccer:bulgaria-estonia:2026-11-16|soccer|Estonia|Bulgaria|spreads|Bulgaria|0": "2026-11-15T05:25:36.709166+00:00"
   },
   "pending": {
     "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": {
@@ -256,8 +259,56 @@
       "book": "Fliff",
       "updated": "2026-11-15T04:27:20+00:00",
       "sent_at": "2026-11-15T04:27:39.588980+00:00"
+    },
+    "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|totals|Under|2.75": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:gibraltar-malta:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Gibraltar",
+      "away": "Malta",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 1.48,
+      "point": 2.75,
+      "book": "bet105",
+      "updated": "2026-11-15T05:25:20+00:00",
+      "sent_at": "2026-11-15T05:25:36.709166+00:00"
+    },
+    "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|totals|Over|2.75": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:greece-serbia:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Greece",
+      "away": "Serbia",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "totals",
+      "selection": "Over",
+      "odds": 1.92,
+      "point": 2.75,
+      "book": "1xBet",
+      "updated": "2026-11-15T05:23:50+00:00",
+      "sent_at": "2026-11-15T05:25:36.709166+00:00"
+    },
+    "soccer:bulgaria-estonia:2026-11-16|soccer|Estonia|Bulgaria|spreads|Bulgaria|0": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:bulgaria-estonia:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Estonia",
+      "away": "Bulgaria",
+      "start": "2026-11-16T17:00:00+00:00",
+      "market": "spreads",
+      "selection": "Bulgaria",
+      "odds": 2.77,
+      "point": 0,
+      "book": "1xBet",
+      "updated": "2026-11-15T05:24:00+00:00",
+      "sent_at": "2026-11-15T05:25:36.709166+00:00"
     }
   },
-  "next_send_at": "2026-11-15T05:14:39.588980+00:00",
+  "next_send_at": "2026-11-15T07:14:36.709166+00:00",
   "settled": {}
 }
