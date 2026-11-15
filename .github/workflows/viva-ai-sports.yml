@@ -40,7 +40,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add sports_bot/viva_sent.json
+          if [ -f sports_bot/viva_sent.json ]; then git add sports_bot/viva_sent.json; fi
           if ! git diff --cached --quiet; then
             git commit -m "Record VIVA picks already sent"
             git push origin HEAD:viva-ai-sports
