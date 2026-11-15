@@ -15,7 +15,7 @@
       "opened_at": "2026-11-15T09:28:13.564323+00:00",
       "score": 85.95,
       "spread_pct": 0.0284,
-      "last_mark": 7.086
+      "last_mark": 7.056
     },
     "ASTER-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-15T10:15:05.173945+00:00",
       "score": 76.01,
       "spread_pct": 0.019,
-      "last_mark": 0.5288
+      "last_mark": 0.53
     }
   },
   "closed_trades": 21,
   "wins": 10,
   "losses": 11,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -231.42418252275868,
-  "equity": 102071.49914153165,
-  "total_pnl": 2071.499141531647,
-  "last_scan": "2026-11-15T10:57:56.879949+00:00",
+  "unrealized_pnl": -200.24528583568642,
+  "equity": 102102.67803821873,
+  "total_pnl": 2102.678038218728,
+  "last_scan": "2026-11-15T11:34:00.390453+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 273,
+    "liquid": 271,
     "analyzed": 60,
     "qualified": 3
   }
