@@ -450,6 +450,32 @@ def fixture_crosschecks(tomorrow):
                 found.setdefault((norm_team(home), norm_team(away)), set()).add(source)
         except Exception as exc:
             errors.append(f'{source}: {type(exc).__name__} {str(exc)[:90]}')
+    # Third independent schedule provider. The free TheSportsDB key has limited
+    # event coverage/rate limits, so it supplements (never replaces) SofaScore/FotMob.
+    try:
+        api_key = os.getenv("THESPORTSDB_API_KEY", "3").strip() or "3"
+        response = requests.get(
+            f"https://www.thesportsdb.com/api/v1/json/{api_key}/eventsday.php",
+            params={"d": tomorrow.isoformat(), "s": "Soccer"},
+            headers=headers,
+            timeout=TIMEOUT,
+        )
+        response.raise_for_status()
+        data = response.json()
+        rows = data.get("events") or []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            home = row.get("strHomeTeam")
+            away = row.get("strAwayTeam")
+            if not home or not away:
+                continue
+            event_date = str(row.get("dateEvent") or "")
+            if event_date != tomorrow.isoformat():
+                continue
+            found.setdefault((norm_team(home), norm_team(away)), set()).add("TheSportsDB")
+    except Exception as exc:
+        errors.append(f'TheSportsDB: {type(exc).__name__} {str(exc)[:90]}')
     return found, errors
 def collect():
     now = datetime.now(timezone.utc)
@@ -520,7 +546,7 @@ def collect():
         matched = schedules.get(key, set())
         pick['fixture_sources'] = sorted(matched)
         if matched: checked += 1
-    stats.append(f'برنامه مسابقات: {len(schedules)} بازی از SofaScore/FotMob؛ {checked} انتخاب با تأیید مستقل')
+    stats.append(f'برنامه مسابقات: {len(schedules)} بازی از SofaScore/FotMob/TheSportsDB؛ {checked} انتخاب با تأیید مستقل')
     errors.extend(schedule_errors)
     return found, errors, stats, tomorrow
 
