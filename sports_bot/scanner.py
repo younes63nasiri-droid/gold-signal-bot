@@ -105,15 +105,12 @@ def competition_name(fixture):
     return "لیگ نامشخص"
 
 def allowed_competition(fixture):
+    # Broad coverage: accept every fixture whose provider explicitly identifies
+    # its competition. The old hard-coded allowlist silently discarded most
+    # domestic leagues, cups and lower divisions, making the schedule look empty.
+    # Still fail closed when the feed supplies no competition metadata.
     label = competition_text(fixture)
-    if not label:
-        return False
-    # Only Spain women's league is in the requested competition list.
-    if any(h in label for h in WOMEN_HINTS):
-        return any(h in label for h in LEAGUES["women_spain"])
-    if any(h in label for h in NATIONAL_HINTS):
-        return True
-    return any(h in label for aliases in LEAGUES.values() for h in aliases)
+    return bool(label.strip())
 
 def get_market_candidates(fixture):
     candidates = []
