@@ -20,7 +20,10 @@
     "soccer:bulgaria-estonia:2026-11-16|soccer|Estonia|Bulgaria|spreads|Bulgaria|0": "2026-11-15T05:25:36.709166+00:00",
     "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|totals|Under|1.75": "2026-11-15T07:39:05.843927+00:00",
     "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|3": "2026-11-15T07:39:05.843927+00:00",
-    "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|spreads|Malta|-1.0": "2026-11-15T07:39:05.843927+00:00"
+    "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|spreads|Malta|-1.0": "2026-11-15T07:39:05.843927+00:00",
+    "soccer:liechtenstein-lithuania:2026-11-16|soccer|Lithuania|Liechtenstein|totals|Over|2.25": "2026-11-15T10:19:33.025896+00:00",
+    "soccer:bulgaria-estonia:2026-11-16|soccer|Estonia|Bulgaria|totals|Under|2.5": "2026-11-15T10:19:33.025896+00:00",
+    "soccer:iceland-luxembourg:2026-11-16|soccer|Iceland|Luxembourg|totals|Under|3": "2026-11-15T10:19:33.025896+00:00"
   },
   "pending": {
     "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": {
@@ -358,8 +361,56 @@
       "book": "sx.bet",
       "updated": "2026-11-15T07:34:30.227000+00:00",
       "sent_at": "2026-11-15T07:39:05.843927+00:00"
+    },
+    "soccer:liechtenstein-lithuania:2026-11-16|soccer|Lithuania|Liechtenstein|totals|Over|2.25": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:liechtenstein-lithuania:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Lithuania",
+      "away": "Liechtenstein",
+      "start": "2026-11-16T17:00:00+00:00",
+      "market": "totals",
+      "selection": "Over",
+      "odds": 1.64,
+      "point": 2.25,
+      "book": "4Casters",
+      "updated": "2026-11-15T10:19:30+00:00",
+      "sent_at": "2026-11-15T10:19:33.025896+00:00"
+    },
+    "soccer:bulgaria-estonia:2026-11-16|soccer|Estonia|Bulgaria|totals|Under|2.5": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:bulgaria-estonia:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Estonia",
+      "away": "Bulgaria",
+      "start": "2026-11-16T17:00:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 1.59,
+      "point": 2.5,
+      "book": "Betfair",
+      "updated": "2026-11-15T10:19:29.135000+00:00",
+      "sent_at": "2026-11-15T10:19:33.025896+00:00"
+    },
+    "soccer:iceland-luxembourg:2026-11-16|soccer|Iceland|Luxembourg|totals|Under|3": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:iceland-luxembourg:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Iceland",
+      "away": "Luxembourg",
+      "start": "2026-11-16T17:00:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 1.62,
+      "point": 3,
+      "book": "Cloudbet",
+      "updated": "2026-11-15T10:19:10+00:00",
+      "sent_at": "2026-11-15T10:19:33.025896+00:00"
     }
   },
-  "next_send_at": "2026-11-15T09:52:05.843927+00:00",
+  "next_send_at": "2026-11-15T12:29:33.025896+00:00",
   "settled": {}
 }
