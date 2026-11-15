@@ -1,5 +1,5 @@
 {
-  "balance": 102220.43458501405,
+  "balance": 102136.45105850778,
   "positions": {
     "XAU/USD (PAXG proxy)": {
       "side": "SHORT",
@@ -10,6 +10,16 @@
       "entry_fee": 49.58545855637798,
       "opened_at": "2026-11-14T22:30:00+00:00",
       "leverage": 1.0
+    },
+    "ترون (TRX-SWAP-USDT)": {
+      "side": "SHORT",
+      "entry": 0.30663,
+      "stop": 0.3077496428571429,
+      "target": 0.3043907142857143,
+      "qty": 456486.7892153707,
+      "entry_fee": 83.98352650626548,
+      "opened_at": "2026-11-14T23:45:00+00:00",
+      "leverage": 1.3693205741626704
     }
   },
   "closed_trades": 57,
@@ -17,7 +27,7 @@
   "wins": 14,
   "losses": 5,
   "accounting_version": 2,
-  "last_unrealized_pnl": -288.2307681375097,
-  "last_equity": 101932.20381687654,
-  "last_total_pnl": 1932.203816876543
+  "last_unrealized_pnl": -246.68032357643847,
+  "last_equity": 101889.77073493134,
+  "last_total_pnl": 1889.7707349313423
 }
