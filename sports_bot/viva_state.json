@@ -17,7 +17,10 @@
     "soccer:germany-netherlands:2026-11-16|soccer|Germany|Netherlands|spreads|Germany|-2.0": "2026-11-15T04:27:39.588980+00:00",
     "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|totals|Under|2.75": "2026-11-15T05:25:36.709166+00:00",
     "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|totals|Over|2.75": "2026-11-15T05:25:36.709166+00:00",
-    "soccer:bulgaria-estonia:2026-11-16|soccer|Estonia|Bulgaria|spreads|Bulgaria|0": "2026-11-15T05:25:36.709166+00:00"
+    "soccer:bulgaria-estonia:2026-11-16|soccer|Estonia|Bulgaria|spreads|Bulgaria|0": "2026-11-15T05:25:36.709166+00:00",
+    "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|totals|Under|1.75": "2026-11-15T07:39:05.843927+00:00",
+    "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|3": "2026-11-15T07:39:05.843927+00:00",
+    "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|spreads|Malta|-1.0": "2026-11-15T07:39:05.843927+00:00"
   },
   "pending": {
     "soccer:ceuta-tenerife:2026-11-15|soccer|Tenerife|AD Ceuta|spreads|Tenerife|-0.75": {
@@ -307,8 +310,56 @@
       "book": "1xBet",
       "updated": "2026-11-15T05:24:00+00:00",
       "sent_at": "2026-11-15T05:25:36.709166+00:00"
+    },
+    "soccer:greece-serbia:2026-11-16|soccer|Greece|Serbia|totals|Under|1.75": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:greece-serbia:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Greece",
+      "away": "Serbia",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 3.99,
+      "point": 1.75,
+      "book": "Betfair",
+      "updated": "2026-11-15T07:38:50+00:00",
+      "sent_at": "2026-11-15T07:39:05.843927+00:00"
+    },
+    "soccer:albacete-celtavigob:2026-11-16|soccer|Albacete|Celta Vigo B|totals|Under|3": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:albacete-celtavigob:2026-11-16",
+      "league": "la liga 2 - spain  spain_la_liga_2 soccer",
+      "home": "Albacete",
+      "away": "Celta Vigo B",
+      "start": "2026-11-16T19:30:00+00:00",
+      "market": "totals",
+      "selection": "Under",
+      "odds": 1.81,
+      "point": 3,
+      "book": "Cloudbet",
+      "updated": "2026-11-15T07:38:50+00:00",
+      "sent_at": "2026-11-15T07:39:05.843927+00:00"
+    },
+    "soccer:gibraltar-malta:2026-11-16|soccer|Gibraltar|Malta|spreads|Malta|-1.0": {
+      "sport": "فوتبال",
+      "sport_key": "soccer",
+      "event_id": "soccer:gibraltar-malta:2026-11-16",
+      "league": "uefa nations league  uefa_nations_league soccer",
+      "home": "Gibraltar",
+      "away": "Malta",
+      "start": "2026-11-16T19:45:00+00:00",
+      "market": "spreads",
+      "selection": "Malta",
+      "odds": 1.89,
+      "point": -1.0,
+      "book": "sx.bet",
+      "updated": "2026-11-15T07:34:30.227000+00:00",
+      "sent_at": "2026-11-15T07:39:05.843927+00:00"
     }
   },
-  "next_send_at": "2026-11-15T07:14:36.709166+00:00",
+  "next_send_at": "2026-11-15T09:52:05.843927+00:00",
   "settled": {}
 }
