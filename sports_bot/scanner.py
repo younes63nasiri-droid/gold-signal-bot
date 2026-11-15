@@ -580,37 +580,37 @@ def main():
         if len(fresh) >= 5:
             break
     lines = [
-        "🧠 VIVA AI | فرصت‌های جدید مسابقات",
-        f"📅 مسابقات تاریخ {tomorrow.isoformat()}",
-        f"💎 بازه ضرایب مجاز: {MIN_ODDS:.2f} تا {MAX_ODDS:.2f}",
-        "━━━━━━━━━━━━━━━━━━",
+        "✨ VIVA AI  |  پیشنهادهای مسابقات",
+        f"📅 {tomorrow.strftime('%d.%m.%Y')}  •  زمان تهران",
+        "━━━━━━━━━━━━━━━━━━━━",
     ]
     if fresh:
         for i, p in enumerate(fresh[:5], 1):
-            local_time = p["start"].astimezone(TEHRAN).strftime("%Y-%m-%d | %H:%M")
-            market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع امتیاز/گل"}
+            local_time = p["start"].astimezone(TEHRAN).strftime("%d.%m.%Y  |  %H:%M")
+            market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع گل / امتیاز"}
             point = f" ({p['point']})" if p.get("point") is not None else ""
+            status = "🟢 تأیید برنامه: " + "، ".join(p["fixture_sources"]) if p.get("fixture_sources") else "⚪ تأیید مستقل برنامه در دسترس نیست"
             lines += [
-                f"#{i} {p['sport']} | {p['home']} 🆚 {p['away']}",
-                f"🕒 {local_time} | 🎯 {market_names.get(p['market'], p['market'])}: {p['selection']}{point}",
-                f"💎 ضریب: {p['odds']:.2f} | منبع: {p['book']}",
-                (f"📊 تأیید برنامه: {', '.join(p['fixture_sources'])}" if p.get('fixture_sources') else "📊 تأیید برنامه مستقل: موجود نیست"),
-                "────────────",
+                f"⚽ مسابقه {i}",
+                f"🏆 {p['sport']}",
+                f"🔵 {p['home']}   VS   {p['away']}",
+                f"🕒 {local_time}",
+                "",
+                f"🎯 نوع پیش‌بینی: {market_names.get(p['market'], p['market'])}",
+                f"📌 پیشنهاد: {p['selection']}{point}",
+                f"💎 ضریب: {p['odds']:.2f}",
+                f"📡 منبع ضریب: {p['book']}",
+                status,
+                "━━━━━━━━━━━━━━━━━━━━",
             ]
     else:
-        lines.append("فعلاً فرصت جدید و تکرارنشده‌ای با ضریب ۱٫۴۸ به بالا پیدا نشد.")
+        lines.append("فعلاً پیشنهاد تازه و تکرارنشده‌ای برای نمایش وجود ندارد.")
     lines += [
-        f"فرصت‌های جدید و یکتا برای ارسال: {len(fresh[:5])}",
-        f"نقل‌قول‌های خام بازار از همه سایت‌ها: {len(raw_picks)}",
-        "بازارهای فعلی این منبع: نتیجه، هندیکپ و مجموع گل/امتیاز؛ کرنر، خطا، کارت، VAR و گل‌زن بازیکن در فید عمومی فعلی ارائه نمی‌شوند.",
-        "لیگ زنان اسپانیا/آلمان، لیگ‌های ایران/امارات/عربستان و J2 فقط وقتی مسابقه می‌گیرند که فید نام رقابت را مشخص کند.",
-        "NBA اسکن نمی‌شود؛ بسکتبال ژاپن از منابعی بررسی می‌شود که لیگ B.League را در فهرست مسابقات ارائه کنند.",
-        "ضرایب خارج از بازه ۱٫۴۸ تا ۱۵ و بازارهای پیش‌بینی/صرافی حذف می‌شوند.",
-        "این خروجی تحلیل قطعی یا تضمین نتیجه نیست.",
-        "وضعیت منابع: " + "؛ ".join(stats),
+        f"📋 تعداد پیشنهادهای تازه: {len(fresh[:5])}",
+        "ℹ️ این پیام صرفاً تحلیل آماری است و تضمینی برای نتیجه ندارد.",
     ]
     if errors:
-        lines.append("خطاها: " + "؛ ".join(errors[:4]))
+        lines.append("⚠️ وضعیت برخی منابع: " + "؛ ".join(errors[:3]))
     if fresh:
         send_telegram("\n".join(lines))
         sent_ids.update(fixture_id(p) for p in fresh[:5])
