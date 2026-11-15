@@ -620,7 +620,7 @@ def main():
             continue
         seen_fixtures.add(fid)
         fresh.append(p)
-        if len(fresh) >= 5:
+        if len(fresh) >= 10:
             break
     import html
     esc = lambda value: html.escape(str(value or ""), quote=False)
@@ -630,7 +630,7 @@ def main():
         "━━━━━━━━━━━━━━━━━━━━",
     ]
     if fresh:
-        for i, p in enumerate(fresh[:5], 1):
+        for i, p in enumerate(fresh[:10], 1):
             local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
             local_date = p["start"].astimezone(TEHRAN).strftime("%d.%m.%Y")
             market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع گل / امتیاز"}
@@ -659,7 +659,7 @@ def main():
     else:
         lines.append("فعلاً پیشنهاد تازه و تکرارنشده‌ای برای نمایش وجود ندارد.")
     lines += [
-        f"📋 <b>تعداد پیشنهادهای تازه: {len(fresh[:5])}</b>",
+        f"📋 <b>تعداد پیشنهادهای تازه: {len(fresh[:10])}</b>",
         "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
     ]
     if errors:
@@ -668,10 +668,10 @@ def main():
     # Always send the scan result, including a clean zero-pick status.
     # Save fixture history only after Telegram confirms successful delivery.
     send_telegram("\n".join(lines))
-    sent_ids.update(fixture_id(p) for p in fresh[:5])
+    sent_ids.update(fixture_id(p) for p in fresh[:10])
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(sorted(sent_ids), ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Telegram sent scan result with {min(len(fresh), 5)} new unique picks.")
+    print(f"Telegram sent scan result with {min(len(fresh), 10)} new unique picks.")
 
 if __name__ == "__main__":
     main()
