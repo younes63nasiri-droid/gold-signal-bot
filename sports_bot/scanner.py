@@ -450,6 +450,40 @@ def fixture_crosschecks(tomorrow):
                 found.setdefault((norm_team(home), norm_team(away)), set()).add(source)
         except Exception as exc:
             errors.append(f'{source}: {type(exc).__name__} {str(exc)[:90]}')
+    # ESPN's public scoreboard provides a broad soccer schedule feed.
+    # It is unofficial/undocumented, so it supplements rather than replaces
+    # the other providers and is used only to verify fixture identity.
+    try:
+        response = requests.get(
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard",
+            params={"dates": tomorrow.strftime("%Y%m%d")},
+            headers=headers,
+            timeout=TIMEOUT,
+        )
+        response.raise_for_status()
+        data = response.json()
+        for event in data.get("events") or []:
+            if not isinstance(event, dict):
+                continue
+            start = parse_time(event.get("date"))
+            if start is None or start.astimezone(TEHRAN).date() != tomorrow:
+                continue
+            competitions = event.get("competitions") or []
+            if not competitions:
+                continue
+            competitors = competitions[0].get("competitors") or []
+            home = away = None
+            for competitor in competitors:
+                team = competitor.get("team") or {}
+                name = team.get("displayName") or team.get("name") or competitor.get("displayName")
+                if competitor.get("homeAway") == "home":
+                    home = name
+                elif competitor.get("homeAway") == "away":
+                    away = name
+            if home and away:
+                found.setdefault((norm_team(home), norm_team(away)), set()).add("ESPN")
+    except Exception as exc:
+        errors.append(f'ESPN: {type(exc).__name__} {str(exc)[:90]}')
     # Third independent schedule provider. The free TheSportsDB key has limited
     # event coverage/rate limits, so it supplements (never replaces) SofaScore/FotMob.
     try:
@@ -546,7 +580,7 @@ def collect():
         matched = schedules.get(key, set())
         pick['fixture_sources'] = sorted(matched)
         if matched: checked += 1
-    stats.append(f'برنامه مسابقات: {len(schedules)} بازی از SofaScore/FotMob/TheSportsDB؛ {checked} انتخاب با تأیید مستقل')
+    stats.append(f'برنامه مسابقات: {len(schedules)} بازی از SofaScore/FotMob/TheSportsDB/ESPN؛ {checked} انتخاب با تأیید مستقل')
     errors.extend(schedule_errors)
     return found, errors, stats, tomorrow
 
