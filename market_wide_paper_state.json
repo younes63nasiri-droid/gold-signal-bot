@@ -15,7 +15,7 @@
       "opened_at": "2026-11-15T02:31:25.908949+00:00",
       "score": 59.11,
       "spread_pct": 0.0901,
-      "last_mark": 0.1115
+      "last_mark": 0.1123
     },
     "AVAX-SWAP-USDT": {
       "direction": "SHORT",
@@ -28,21 +28,22 @@
       "opened_candle": 1794713400000,
       "opened_at": "2026-11-15T03:31:42.035841+00:00",
       "score": 70.26,
-      "spread_pct": 0.0141
+      "spread_pct": 0.0141,
+      "last_mark": 7.194
     }
   },
   "closed_trades": 17,
   "wins": 10,
   "losses": 7,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -26.58512625710857,
-  "equity": 103832.68451702932,
-  "total_pnl": 3832.6845170293236,
-  "last_scan": "2026-11-15T03:31:42.035879+00:00",
+  "unrealized_pnl": -282.76601166509215,
+  "equity": 103576.50363162134,
+  "total_pnl": 3576.5036316213373,
+  "last_scan": "2026-11-15T04:36:48.315079+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 279,
+    "liquid": 280,
     "analyzed": 60,
-    "qualified": 7
+    "qualified": 5
   }
 }
