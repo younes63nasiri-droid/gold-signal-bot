@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 102302.92332405441,
-  "realized_pnl": 2329.0756527827593,
+  "balance": 101916.39888436113,
+  "realized_pnl": 1943.099911948859,
   "positions": {
     "INJ-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,34 +15,33 @@
       "opened_at": "2026-11-15T09:28:13.564323+00:00",
       "score": 85.95,
       "spread_pct": 0.0284,
-      "last_mark": 7.056
+      "last_mark": 6.985
     },
-    "ASTER-SWAP-USDT": {
-      "direction": "SHORT",
-      "entry": 0.5241,
-      "stop": 0.5320714285714285,
-      "target": 0.5081571428571429,
-      "qty": 44854.13663205142,
-      "entry_fee": 14.10483180531489,
-      "leverage": 0.23,
-      "opened_candle": 1794736800000,
-      "opened_at": "2026-11-15T10:15:05.173945+00:00",
-      "score": 76.01,
-      "spread_pct": 0.019,
-      "last_mark": 0.53
+    "DODOX-SWAP-USDT": {
+      "direction": "LONG",
+      "entry": 0.032484,
+      "stop": 0.03200817857142857,
+      "target": 0.03343564285714286,
+      "qty": 751833.2442995548,
+      "entry_fee": 14.65353066469604,
+      "leverage": 0.24,
+      "opened_candle": 1794744900000,
+      "opened_at": "2026-11-15T12:20:06.617152+00:00",
+      "score": 82.1,
+      "spread_pct": 0.0031
     }
   },
-  "closed_trades": 21,
+  "closed_trades": 22,
   "wins": 10,
-  "losses": 11,
+  "losses": 12,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -200.24528583568642,
-  "equity": 102102.67803821873,
-  "total_pnl": 2102.678038218728,
-  "last_scan": "2026-11-15T11:34:00.390453+00:00",
+  "unrealized_pnl": 265.25644005429405,
+  "equity": 102181.65532441542,
+  "total_pnl": 2181.65532441542,
+  "last_scan": "2026-11-15T12:20:06.617198+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 271,
+    "liquid": 270,
     "analyzed": 60,
     "qualified": 3
   }
