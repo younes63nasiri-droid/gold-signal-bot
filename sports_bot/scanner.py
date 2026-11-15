@@ -556,28 +556,26 @@ def main():
     except (FileNotFoundError, json.JSONDecodeError, TypeError):
         sent_ids = set()
 
-    def pick_id(p):
-        raw = "|".join(str(p.get(k, "")) for k in ("sport", "home", "away", "market", "selection", "point"))
-        raw += "|" + p["start"].isoformat()
+    def fixture_id(p):
+        # History is fixture-level, not selection-level: a match can never be resent
+        # merely because the market/selection/bookmaker changed on the next scan.
+        raw = "|".join(str(p.get(k, "")) for k in ("sport", "home", "away"))
+        raw += "|" + p["start"].astimezone(timezone.utc).replace(second=0, microsecond=0).isoformat()
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
-    # Keep only genuinely upcoming fixtures; discard stale/in-play/past start times.
+    # Strictly reject matches that have started or start within the next 20 minutes.
     now_utc = datetime.now(timezone.utc)
+    cutoff = now_utc + timedelta(minutes=20)
     upcoming = [p for p in picks
-                if p.get("start") and p["start"].astimezone(timezone.utc) > now_utc + timedelta(minutes=5)]
-    # One recommendation per match, regardless of how many 1X2 outcomes/books exist.
+                if p.get("start") and p["start"].astimezone(timezone.utc) > cutoff]
+    # One recommendation per fixture and never resend that fixture on later scans.
     fresh = []
     seen_fixtures = set()
     for p in upcoming:
-        fixture_key = (
-            p["sport"], norm_team(p["home"]), norm_team(p["away"]),
-            p["start"].astimezone(timezone.utc).isoformat(),
-        )
-        if fixture_key in seen_fixtures:
+        fid = fixture_id(p)
+        if fid in seen_fixtures or fid in sent_ids:
             continue
-        seen_fixtures.add(fixture_key)
-        if pick_id(p) in sent_ids:
-            continue
+        seen_fixtures.add(fid)
         fresh.append(p)
         if len(fresh) >= 5:
             break
@@ -589,7 +587,7 @@ def main():
     ]
     if fresh:
         for i, p in enumerate(fresh[:5], 1):
-            local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
+            local_time = p["start"].astimezone(TEHRAN).strftime("%Y-%m-%d | %H:%M")
             market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع امتیاز/گل"}
             point = f" ({p['point']})" if p.get("point") is not None else ""
             lines += [
@@ -615,7 +613,7 @@ def main():
         lines.append("خطاها: " + "؛ ".join(errors[:4]))
     if fresh:
         send_telegram("\n".join(lines))
-        sent_ids.update(pick_id(p) for p in fresh[:5])
+        sent_ids.update(fixture_id(p) for p in fresh[:5])
         state_path.parent.mkdir(parents=True, exist_ok=True)
         state_path.write_text(json.dumps(sorted(sent_ids), ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"Telegram sent {min(len(fresh), 5)} new unique picks.")
