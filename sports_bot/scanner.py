@@ -1,6 +1,9 @@
 import os
 import time
 import statistics
+import hashlib
+import json
+from pathlib import Path
 import requests
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
@@ -547,14 +550,26 @@ def main():
         -x.get("book_count", 1),
         x.get("median_odds", x["odds"]),
     ))
+    state_path = Path("sports_bot/viva_sent.json")
+    try:
+        sent_ids = set(json.loads(state_path.read_text(encoding="utf-8")))
+    except (FileNotFoundError, json.JSONDecodeError, TypeError):
+        sent_ids = set()
+
+    def pick_id(p):
+        raw = "|".join(str(p.get(k, "")) for k in ("sport", "home", "away", "market", "selection", "point"))
+        raw += "|" + p["start"].isoformat()
+        return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+    fresh = [p for p in picks if pick_id(p) not in sent_ids]
     lines = [
-        "🧠 VIVA AI | پیش‌بینی مسابقات فردا",
-        f"📅 {tomorrow.isoformat()} | ارسال ۲۲:۰۰ تهران",
+        "🧠 VIVA AI | فرصت‌های جدید مسابقات",
+        f"📅 مسابقات تاریخ {tomorrow.isoformat()}",
         f"💎 بازه ضرایب مجاز: {MIN_ODDS:.2f} تا {MAX_ODDS:.2f}",
         "━━━━━━━━━━━━━━━━━━",
     ]
-    if picks:
-        for i, p in enumerate(picks[:12], 1):
+    if fresh:
+        for i, p in enumerate(fresh[:12], 1):
             local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
             market_names = {"h2h": "نتیجه مسابقه", "spreads": "هندیکپ", "totals": "مجموع امتیاز/گل"}
             point = f" ({p['point']})" if p.get("point") is not None else ""
@@ -566,9 +581,9 @@ def main():
                 "────────────",
             ]
     else:
-        lines.append("امشب گزینه‌ای با ضریب ۱٫۴۸ به بالا در رقابت‌های قابل‌تأیید پیدا نشد؛ پیش‌بینی حدسی ارسال نمی‌شود.")
+        lines.append("فعلاً فرصت جدید و تکرارنشده‌ای با ضریب ۱٫۴۸ به بالا پیدا نشد.")
     lines += [
-        f"گزینه‌های یکتا پس از حذف تکرار ضرایب سایت‌ها: {len(picks)}",
+        f"فرصت‌های جدید و یکتا برای ارسال: {len(fresh[:12])}",
         f"نقل‌قول‌های خام بازار از همه سایت‌ها: {len(raw_picks)}",
         "بازارهای فعلی این منبع: نتیجه، هندیکپ و مجموع گل/امتیاز؛ کرنر، خطا، کارت، VAR و گل‌زن بازیکن در فید عمومی فعلی ارائه نمی‌شوند.",
         "لیگ زنان اسپانیا/آلمان، لیگ‌های ایران/امارات/عربستان و J2 فقط وقتی مسابقه می‌گیرند که فید نام رقابت را مشخص کند.",
@@ -579,7 +594,14 @@ def main():
     ]
     if errors:
         lines.append("خطاها: " + "؛ ".join(errors[:4]))
-    send_telegram("\n".join(lines))
+    if fresh:
+        send_telegram("\n".join(lines))
+        sent_ids.update(pick_id(p) for p in fresh[:12])
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        state_path.write_text(json.dumps(sorted(sent_ids), ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"Telegram sent {min(len(fresh), 12)} new unique picks.")
+    else:
+        print("No new unique picks; Telegram message skipped.")
 
 if __name__ == "__main__":
     main()
