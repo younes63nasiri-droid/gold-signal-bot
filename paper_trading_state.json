@@ -1,16 +1,6 @@
 {
-  "balance": 102121.54196591782,
+  "balance": 101038.90244104626,
   "positions": {
-    "XAU/USD (PAXG proxy)": {
-      "side": "SHORT",
-      "entry": 3794.24,
-      "stop": 3817.5103571428567,
-      "target": 3747.6992857142855,
-      "qty": 21.781023585038543,
-      "entry_fee": 49.58545855637798,
-      "opened_at": "2026-11-14T22:30:00+00:00",
-      "leverage": 1.0
-    },
     "ترون (TRX-SWAP-USDT)": {
       "side": "SHORT",
       "entry": 0.30663,
@@ -20,24 +10,14 @@
       "entry_fee": 83.98352650626548,
       "opened_at": "2026-11-14T23:45:00+00:00",
       "leverage": 1.3693205741626704
-    },
-    "دوج‌کوین (DOGE-SWAP-USDT)": {
-      "side": "SHORT",
-      "entry": 0.05646,
-      "stop": 0.05762035714285715,
-      "target": 0.054139285714285716,
-      "qty": 440107.82235121826,
-      "entry_fee": 14.90909258996987,
-      "opened_at": "2026-11-15T01:00:00+00:00",
-      "leverage": 1.0
     }
   },
-  "closed_trades": 57,
-  "realized_pnl": 2270.020043570422,
+  "closed_trades": 59,
+  "realized_pnl": 1122.8859675525182,
   "wins": 14,
-  "losses": 5,
+  "losses": 7,
   "accounting_version": 2,
-  "last_unrealized_pnl": 56.04774470896801,
-  "last_equity": 102177.58971062678,
-  "last_total_pnl": 2177.5897106267803
+  "last_unrealized_pnl": -83.98352650626548,
+  "last_equity": 100954.91891453999,
+  "last_total_pnl": 954.9189145399869
 }
