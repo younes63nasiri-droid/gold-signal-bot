@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 103915.44905449187,
-  "realized_pnl": 3935.606663587812,
+  "balance": 104616.56429883701,
+  "realized_pnl": 4628.199490121394,
   "positions": {
     "AKE-SWAP-USDT": {
       "direction": "LONG",
@@ -15,34 +15,33 @@
       "opened_at": "2026-11-14T17:26:35.408529+00:00",
       "score": 77.21,
       "spread_pct": 0.0158,
-      "last_mark": 0.012363
+      "last_mark": 0.012394
     },
-    "SOXS-SWAP-USDT": {
-      "direction": "LONG",
-      "entry": 54.42,
-      "stop": 53.72678571428572,
-      "target": 55.806428571428576,
-      "qty": 524.575208996951,
-      "entry_fee": 17.128429724168445,
-      "leverage": 0.27,
-      "opened_candle": 1794690000000,
-      "opened_at": "2026-11-14T21:02:26.650300+00:00",
-      "score": 95.96,
-      "spread_pct": 0.0184,
-      "last_mark": 54.1
+    "ENA-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 0.11205,
+      "stop": 0.11490964285714286,
+      "target": 0.10633071428571428,
+      "qty": 128008.50680650551,
+      "entry_fee": 8.606011912601364,
+      "leverage": 0.14,
+      "opened_candle": 1794706200000,
+      "opened_at": "2026-11-15T01:40:42.594964+00:00",
+      "score": 85.85,
+      "spread_pct": 0.009
     }
   },
-  "closed_trades": 14,
-  "wins": 9,
+  "closed_trades": 15,
+  "wins": 10,
   "losses": 5,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -234.42234856756718,
-  "equity": 103681.0267059243,
-  "total_pnl": 3681.026705924305,
-  "last_scan": "2026-11-15T00:17:48.021347+00:00",
+  "unrealized_pnl": -45.601424734381965,
+  "equity": 104570.96287410262,
+  "total_pnl": 4570.9628741026245,
+  "last_scan": "2026-11-15T01:40:42.594998+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 279,
+    "liquid": 248,
     "analyzed": 60,
     "qualified": 10
   }
