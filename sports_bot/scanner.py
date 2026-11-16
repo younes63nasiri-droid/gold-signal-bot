@@ -765,13 +765,19 @@ def main():
                 "━━━━━━━━━━━━━━━━━━━━",
             ]
     else:
-        lines.append("فعلاً پیشنهاد تازه و تکرارنشده‌ای برای نمایش وجود ندارد.")
+        lines.append("فعلاً پیشنهادی که همه بررسی‌های اعتبار، زمان و ضریب را بگذراند پیدا نشد.")
+        if stats:
+            lines += ["", "📡 <b>گزارش منابع داده:</b>"]
+            lines.extend(f"• {esc(item)}" for item in stats[:8])
+        if errors:
+            lines += ["", "⚠️ <b>خطاهای منابع:</b>"]
+            lines.extend(f"• {esc(item)}" for item in errors[:5])
     lines += [
         f"📋 <b>تعداد پیشنهادهای تازه: {len(fresh[:10])}</b>",
         "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
     ]
-    if errors:
-        lines.append("⚠️ <i>برخی منابع داده خطا داشتند؛ جزئیات در گزارش اجرا ثبت شده است.</i>")
+    if errors and fresh:
+        lines.append("⚠️ <i>برخی منابع داده خطا داشتند؛ جزئیات در گزارش اجرای GitHub ثبت شده است.</i>")
 
     # Always send the scan result, including a clean zero-pick status.
     # Save fixture history only after Telegram confirms successful delivery.
