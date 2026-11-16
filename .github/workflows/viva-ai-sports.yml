@@ -2,7 +2,7 @@ name: VIVA AI Sports Scanner
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "30 18 * * *"  # 22:00 Asia/Tehran
   workflow_dispatch:
 
 permissions:
