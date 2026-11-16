@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 102127.91107448624,
-  "realized_pnl": 2171.115144714266,
+  "balance": 101717.70107557808,
+  "realized_pnl": 1738.668829928856,
   "positions": {
     "INIT-SWAP-USDT": {
       "direction": "SHORT",
@@ -17,31 +17,31 @@
       "spread_pct": 0.0386,
       "last_mark": 0.09986
     },
-    "BTC-SWAP-USDT": {
+    "INTC-SWAP-USDT": {
       "direction": "SHORT",
-      "entry": 64164.0,
-      "stop": 64539.985714285714,
-      "target": 63412.02857142857,
-      "qty": 0.9541892771397947,
-      "entry_fee": 36.73476046703867,
-      "leverage": 0.6,
-      "opened_candle": 1794837600000,
-      "opened_at": "2026-11-16T14:10:08.652428+00:00",
-      "score": 84.97,
-      "spread_pct": 0.0002
+      "entry": 56.02,
+      "stop": 56.84821428571429,
+      "target": 54.36357142857143,
+      "qty": 431.3472744789953,
+      "entry_fee": 14.49844458978799,
+      "leverage": 0.24,
+      "opened_candle": 1794844800000,
+      "opened_at": "2026-11-16T16:11:52.785045+00:00",
+      "score": 80.44,
+      "spread_pct": 0.018
     }
   },
-  "closed_trades": 35,
+  "closed_trades": 36,
   "wins": 15,
-  "losses": 20,
+  "losses": 21,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 301.9156700583374,
-  "equity": 102429.82674454458,
-  "total_pnl": 2429.8267445445817,
-  "last_scan": "2026-11-16T14:10:08.652471+00:00",
+  "unrealized_pnl": 324.1519859355881,
+  "equity": 102041.85306151367,
+  "total_pnl": 2041.8530615136697,
+  "last_scan": "2026-11-16T16:11:52.785084+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 246,
+    "liquid": 258,
     "analyzed": 60,
     "qualified": 10
   }
