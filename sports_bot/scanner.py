@@ -705,9 +705,9 @@ def main():
     upcoming = [p for p in picks
                 if p.get("start")
                 and p["start"].astimezone(timezone.utc) > cutoff
-                # Never publish a recommendation unless an independent fixture
-                # schedule confirms the exact home/away pairing.
-                and bool(p.get("fixture_sources"))]
+                # Accept an independent schedule confirmation OR matching odds
+                # from at least two distinct bookmakers for the same fixture.
+                and (bool(p.get("fixture_sources")) or p.get("book_count", 1) >= 2)]
     # Emit source/filter diagnostics in the Actions log so a zero-pick run
     # can be traced to provider failures, league filtering, timing, or history.
     upcoming_fixture_ids = {fixture_id(p) for p in upcoming}
