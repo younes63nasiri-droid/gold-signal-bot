@@ -15,7 +15,7 @@
       "opened_at": "2026-11-15T17:12:35.687455+00:00",
       "score": 73.97,
       "spread_pct": 0.0429,
-      "last_mark": 6.954
+      "last_mark": 6.905
     },
     "1000PEPE-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-15T20:46:52.143316+00:00",
       "score": 80.66,
       "spread_pct": 0.0026,
-      "last_mark": 0.0038593
+      "last_mark": 0.0038405
     }
   },
   "closed_trades": 29,
   "wins": 11,
   "losses": 18,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 249.42307955657736,
-  "equity": 100488.41413795414,
-  "total_pnl": 488.41413795413973,
-  "last_scan": "2026-11-15T23:36:11.408086+00:00",
+  "unrealized_pnl": 522.1943079734274,
+  "equity": 100761.18536637099,
+  "total_pnl": 761.1853663709917,
+  "last_scan": "2026-11-16T00:32:29.046165+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 208,
+    "liquid": 212,
     "analyzed": 60,
     "qualified": 10
   }
