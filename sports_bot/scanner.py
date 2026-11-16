@@ -459,9 +459,16 @@ def norm_team(value):
 def fixture_crosschecks(tomorrow):
     """Independent fixture schedule checks; these feeds do not provide odds."""
     found, errors = {}, []
-    headers = {**HEADERS, 'User-Agent': 'Mozilla/5.0 (compatible; VIVA-AI-Sports/1.0)'}
+    headers = {
+        **HEADERS,
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Referer': 'https://www.sofascore.com/',
+        'Origin': 'https://www.sofascore.com',
+        'Accept-Language': 'en-US,en;q=0.9',
+    }
     sources = [
-        ('SofaScore', 'https://api.sofascore.com/api/v1/sport/football/scheduled-events/' + tomorrow.isoformat()),
+        ('SofaScore', 'https://www.sofascore.com/api/v1/sport/football/scheduled-events/' + tomorrow.isoformat()),
         ('FotMob', 'https://www.fotmob.com/api/data/matches?date=' + tomorrow.strftime('%Y%m%d')),
     ]
     for source, url in sources:
@@ -537,7 +544,7 @@ def fixture_crosschecks(tomorrow):
     # Third independent schedule provider. The free TheSportsDB key has limited
     # event coverage/rate limits, so it supplements (never replaces) SofaScore/FotMob.
     try:
-        api_key = os.getenv("THESPORTSDB_API_KEY", "3").strip() or "3"
+        api_key = os.getenv("THESPORTSDB_API_KEY", "123").strip() or "123"
         response = requests.get(
             f"https://www.thesportsdb.com/api/v1/json/{api_key}/eventsday.php",
             params={"d": tomorrow.isoformat(), "s": "Soccer"},
