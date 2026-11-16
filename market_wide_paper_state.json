@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 100926.33006577814,
-  "realized_pnl": 950.9024576643368,
+  "balance": 100559.06868099117,
+  "realized_pnl": 583.4222001139665,
   "positions": {
     "1000PEPE-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,34 +15,34 @@
       "opened_at": "2026-11-15T20:46:52.143316+00:00",
       "score": 80.66,
       "spread_pct": 0.0026,
-      "last_mark": 0.0038304
+      "last_mark": 0.0038615
     },
-    "AKE-SWAP-USDT": {
-      "direction": "LONG",
-      "entry": 0.011646,
-      "stop": 0.011275821428571428,
-      "target": 0.012386357142857143,
-      "qty": 957150.1695075053,
-      "entry_fee": 6.688182524450644,
+    "INIT-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 0.10316,
+      "stop": 0.10652964285714286,
+      "target": 0.09642071428571429,
+      "qty": 104519.02806389474,
+      "entry_fee": 6.469309761042829,
       "leverage": 0.11,
-      "opened_candle": 1794794400000,
-      "opened_at": "2026-11-16T02:07:03.523523+00:00",
-      "score": 94.17,
-      "spread_pct": 0.0346
+      "opened_candle": 1794798000000,
+      "opened_at": "2026-11-16T03:02:54.846687+00:00",
+      "score": 86.73,
+      "spread_pct": 0.0386
     }
   },
-  "closed_trades": 30,
+  "closed_trades": 31,
   "wins": 12,
-  "losses": 18,
+  "losses": 19,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 293.57425228824235,
-  "equity": 101219.90431806637,
-  "total_pnl": 1219.904318066372,
-  "last_scan": "2026-11-16T02:07:03.523557+00:00",
+  "unrealized_pnl": 54.22022834882634,
+  "equity": 100613.28890934,
+  "total_pnl": 613.2889093400008,
+  "last_scan": "2026-11-16T03:02:54.846734+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 206,
+    "liquid": 201,
     "analyzed": 60,
-    "qualified": 9
+    "qualified": 10
   }
 }
