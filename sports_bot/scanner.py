@@ -461,15 +461,27 @@ def fixture_crosschecks(tomorrow):
     found, errors = {}, []
     headers = {**HEADERS, 'User-Agent': 'Mozilla/5.0 (compatible; VIVA-AI-Sports/1.0)'}
     sources = [
-        ('SofaScore', 'https://www.sofascore.com/api/v1/sport/football/scheduled-events/' + tomorrow.isoformat()),
-        ('FotMob', 'https://www.fotmob.com/api/matches?date=' + tomorrow.strftime('%Y%m%d')),
+        ('SofaScore', 'https://api.sofascore.com/api/v1/sport/football/scheduled-events/' + tomorrow.isoformat()),
+        ('FotMob', 'https://www.fotmob.com/api/data/matches?date=' + tomorrow.strftime('%Y%m%d')),
     ]
     for source, url in sources:
         try:
             response = requests.get(url, headers=headers, timeout=TIMEOUT)
             response.raise_for_status()
             data = response.json()
-            rows = data.get('events', []) if source == 'SofaScore' else data.get('matches', [])
+            if source == 'SofaScore':
+                rows = data.get('events', [])
+            else:
+                # Current FotMob daily feed groups fixtures under leagues.
+                rows = data.get('matches', [])
+                if not rows and isinstance(data.get('leagues'), list):
+                    rows = [
+                        match
+                        for league in data.get('leagues', [])
+                        if isinstance(league, dict)
+                        for match in (league.get('matches') or [])
+                        if isinstance(match, dict)
+                    ]
             for row in rows:
                 if source == 'SofaScore':
                     home = (row.get('homeTeam') or {}).get('name')
