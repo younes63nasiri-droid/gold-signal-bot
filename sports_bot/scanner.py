@@ -256,7 +256,10 @@ def collect_oddslink_authenticated(tomorrow):
             for fixture in fixtures or []:
                 if not isinstance(fixture, dict):
                     continue
-                start = parse_time(fixture.get("commence_time"))
+                start = parse_time(
+                    fixture.get("commence_time") or fixture.get("start_time")
+                    or fixture.get("startTime") or fixture.get("date")
+                )
                 if start is None or start.astimezone(TEHRAN).date() != tomorrow:
                     continue
                 if is_soccer and not allowed_competition(fixture):
@@ -265,7 +268,19 @@ def collect_oddslink_authenticated(tomorrow):
                 for book in fixture.get("bookmakers") or []:
                     if not isinstance(book, dict):
                         continue
-                    for market in book.get("markets") or []:
+                    raw_markets = book.get("markets") or []
+                    if isinstance(raw_markets, dict):
+                        market_rows = []
+                        for market_key, market_value in raw_markets.items():
+                            if isinstance(market_value, dict):
+                                market_rows.append({"key": market_key, **market_value})
+                            elif isinstance(market_value, list):
+                                market_rows.append({"key": market_key, "outcomes": market_value})
+                    elif isinstance(raw_markets, list):
+                        market_rows = raw_markets
+                    else:
+                        market_rows = []
+                    for market in market_rows:
                         if not isinstance(market, dict) or market.get("key") not in ("h2h", "spreads", "totals"):
                             continue
                         updated = parse_time(market.get("last_update")) or parse_time(book.get("last_update"))
@@ -285,8 +300,8 @@ def collect_oddslink_authenticated(tomorrow):
                                 continue
                             picks.append({
                                 "sport": sport_label,
-                                "home": fixture.get("home_team", "نامشخص"),
-                                "away": fixture.get("away_team", "نامشخص"),
+                                "home": fixture.get("home_team") or fixture.get("home") or "نامشخص",
+                                "away": fixture.get("away_team") or fixture.get("away") or "نامشخص",
                                 "start": start,
                                 "league": competition_name(fixture) or "لیگ نامشخص",
                                 "market": market["key"],
