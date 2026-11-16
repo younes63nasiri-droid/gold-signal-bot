@@ -467,8 +467,9 @@ def fixture_crosschecks(tomorrow):
         'Origin': 'https://www.sofascore.com',
         'Accept-Language': 'en-US,en;q=0.9',
     }
+    # SofaScore is currently returning HTTP 403 from GitHub Actions; skip it rather than
+    # repeatedly failing. FotMob, ESPN and TheSportsDB remain independent schedule checks.
     sources = [
-        ('SofaScore', 'https://www.sofascore.com/api/v1/sport/football/scheduled-events/' + tomorrow.isoformat()),
         ('FotMob', 'https://www.fotmob.com/api/data/matches?date=' + tomorrow.strftime('%Y%m%d')),
     ]
     for source, url in sources:
@@ -733,6 +734,8 @@ def main():
     already_sent_fixture_ids = upcoming_fixture_ids & sent_ids
     independently_verified = sum(1 for p in picks if p.get("fixture_sources"))
     print(f"DIAGNOSTIC raw={len(raw_picks)} unique={len(picks)} independently_verified={independently_verified} upcoming_verified={len(upcoming)} upcoming_fixtures={len(upcoming_fixture_ids)} already_sent_fixtures={len(already_sent_fixture_ids)} sent_history={len(sent_ids)}")
+    if upcoming_fixture_ids and len(already_sent_fixture_ids) == len(upcoming_fixture_ids):
+        stats.append(f"توضیح صفر پیشنهاد: هر {len(already_sent_fixture_ids)} مسابقه واجدشرایط قبلاً ارسال شده است؛ برای جلوگیری از تکرار، دوباره ارسال نشد")
     for item in stats:
         print("SOURCE:", item)
     for item in errors:
