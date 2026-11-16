@@ -15,7 +15,7 @@
       "opened_at": "2026-11-16T03:02:54.846687+00:00",
       "score": 86.73,
       "spread_pct": 0.0386,
-      "last_mark": 0.10147
+      "last_mark": 0.10065
     },
     "INTC-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-16T16:11:52.785045+00:00",
       "score": 80.44,
       "spread_pct": 0.018,
-      "last_mark": 55.83
+      "last_mark": 55.44
     }
   },
   "closed_trades": 36,
   "wins": 15,
   "losses": 21,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 237.78054111190957,
-  "equity": 101955.48161668998,
-  "total_pnl": 1955.4816166899836,
-  "last_scan": "2026-11-16T19:27:12.379709+00:00",
+  "unrealized_pnl": 491.8639397951473,
+  "equity": 102209.56501537323,
+  "total_pnl": 2209.5650153732277,
+  "last_scan": "2026-11-16T20:18:44.593889+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 271,
+    "liquid": 265,
     "analyzed": 60,
     "qualified": 10
   }
