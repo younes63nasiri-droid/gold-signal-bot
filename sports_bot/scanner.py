@@ -734,6 +734,15 @@ def main():
     already_sent_fixture_ids = upcoming_fixture_ids & sent_ids
     independently_verified = sum(1 for p in picks if p.get("fixture_sources"))
     print(f"DIAGNOSTIC raw={len(raw_picks)} unique={len(picks)} independently_verified={independently_verified} upcoming_verified={len(upcoming)} upcoming_fixtures={len(upcoming_fixture_ids)} already_sent_fixtures={len(already_sent_fixture_ids)} sent_history={len(sent_ids)}")
+    # Log exact fixture names/times behind the duplicate filter for diagnosis.
+    if already_sent_fixture_ids:
+        reported = set()
+        for p in upcoming:
+            fid = fixture_id(p)
+            if fid in already_sent_fixture_ids and fid not in reported:
+                reported.add(fid)
+                print("HISTORY_MATCH:", p.get("sport"), "|", p.get("home"), "vs", p.get("away"),
+                      "|", p["start"].astimezone(TEHRAN).isoformat(), "|", fid[:12])
     if upcoming_fixture_ids and len(already_sent_fixture_ids) == len(upcoming_fixture_ids):
         stats.append(f"توضیح صفر پیشنهاد: هر {len(already_sent_fixture_ids)} مسابقه واجدشرایط قبلاً ارسال شده است؛ برای جلوگیری از تکرار، دوباره ارسال نشد")
     for item in stats:
