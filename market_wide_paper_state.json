@@ -15,7 +15,7 @@
       "opened_at": "2026-11-17T11:41:05.387560+00:00",
       "score": 94.19,
       "spread_pct": 0.0011,
-      "last_mark": 951.71
+      "last_mark": 945.81
     },
     "AAVE-SWAP-USDT": {
       "direction": "LONG",
@@ -28,21 +28,22 @@
       "opened_candle": 1794918600000,
       "opened_at": "2026-11-17T12:35:53.981293+00:00",
       "score": 84.89,
-      "spread_pct": 0.0176
+      "spread_pct": 0.0176,
+      "last_mark": 112.88
     }
   },
   "closed_trades": 44,
   "wins": 20,
   "losses": 24,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 327.4093842360864,
-  "equity": 103934.57886988022,
-  "total_pnl": 3934.5788698802207,
-  "last_scan": "2026-11-17T12:35:53.981329+00:00",
+  "unrealized_pnl": -94.88265888410868,
+  "equity": 103512.28682676003,
+  "total_pnl": 3512.286826760028,
+  "last_scan": "2026-11-17T13:55:28.523236+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 274,
+    "liquid": 286,
     "analyzed": 60,
-    "qualified": 8
+    "qualified": 10
   }
 }
