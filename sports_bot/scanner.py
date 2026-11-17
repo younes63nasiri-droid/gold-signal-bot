@@ -946,20 +946,12 @@ def deduplicate_picks(picks):
 
 
 def resolve_chat_id():
+    # Use the explicitly configured destination. getUpdates can fail with
+    # Telegram 409 when a webhook/another poller is active, blocking delivery.
     if not TOKEN:
         raise RuntimeError("TELEGRAM_BOT_TOKEN secret تنظیم نشده است.")
-    me = requests.get(f"https://api.telegram.org/bot{TOKEN}/getMe", timeout=TIMEOUT)
-    me.raise_for_status()
-    if not me.json().get("ok"):
-        raise RuntimeError("Telegram getMe failed")
-    updates = requests.get(f"https://api.telegram.org/bot{TOKEN}/getUpdates",
-                           params={"limit": 20, "allowed_updates": ["message"]}, timeout=TIMEOUT)
-    updates.raise_for_status()
-    for update in reversed(updates.json().get("result", [])):
-        msg = update.get("message") or update.get("edited_message") or {}
-        chat = msg.get("chat") or {}
-        if chat.get("type") == "private" and chat.get("id") is not None:
-            return str(chat["id"])
+    if not CHAT_ID:
+        raise RuntimeError("TELEGRAM_CHAT_ID secret تنظیم نشده است.")
     return CHAT_ID
 
 def send_telegram(message):
@@ -1093,8 +1085,36 @@ def main():
                 "┄┄┄┄┄┄┄┄┄┄",
             ]
     if not fresh and not analysis_fresh:
-        print("NO_FRESH_PICKS: no new odds picks or statistical previews.")
-        return
+        # Never silently exit: send a useful run report and, when available,
+        # show up to five fixture previews even if those previews were sent before.
+        print("NO_FRESH_PICKS: sending status report instead of exiting.")
+        fallback_previews = previews[:5]
+        if fallback_previews:
+            lines += [
+                "📊 <b>گزارش آنالیز آماری (بدون سیگنال ضریب‌دار تازه)</b>",
+                "━━━━━━━━━━━━━━━━━━━━",
+            ]
+            for i, p in enumerate(fallback_previews, 1):
+                local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
+                hf, af = p.get("home_form", "ناموجود"), p.get("away_form", "ناموجود")
+                lines += [
+                    f"<b>{i}. {esc(p['home'])} × {esc(p['away'])}</b>",
+                    f"🏆 {esc(p.get('league') or 'لیگ نامشخص')} | 🕒 {local_time}",
+                    f"📈 فرم اخیر: <b>{esc(hf)}</b> مقابل <b>{esc(af)}</b>",
+                    "💠 ضریب معتبر: فعلاً دریافت نشده",
+                    "┄┄┄┄┄┄┄┄┄┄",
+                ]
+        else:
+            lines += [
+                "⚠️ <b>فعلاً مسابقه تازه‌ای برای آنالیز پیدا نشد.</b>",
+                "منابع برنامه مسابقات یا فهرست ضرایب پاسخ کامل نداده‌اند.",
+                "━━━━━━━━━━━━━━━━━━━━",
+            ]
+        lines += [
+            f"📊 آنالیز تازه: {len(analysis_fresh)}",
+            "💎 سیگنال ضریب‌دار تازه: 0",
+            "<i>این گزارش به معنی پیشنهاد شرط‌بندی نیست.</i>",
+        ]
     if fresh:
         for i, p in enumerate(fresh[:10], 1):
             local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
