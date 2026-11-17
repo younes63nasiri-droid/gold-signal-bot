@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 103040.85998677327,
-  "realized_pnl": 3111.629585953678,
+  "balance": 103675.45192009534,
+  "realized_pnl": 3706.4713789373122,
   "positions": {
     "INIT-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,35 +15,34 @@
       "opened_at": "2026-11-16T03:02:54.846687+00:00",
       "score": 86.73,
       "spread_pct": 0.0386,
-      "last_mark": 0.10221
+      "last_mark": 0.10254
     },
-    "XTI-SWAP-USDT": {
+    "QNT-SWAP-USDT": {
       "direction": "SHORT",
-      "entry": 84.17,
-      "stop": 84.45392857142858,
-      "target": 83.60214285714287,
-      "qty": 1273.2226331515185,
-      "entry_fee": 64.30028941941798,
-      "leverage": 1.04,
-      "opened_candle": 1794871800000,
-      "opened_at": "2026-11-16T23:33:59.210188+00:00",
-      "score": 81.72,
-      "spread_pct": 0.0119,
-      "last_mark": 83.71
+      "entry": 152.83,
+      "stop": 154.1864285714286,
+      "target": 150.11714285714288,
+      "qty": 267.7282937575956,
+      "entry_fee": 24.550149080984003,
+      "leverage": 0.39,
+      "opened_candle": 1794886200000,
+      "opened_at": "2026-11-17T03:36:46.535689+00:00",
+      "score": 86.67,
+      "spread_pct": 0.013
     }
   },
-  "closed_trades": 38,
-  "wins": 17,
+  "closed_trades": 39,
+  "wins": 18,
   "losses": 21,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 614.6168740226948,
-  "equity": 103655.47686079597,
-  "total_pnl": 3655.4768607959704,
-  "last_scan": "2026-11-17T02:45:16.779271+00:00",
+  "unrealized_pnl": 33.82121963602721,
+  "equity": 103709.27313973136,
+  "total_pnl": 3709.273139731362,
+  "last_scan": "2026-11-17T03:36:46.535736+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 242,
+    "liquid": 240,
     "analyzed": 60,
-    "qualified": 10
+    "qualified": 9
   }
 }
