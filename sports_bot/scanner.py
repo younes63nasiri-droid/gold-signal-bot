@@ -713,10 +713,17 @@ def collect_match_previews(target_date, limit=5):
             away = away_obj.get("name") if isinstance(away_obj, dict) else str(away_obj)
             status = row.get("status") or {}
             start = parse_time(status.get("utcTime") or row.get("utcTime"))
-            league_obj = row.get("league")
-            league = (row.get("leagueName") or row.get("tournamentName") or
-                      (league_obj.get("name") if isinstance(league_obj, dict) else "") or
-                      str(league_obj or ""))
+            # FotMob exposes the actual competition under tournament/leagueName.
+            # Never use a stringified event label (often "Away at Home") as league.
+            league_obj = row.get("tournament") or row.get("league") or {}
+            league = ""
+            if isinstance(league_obj, dict):
+                league = (league_obj.get("name") or league_obj.get("leagueName") or
+                          league_obj.get("parentLeagueName") or "")
+            league = (row.get("leagueName") or row.get("parentLeagueName") or
+                      row.get("tournamentName") or league)
+            if not league or " at " in str(league).lower() or " vs " in str(league).lower():
+                league = "نام لیگ در منبع مشخص نیست"
             if not home or not away or start is None:
                 continue
             if start.astimezone(TEHRAN).date() != target_date:
@@ -757,10 +764,17 @@ def collect_match_previews(target_date, limit=5):
                 if "home" not in sides or "away" not in sides:
                     continue
                 season = event.get("season") or {}
-                league = season.get("name") or event.get("name") or "فوتبال"
-                notes = competitions[0].get("notes") or []
-                if notes and isinstance(notes[0], dict):
-                    league = notes[0].get("headline") or league
+                comp = competitions[0]
+                notes = comp.get("notes") or []
+                note_league = next((n.get("headline") for n in notes
+                                    if isinstance(n, dict) and n.get("headline")), "")
+                league_obj = event.get("league") or comp.get("league") or {}
+                league = (note_league or
+                          (league_obj.get("name") if isinstance(league_obj, dict) else "") or
+                          comp.get("name") or season.get("name") or "")
+                # event.name is commonly just "Away at Home", not the league.
+                if not league or " at " in str(league).lower() or " vs " in str(league).lower():
+                    league = "نام لیگ در منبع مشخص نیست"
                 fixtures.append({
                     "sport": "فوتبال", "home": sides["home"], "away": sides["away"],
                     "start": start, "league": league,
@@ -1098,11 +1112,12 @@ def main():
                 local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
                 hf, af = p.get("home_form", "ناموجود"), p.get("away_form", "ناموجود")
                 lines += [
-                    f"<b>{i}. {esc(p['home'])} × {esc(p['away'])}</b>",
-                    f"🏆 {esc(p.get('league') or 'لیگ نامشخص')} | 🕒 {local_time}",
-                    f"📈 فرم اخیر: <b>{esc(hf)}</b> مقابل <b>{esc(af)}</b>",
-                    "💠 ضریب معتبر: فعلاً دریافت نشده",
-                    "┄┄┄┄┄┄┄┄┄┄",
+                    f"⚽ <b>{esc(p['home'])}</b>  <i>vs</i>  <b>{esc(p['away'])}</b>",
+                    f"🏆 <b>{esc(p.get('league') or 'نام لیگ در منبع مشخص نیست')}</b>",
+                    f"🕒 {local_time}  |  📊 فرم ۵ بازی اخیر",
+                    f"🏠 میزبان: <b>{esc(hf)}</b>   ✈️ میهمان: <b>{esc(af)}</b>",
+                    "💠 ضریب معتبر: <i>در دسترس نیست</i>",
+                    "━━━━━━━━━━━━━━━━━━━━",
                 ]
         else:
             lines += [
