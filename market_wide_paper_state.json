@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 103117.72453088722,
-  "realized_pnl": 3161.6288519466602,
+  "balance": 102690.09956949737,
+  "realized_pnl": 2768.818134820134,
   "positions": {
     "GOOGL-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,35 +15,34 @@
       "opened_at": "2026-11-17T17:53:26.302064+00:00",
       "score": 89.46,
       "spread_pct": 0.0035,
-      "last_mark": 280.84
+      "last_mark": 282.01
     },
-    "ETH-SWAP-USDT": {
+    "AAPL-SWAP-USDT": {
       "direction": "SHORT",
-      "entry": 1788.19,
-      "stop": 1812.9389285714287,
-      "target": 1738.692142857143,
-      "qty": 14.59741618547655,
-      "entry_fee": 15.661772189224386,
-      "leverage": 0.25,
-      "opened_candle": 1794941100000,
-      "opened_at": "2026-11-17T18:47:19.555272+00:00",
-      "score": 80.77,
-      "spread_pct": 0.0006,
-      "last_mark": 1808.14
+      "entry": 349.4,
+      "stop": 350.89464285714286,
+      "target": 346.4107142857143,
+      "qty": 240.77473980422204,
+      "entry_fee": 50.4760164525571,
+      "leverage": 0.82,
+      "opened_candle": 1794954600000,
+      "opened_at": "2026-11-17T22:34:41.350949+00:00",
+      "score": 84.8,
+      "spread_pct": 0.0029
     }
   },
-  "closed_trades": 48,
+  "closed_trades": 49,
   "wins": 21,
-  "losses": 27,
+  "losses": 28,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -32.03398580211643,
-  "equity": 103085.6905450851,
-  "total_pnl": 3085.6905450851045,
-  "last_scan": "2026-11-17T21:36:03.405975+00:00",
+  "unrealized_pnl": 29.589834401965923,
+  "equity": 102719.68940389933,
+  "total_pnl": 2719.689403899334,
+  "last_scan": "2026-11-17T22:34:41.350980+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 289,
+    "liquid": 292,
     "analyzed": 60,
-    "qualified": 7
+    "qualified": 6
   }
 }
