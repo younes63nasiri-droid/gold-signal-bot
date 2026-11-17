@@ -924,31 +924,57 @@ def main():
         f"📅 <b>{tomorrow.strftime('%d.%m.%Y')}</b>  |  به وقت تهران",
         "━━━━━━━━━━━━━━━━━━━━",
     ]
+    # Always include fresh statistical previews, even when odds-qualified picks exist.
+    # Preview data comes from fixture/results feeds, not bookmaker price feeds.
     analysis_fresh = []
-    if not fresh:
-        previews = collect_match_previews(tomorrow, limit=5)
-        for p in previews:
-            analysis_id = "ANALYSIS|" + fixture_id(p)
-            if analysis_id not in sent_ids:
-                analysis_fresh.append((p, analysis_id))
-        if analysis_fresh:
-            lines.append("📊 <b>پیش‌نمایش آماری مسابقات (بدون ضریب شرط‌بندی)</b>")
-            lines.append("<i>بر پایه فرم ۵ بازی اخیر؛ این بخش سیگنال شرط‌بندی نیست.</i>")
-            lines.append("━━━━━━━━━━━━━━━━━━━━")
-            for i, (p, analysis_id) in enumerate(analysis_fresh, 1):
-                local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
-                lines += [
-                    f"<b>⚽ بازی {i:02d} | {esc(p['league'])}</b>",
-                    f"{esc(p['home'])}  مقابل  {esc(p['away'])}",
-                    f"🕒 {local_time} تهران",
-                    f"📈 فرم اخیر: میزبان <b>{p['home_form']}</b> | میهمان <b>{p['away_form']}</b>",
-                    (f"⚽ میانگین گل زده: {p['home_avg_scored']:.1f} در برابر {p['away_avg_scored']:.1f}" if "home_avg_scored" in p and "away_avg_scored" in p else "⚽ میانگین گل زده: آمار کافی در منبع رایگان موجود نبود"),
-                    (f"🛡 میانگین گل خورده: {p['home_avg_conceded']:.1f} در برابر {p['away_avg_conceded']:.1f}" if "home_avg_conceded" in p and "away_avg_conceded" in p else "🛡 میانگین گل خورده: آمار کافی در منبع رایگان موجود نبود"),
-                    "┄┄┄┄┄┄┄┄┄┄",
-                ]
-        else:
-            print("NO_FRESH_PICKS: هیچ پیشنهاد یا پیش‌نمایش آماری تازه‌ای برای ارسال نیست.")
-            return
+    previews = collect_match_previews(tomorrow, limit=5)
+    pick_fixture_keys = {
+        (norm_team(p.get("home")), norm_team(p.get("away")))
+        for p in fresh
+    }
+    for p in previews:
+        analysis_id = "ANALYSIS|" + fixture_id(p)
+        same_as_pick = (norm_team(p.get("home")), norm_team(p.get("away"))) in pick_fixture_keys
+        if analysis_id not in sent_ids and not same_as_pick:
+            analysis_fresh.append((p, analysis_id))
+
+    if analysis_fresh:
+        lines += [
+            "📊 <b>آنالیز آماری بازی‌ها</b>",
+            "<i>فرم و آمار ۵ بازی اخیر؛ جدا از سیگنال‌های ضریب‌دار</i>",
+            "━━━━━━━━━━━━━━━━━━━━",
+        ]
+        for i, (p, analysis_id) in enumerate(analysis_fresh, 1):
+            local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
+            hf, af = p.get("home_form", ""), p.get("away_form", "")
+            hp = sum(3 if x == "W" else 1 if x == "D" else 0 for x in hf if x in "WDL")
+            ap = sum(3 if x == "W" else 1 if x == "D" else 0 for x in af if x in "WDL")
+            if hf == "ناموجود" or af == "ناموجود":
+                lean = "داده فرم کافی نیست"
+            elif hp > ap + 2:
+                lean = "گرایش آماری به میزبان"
+            elif ap > hp + 2:
+                lean = "گرایش آماری به میهمان"
+            else:
+                lean = "از نظر فرم، نزدیک و متعادل"
+            goals = (
+                f"⚽ گل زده: {p['home_avg_scored']:.1f} - {p['away_avg_scored']:.1f}\n"
+                f"🛡 گل خورده: {p['home_avg_conceded']:.1f} - {p['away_avg_conceded']:.1f}"
+                if all(k in p for k in ("home_avg_scored","away_avg_scored","home_avg_conceded","away_avg_conceded"))
+                else "⚽ آمار گل: در منبع رایگان کامل نبود"
+            )
+            lines += [
+                f"<b>⚽ {i:02d}. {esc(p['home'])} × {esc(p['away'])}</b>",
+                f"🏆 {esc(p['league'])}  |  🕒 {local_time}",
+                f"📈 فرم ۵ بازی: <b>{hf}</b>  مقابل  <b>{af}</b>",
+                goals,
+                f"🧠 جمع‌بندی فرم: <b>{lean}</b>",
+                "💠 ضریب: <i>برای این مسابقه از منبع فعلی قیمت معتبر دریافت نشد</i>",
+                "┄┄┄┄┄┄┄┄┄┄",
+            ]
+    if not fresh and not analysis_fresh:
+        print("NO_FRESH_PICKS: no new odds picks or statistical previews.")
+        return
     if fresh:
         for i, p in enumerate(fresh[:10], 1):
             local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
@@ -980,7 +1006,8 @@ def main():
         # If no betting picks exist, send the verified form-based previews above.
         pass
     lines += [
-        f"📋 <b>تعداد پیشنهادهای تازه: {len(fresh[:10])}</b>",
+        f"💎 <b>سیگنال ضریب‌دار: {len(fresh[:10])}</b>",
+        f"📊 <b>آنالیز آماری: {len(analysis_fresh)}</b>",
         "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
     ]
     if errors and fresh:
@@ -992,7 +1019,7 @@ def main():
     sent_ids.update(analysis_id for _, analysis_id in analysis_fresh)
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(sorted(sent_ids), ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Telegram sent scan result with {min(len(fresh), 10)} new unique picks.")
+    print(f"Telegram sent: odds_picks={min(len(fresh), 10)} previews={len(analysis_fresh)}.")
 
 if __name__ == "__main__":
     main()
