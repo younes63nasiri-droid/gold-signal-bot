@@ -34,7 +34,7 @@ jobs:
         run: python -m py_compile sports_bot/scanner.py
 
   scan:
-    if: github.event_name != 'push'
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, 'Run VIVA scan after delivery fix')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
