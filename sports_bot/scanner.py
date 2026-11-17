@@ -341,12 +341,8 @@ def collect_ukodds(tomorrow):
         return [], [], ["UK Odds API: کلید UK_ODDS_API_KEY تنظیم نشده"]
     picks, errors, stats = [], [], []
     try:
-        # Tehran's next calendar day overlaps two UTC dates.
-        day_start = datetime.combine(tomorrow, datetime.min.time(), tzinfo=TEHRAN).astimezone(timezone.utc)
-        day_end = day_start + timedelta(days=1)
         payload = ukodds_get("v1/football/events", {
-            "from": day_start.date().isoformat(),
-            "to": day_end.date().isoformat(),
+            "schedule_date": tomorrow.isoformat(), "has_odds": "true",
             "per_page": 200, "page": 1,
         })
         events = payload.get("events", []) if isinstance(payload, dict) else []
@@ -390,6 +386,12 @@ def collect_ukodds(tomorrow):
                 stats.append(f"UK Odds API {event.get('home_team','?')}–{event.get('away_team','?')}: قیمت قدیمی است")
                 continue
 
+            # Documented response: bookmakers=[{code,name}], markets=[{market_name,selections:[{selection_name,odds,bookmaker_code}]}]
+            bookmaker_names = {
+                str(row.get("code")): str(row.get("name") or row.get("code"))
+                for row in (odds_data.get("bookmakers") or [])
+                if isinstance(row, dict) and row.get("code")
+            }
             markets = odds_data.get("markets") or []
             if not isinstance(markets, list):
                 raise RuntimeError("ساختار markets نامعتبر است")
@@ -411,7 +413,8 @@ def collect_ukodds(tomorrow):
                     if not isinstance(selection, dict):
                         continue
                     price = selection.get("odds")
-                    book = str(selection.get("bookmaker_code") or selection.get("bookmaker_name") or "")
+                    code = str(selection.get("bookmaker_code") or "")
+                    book = bookmaker_names.get(code, code)
                     if not valid_decimal_odds(price) or not allowed_bookmaker(book):
                         continue
                     picks.append({
@@ -424,7 +427,7 @@ def collect_ukodds(tomorrow):
                         "selection": str(selection.get("selection_name") or "نامشخص"),
                         "odds": float(price),
                         "point": selection.get("handicap", selection.get("point")),
-                        "book": book,
+                        "book": book or "UK Odds API",
                         "updated": captured,
                     })
         except Exception as exc:
