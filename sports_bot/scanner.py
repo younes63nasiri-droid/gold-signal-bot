@@ -336,13 +336,18 @@ def ukodds_get(path, params=None):
     return data
 
 def collect_ukodds(tomorrow):
-    """Fetch UK Odds API core prices using its documented markets/selections schema."""
+    """Read the documented UK Odds API markets/selections payload."""
     if not UK_ODDS_API_KEY:
         return [], [], ["UK Odds API: کلید UK_ODDS_API_KEY تنظیم نشده"]
     picks, errors, stats = [], [], []
     try:
+        # Tehran's next calendar day overlaps two UTC dates.
+        day_start = datetime.combine(tomorrow, datetime.min.time(), tzinfo=TEHRAN).astimezone(timezone.utc)
+        day_end = day_start + timedelta(days=1)
         payload = ukodds_get("v1/football/events", {
-            "schedule_date": tomorrow.isoformat(), "per_page": 200, "page": 1,
+            "from": day_start.date().isoformat(),
+            "to": day_end.date().isoformat(),
+            "per_page": 200, "page": 1,
         })
         events = payload.get("events", []) if isinstance(payload, dict) else []
         if not isinstance(events, list):
@@ -356,8 +361,10 @@ def collect_ukodds(tomorrow):
             continue
         start = parse_time(event.get("kickoff_utc"))
         fixture = {"league": event.get("league_name", "")}
-        available = event.get("markets_with_odds")
-        has_odds = bool(available) and available != 0 and available != "0"
+        try:
+            has_odds = int(event.get("markets_with_odds") or 0) > 0
+        except (TypeError, ValueError):
+            has_odds = False
         if (start is None or start.astimezone(TEHRAN).date() != tomorrow
                 or start <= datetime.now(timezone.utc)
                 or not allowed_competition(fixture)
@@ -365,7 +372,7 @@ def collect_ukodds(tomorrow):
             continue
         eligible.append((event, start))
 
-    # Free tier quota is metered per odds request; keep daily usage bounded.
+    # Free plan: 300 metered odds requests/month; keep a small daily shortlist.
     eligible = eligible[:6]
     for event, start in eligible:
         try:
@@ -375,71 +382,51 @@ def collect_ukodds(tomorrow):
             )
             if not isinstance(odds_data, dict):
                 raise RuntimeError("پاسخ ضرایب ساختار معتبر ندارد")
+            captured = parse_time(odds_data.get("captured_at"))
+            if captured is None:
+                raise RuntimeError("زمان ثبت قیمت در پاسخ موجود نیست")
+            age = (datetime.now(timezone.utc) - captured.astimezone(timezone.utc)).total_seconds()
+            if age < -60 or age > 3600:
+                stats.append(f"UK Odds API {event.get('home_team','?')}–{event.get('away_team','?')}: قیمت قدیمی است")
+                continue
+
             markets = odds_data.get("markets") or []
             if not isinstance(markets, list):
                 raise RuntimeError("ساختار markets نامعتبر است")
-            event_count = 0
             for market in markets:
                 if not isinstance(market, dict):
                     continue
-                market_name = str(market.get("market_name") or market.get("name") or "").lower()
-                if any(x in market_name for x in ("corner", "card", "goalscorer", "scorer", "player")):
+                name = str(market.get("market_name") or "").lower()
+                if any(x in name for x in ("corner", "card", "goalscorer", "scorer", "player")):
                     continue
-                if any(x in market_name for x in ("1x2", "match winner", "match result", "winner", "match odds")):
+                if any(x in name for x in ("1x2", "match winner", "match result", "winner", "match odds")):
                     market_key = "h2h"
-                elif "handicap" in market_name or "asian" in market_name or "spread" in market_name:
+                elif "handicap" in name or "asian" in name or "spread" in name:
                     market_key = "spreads"
-                elif "total" in market_name or "over/under" in market_name or "over under" in market_name:
+                elif "total" in name or "over/under" in name or "over under" in name:
                     market_key = "totals"
                 else:
                     continue
-
                 for selection in market.get("selections") or []:
                     if not isinstance(selection, dict):
                         continue
-                    selection_name = str(selection.get("selection_name") or selection.get("name") or "نامشخص")
-                    odds_rows = selection.get("odds") or []
-                    if isinstance(odds_rows, dict):
-                        odds_rows = [odds_rows]
-                    for quote in odds_rows if isinstance(odds_rows, list) else []:
-                        if not isinstance(quote, dict):
-                            continue
-                        status = str(quote.get("status") or "active").lower()
-                        if status not in ("active", "open", "available"):
-                            continue
-                        price = quote.get("odds", quote.get("price"))
-                        if not valid_decimal_odds(price):
-                            continue
-                        book_code = quote.get("bookmaker_code") or quote.get("bookmaker_name") or "UK Odds API"
-                        if not allowed_bookmaker(book_code):
-                            continue
-                        updated = (parse_time(quote.get("captured_at"))
-                                   or parse_time(quote.get("updated_at"))
-                                   or parse_time(market.get("captured_at"))
-                                   or parse_time(odds_data.get("captured_at"))
-                                   or parse_time(odds_data.get("latest_captured_at")))
-                        # Never invent a quote timestamp: stale/undated prices are excluded.
-                        if updated is None:
-                            continue
-                        age = (datetime.now(timezone.utc) - updated.astimezone(timezone.utc)).total_seconds()
-                        if age < -60 or age > 3600:
-                            continue
-                        picks.append({
-                            "sport": "فوتبال",
-                            "home": event.get("home_team") or "نامشخص",
-                            "away": event.get("away_team") or "نامشخص",
-                            "start": start,
-                            "league": event.get("league_name") or "لیگ نامشخص",
-                            "market": market_key,
-                            "selection": selection_name,
-                            "odds": float(price),
-                            "point": selection.get("handicap", selection.get("point")),
-                            "book": str(book_code),
-                            "updated": updated,
-                        })
-                        event_count += 1
-            if event_count == 0:
-                stats.append(f"UK Odds API {event.get('home_team','?')}–{event.get('away_team','?')}: قیمت تازه/قابل‌استفاده نداشت")
+                    price = selection.get("odds")
+                    book = str(selection.get("bookmaker_code") or selection.get("bookmaker_name") or "")
+                    if not valid_decimal_odds(price) or not allowed_bookmaker(book):
+                        continue
+                    picks.append({
+                        "sport": "فوتبال",
+                        "home": event.get("home_team") or "نامشخص",
+                        "away": event.get("away_team") or "نامشخص",
+                        "start": start,
+                        "league": event.get("league_name") or "لیگ نامشخص",
+                        "market": market_key,
+                        "selection": str(selection.get("selection_name") or "نامشخص"),
+                        "odds": float(price),
+                        "point": selection.get("handicap", selection.get("point")),
+                        "book": book,
+                        "updated": captured,
+                    })
         except Exception as exc:
             errors.append(f"UK Odds API {event.get('home_team','?')}–{event.get('away_team','?')}: {type(exc).__name__} {str(exc)[:90]}")
     stats.append(f"UK Odds API: {len(eligible)} مسابقه بررسی شد؛ {len(picks)} قیمت تازه و معتبر")
