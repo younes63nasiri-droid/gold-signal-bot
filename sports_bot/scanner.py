@@ -319,6 +319,153 @@ def collect_oddslink_authenticated(tomorrow):
         stats.append("بسکتبال ژاپن در فهرست ورزش‌های OddsLink API موجود نیست")
     return picks, errors, stats
 
+
+UK_ODDS_API_KEY = os.getenv("UK_ODDS_API_KEY", "").strip()
+UK_ODDS_API_BASE = "https://api.ukoddsapi.com"
+
+def ukodds_get(path, params=None):
+    response = requests.get(
+        f"{UK_ODDS_API_BASE}/{path.lstrip('/')}",
+        headers={**HEADERS, "X-Api-Key": UK_ODDS_API_KEY},
+        params=params or {}, timeout=TIMEOUT,
+    )
+    response.raise_for_status()
+    data = response.json()
+    if isinstance(data, dict) and data.get("detail") and not data.get("events"):
+        raise RuntimeError(str(data["detail"])[:160])
+    return data
+
+def collect_ukodds(tomorrow):
+    """Free-tier UK Odds API: daily football fixtures + core pre-match prices."""
+    if not UK_ODDS_API_KEY:
+        return [], [], ["UK Odds API: کلید UK_ODDS_API_KEY تنظیم نشده"]
+    picks, errors, stats = [], [], []
+    try:
+        payload = ukodds_get("v1/football/events", {
+            "schedule_date": tomorrow.isoformat(), "per_page": 200, "page": 1,
+        })
+        events = payload.get("events", []) if isinstance(payload, dict) else []
+        if not isinstance(events, list):
+            raise RuntimeError("فرمت فهرست مسابقات نامعتبر است")
+    except Exception as exc:
+        return [], [f"UK Odds API events: {type(exc).__name__} {str(exc)[:120]}"], ["UK Odds API: خطا در دریافت مسابقات"]
+
+    eligible = []
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        start = parse_time(event.get("kickoff_utc"))
+        fixture = {"league": event.get("league_name", "")}
+        if (start is None or start.astimezone(TEHRAN).date() != tomorrow
+                or not allowed_competition(fixture)
+                or not event.get("event_id")
+                or int(event.get("markets_with_odds") or 0) <= 0):
+            continue
+        eligible.append((event, start))
+
+    # Free tier allows 300 metered odds calls/month. Keep this provider bounded
+    # to a small daily shortlist; event-list calls are not metered.
+    eligible = eligible[:6]
+    for event, start in eligible:
+        try:
+            odds_data = ukodds_get(
+                f"v1/football/events/{event['event_id']}/odds",
+                {"package": "core", "odds_format": "decimal"},
+            )
+            captured = parse_time(odds_data.get("captured_at")) if isinstance(odds_data, dict) else None
+            if captured is None:
+                captured = datetime.now(timezone.utc)
+            age = (datetime.now(timezone.utc) - captured.astimezone(timezone.utc)).total_seconds()
+            if age < -60 or age > 3600:
+                continue
+
+            bookmakers = odds_data.get("bookmakers", []) if isinstance(odds_data, dict) else []
+            if isinstance(bookmakers, dict):
+                book_rows = [{"bookmaker_name": name, "markets": rows} for name, rows in bookmakers.items()]
+            else:
+                book_rows = bookmakers if isinstance(bookmakers, list) else []
+            # Some responses expose a top-level market list with bookmaker codes
+            # on each selection; normalize both documented/compatible shapes.
+            for book in book_rows:
+                if not isinstance(book, dict):
+                    continue
+                book_name = (book.get("bookmaker_name") or book.get("name")
+                             or book.get("title") or book.get("bookmaker_code")
+                             or book.get("code") or "UK Odds API")
+                if not allowed_bookmaker(book_name):
+                    continue
+                markets = book.get("markets") or []
+                if isinstance(markets, dict):
+                    markets = [{"market_name": key, **(value if isinstance(value, dict) else {})}
+                               for key, value in markets.items()]
+                for market in markets if isinstance(markets, list) else []:
+                    if not isinstance(market, dict):
+                        continue
+                    market_name = str(market.get("market_name") or market.get("name") or market.get("key") or "").lower()
+                    if any(x in market_name for x in ("corner", "card", "goalscorer", "scorer", "player")):
+                        continue
+                    if any(x in market_name for x in ("1x2", "match result", "winner", "match odds")):
+                        market_key = "h2h"
+                    elif "handicap" in market_name or "asian" in market_name:
+                        market_key = "spreads"
+                    elif "total" in market_name or "over/under" in market_name or "over under" in market_name:
+                        market_key = "totals"
+                    else:
+                        continue
+                    selections = market.get("selections") or market.get("outcomes") or []
+                    for selection in selections if isinstance(selections, list) else []:
+                        if not isinstance(selection, dict):
+                            continue
+                        price = selection.get("odds", selection.get("price"))
+                        if not valid_decimal_odds(price):
+                            continue
+                        updated = parse_time(selection.get("captured_at") or market.get("captured_at")) or captured
+                        if (datetime.now(timezone.utc) - updated.astimezone(timezone.utc)).total_seconds() > 3600:
+                            continue
+                        picks.append({
+                            "sport": "فوتبال",
+                            "home": event.get("home_team") or "نامشخص",
+                            "away": event.get("away_team") or "نامشخص",
+                            "start": start,
+                            "league": event.get("league_name") or "لیگ نامشخص",
+                            "market": market_key,
+                            "selection": str(selection.get("selection_name") or selection.get("name") or "نامشخص"),
+                            "odds": float(price),
+                            "point": selection.get("handicap", selection.get("point")),
+                            "book": str(selection.get("bookmaker_name") or book_name),
+                            "updated": updated,
+                        })
+            # Alternate response shape: markets -> selections, bookmaker_code on each selection.
+            for market in odds_data.get("markets", []) if isinstance(odds_data, dict) else []:
+                if not isinstance(market, dict):
+                    continue
+                market_name = str(market.get("market_name") or "").lower()
+                market_key = ("h2h" if any(x in market_name for x in ("1x2","match result","winner"))
+                              else "spreads" if "handicap" in market_name
+                              else "totals" if "total" in market_name or "over" in market_name
+                              else None)
+                if not market_key:
+                    continue
+                for selection in market.get("selections") or []:
+                    if not isinstance(selection, dict):
+                        continue
+                    price = selection.get("odds")
+                    book_name = selection.get("bookmaker_name") or selection.get("bookmaker_code") or "UK Odds API"
+                    if valid_decimal_odds(price) and allowed_bookmaker(book_name):
+                        picks.append({
+                            "sport":"فوتبال", "home":event.get("home_team") or "نامشخص",
+                            "away":event.get("away_team") or "نامشخص", "start":start,
+                            "league":event.get("league_name") or "لیگ نامشخص",
+                            "market":market_key,
+                            "selection":str(selection.get("selection_name") or "نامشخص"),
+                            "odds":float(price), "point":selection.get("handicap"),
+                            "book":str(book_name), "updated":captured,
+                        })
+        except Exception as exc:
+            errors.append(f"UK Odds API {event.get('home_team','?')}–{event.get('away_team','?')}: {type(exc).__name__} {str(exc)[:90]}")
+    stats.append(f"UK Odds API: {len(eligible)} مسابقه بررسی شد؛ {len(picks)} قیمت معتبر")
+    return picks, errors, stats
+
 ODDS_API_KEY = os.getenv("ODDS_API_KEY", "").strip()
 ODDS_API_BASE = "https://api.odds-api.io/v3"
 
@@ -783,6 +930,10 @@ def collect():
     found.extend(link_picks)
     errors.extend(link_errors)
     stats.extend(link_stats)
+    uk_picks, uk_errors, uk_stats = collect_ukodds(tomorrow)
+    found.extend(uk_picks)
+    errors.extend(uk_errors)
+    stats.extend(uk_stats)
     extra_picks, extra_errors, extra_stats = collect_odds_api(tomorrow)
     found.extend(extra_picks)
     errors.extend(extra_errors)
