@@ -1,33 +1,12 @@
 {
-  "balance": 97346.87224266308,
-  "positions": {
-    "XAU/USD (PAXG proxy)": {
-      "side": "SHORT",
-      "entry": 3859.185,
-      "stop": 3873.892714285714,
-      "target": 3829.7695714285715,
-      "qty": 33.13258648579259,
-      "entry_fee": 76.71886846630407,
-      "opened_at": "2026-11-16T16:15:00Z",
-      "leverage": 1.3119594673349313
-    },
-    "ریپل (XRP-SWAP-USDT)": {
-      "side": "SHORT",
-      "entry": 0.957,
-      "stop": 0.9644892857142857,
-      "target": 0.9420214285714286,
-      "qty": 65015.68237791041,
-      "entry_fee": 37.33200482139615,
-      "opened_at": "2026-11-16T20:15:00+00:00",
-      "leverage": 1.0
-    }
-  },
-  "closed_trades": 77,
-  "realized_pnl": -2539.07688404923,
+  "balance": 96258.01119717612,
+  "positions": {},
+  "closed_trades": 79,
+  "realized_pnl": -3741.9888028239,
   "wins": 20,
-  "losses": 19,
+  "losses": 21,
   "accounting_version": 2,
-  "last_unrealized_pnl": -49.61736647227886,
-  "last_equity": 97297.25487619081,
-  "last_total_pnl": -2702.745123809189
+  "last_unrealized_pnl": 0.0,
+  "last_equity": 96258.01119717612,
+  "last_total_pnl": -3741.9888028238784
 }
