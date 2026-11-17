@@ -569,6 +569,112 @@ def fixture_crosschecks(tomorrow):
     except Exception as exc:
         errors.append(f'TheSportsDB: {type(exc).__name__} {str(exc)[:90]}')
     return found, errors
+
+def collect_match_previews(target_date, limit=5):
+    """Build non-betting match previews from FotMob fixtures and ESPN recent results."""
+    headers = {
+        **HEADERS,
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/130.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+    }
+    fixtures = []
+    try:
+        response = requests.get(
+            "https://www.fotmob.com/api/data/matches",
+            params={"date": target_date.strftime("%Y%m%d")},
+            headers=headers, timeout=TIMEOUT,
+        )
+        response.raise_for_status()
+        data = response.json()
+        rows = data.get("matches") or []
+        if not rows and isinstance(data.get("leagues"), list):
+            rows = [m for league in data["leagues"] if isinstance(league, dict)
+                    for m in (league.get("matches") or []) if isinstance(m, dict)]
+        for row in rows:
+            home_obj, away_obj = row.get("home") or {}, row.get("away") or {}
+            home = home_obj.get("name") if isinstance(home_obj, dict) else str(home_obj)
+            away = away_obj.get("name") if isinstance(away_obj, dict) else str(away_obj)
+            status = row.get("status") or {}
+            start = parse_time(status.get("utcTime") or row.get("utcTime"))
+            league = (row.get("leagueName") or row.get("tournamentName")
+                      or row.get("league", {}).get("name", "")
+                      if isinstance(row.get("league"), dict) else row.get("leagueName", ""))
+            if not home or not away or start is None:
+                continue
+            if start.astimezone(TEHRAN).date() != target_date:
+                continue
+            if not allowed_competition({"league": league}):
+                continue
+            fixtures.append({
+                "sport": "فوتبال", "home": home, "away": away,
+                "start": start, "league": league or "لیگ نامشخص",
+            })
+    except Exception as exc:
+        print("PREVIEW_FIXTURE_ERROR:", type(exc).__name__, str(exc)[:120])
+
+    if not fixtures:
+        return []
+
+    # One date-range request supplies recent completed matches for form calculations.
+    form = {}
+    start_date = target_date - timedelta(days=35)
+    try:
+        response = requests.get(
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard",
+            params={"dates": f"{start_date.strftime('%Y%m%d')}-{target_date.strftime('%Y%m%d')}"},
+            headers=headers, timeout=TIMEOUT,
+        )
+        response.raise_for_status()
+        for event in response.json().get("events") or []:
+            event_date = parse_time(event.get("date"))
+            if event_date is None or event_date.astimezone(TEHRAN).date() >= target_date:
+                continue
+            competitions = event.get("competitions") or []
+            if not competitions:
+                continue
+            competitors = competitions[0].get("competitors") or []
+            sides = {}
+            for item in competitors:
+                team = item.get("team") or {}
+                name = team.get("displayName") or team.get("name")
+                try:
+                    score = float(item.get("score"))
+                except (TypeError, ValueError):
+                    continue
+                if name and item.get("homeAway") in ("home", "away"):
+                    sides[item["homeAway"]] = (name, score)
+            if "home" not in sides or "away" not in sides:
+                continue
+            (hn, hs), (an, ass) = sides["home"], sides["away"]
+            for name, scored, conceded in ((hn, hs, ass), (an, ass, hs)):
+                form.setdefault(norm_team(name), []).append({
+                    "date": event_date, "scored": scored, "conceded": conceded,
+                    "result": "W" if scored > conceded else "D" if scored == conceded else "L",
+                })
+    except Exception as exc:
+        print("PREVIEW_FORM_ERROR:", type(exc).__name__, str(exc)[:120])
+
+    previews = []
+    for fixture in fixtures:
+        home_form = sorted(form.get(norm_team(fixture["home"]), []), key=lambda x: x["date"])[-5:]
+        away_form = sorted(form.get(norm_team(fixture["away"]), []), key=lambda x: x["date"])[-5:]
+        if len(home_form) < 3 or len(away_form) < 3:
+            continue
+        for label, rows in (("home_form", home_form), ("away_form", away_form)):
+            fixture[label] = "".join(x["result"] for x in rows)
+        fixture["home_avg_scored"] = sum(x["scored"] for x in home_form) / len(home_form)
+        fixture["home_avg_conceded"] = sum(x["conceded"] for x in home_form) / len(home_form)
+        fixture["away_avg_scored"] = sum(x["scored"] for x in away_form) / len(away_form)
+        fixture["away_avg_conceded"] = sum(x["conceded"] for x in away_form) / len(away_form)
+        fixture["form_matches"] = min(len(home_form), len(away_form))
+        previews.append(fixture)
+    previews.sort(key=lambda x: (
+        -(x["home_avg_scored"] + x["away_avg_scored"]),
+        x["start"],
+    ))
+    return previews[:limit]
+
+
 def collect():
     now = datetime.now(timezone.utc)
     tomorrow = (datetime.now(TEHRAN).date() + timedelta(days=1))
@@ -768,6 +874,31 @@ def main():
         f"📅 <b>{tomorrow.strftime('%d.%m.%Y')}</b>  |  به وقت تهران",
         "━━━━━━━━━━━━━━━━━━━━",
     ]
+    analysis_fresh = []
+    if not fresh:
+        previews = collect_match_previews(tomorrow, limit=5)
+        for p in previews:
+            analysis_id = "ANALYSIS|" + fixture_id(p)
+            if analysis_id not in sent_ids:
+                analysis_fresh.append((p, analysis_id))
+        if analysis_fresh:
+            lines.append("📊 <b>پیش‌نمایش آماری مسابقات (بدون ضریب شرط‌بندی)</b>")
+            lines.append("<i>بر پایه فرم ۵ بازی اخیر؛ این بخش سیگنال شرط‌بندی نیست.</i>")
+            lines.append("━━━━━━━━━━━━━━━━━━━━")
+            for i, (p, analysis_id) in enumerate(analysis_fresh, 1):
+                local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
+                lines += [
+                    f"<b>⚽ بازی {i:02d} | {esc(p['league'])}</b>",
+                    f"{esc(p['home'])}  مقابل  {esc(p['away'])}",
+                    f"🕒 {local_time} تهران",
+                    f"📈 فرم اخیر: میزبان <b>{p['home_form']}</b> | میهمان <b>{p['away_form']}</b>",
+                    f"⚽ میانگین گل زده: {p['home_avg_scored']:.1f} در برابر {p['away_avg_scored']:.1f}",
+                    f"🛡 میانگین گل خورده: {p['home_avg_conceded']:.1f} در برابر {p['away_avg_conceded']:.1f}",
+                    "┄┄┄┄┄┄┄┄┄┄",
+                ]
+        else:
+            print("NO_FRESH_PICKS: هیچ پیشنهاد یا پیش‌نمایش آماری تازه‌ای برای ارسال نیست.")
+            return
     if fresh:
         for i, p in enumerate(fresh[:10], 1):
             local_time = p["start"].astimezone(TEHRAN).strftime("%H:%M")
@@ -796,10 +927,8 @@ def main():
                 "━━━━━━━━━━━━━━━━━━━━",
             ]
     else:
-        # No empty-result Telegram messages. Keep diagnostics in GitHub Actions logs;
-        # Telegram is reserved for fresh, qualified recommendations only.
-        print("NO_FRESH_PICKS: پیام خالی ارسال نشد؛ گزارش منابع در Actions ثبت شد.")
-        return
+        # If no betting picks exist, send the verified form-based previews above.
+        pass
     lines += [
         f"📋 <b>تعداد پیشنهادهای تازه: {len(fresh[:10])}</b>",
         "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
@@ -810,6 +939,7 @@ def main():
     # Save fixture history only after Telegram confirms successful delivery.
     send_telegram("\n".join(lines))
     sent_ids.update(fixture_id(p) for p in fresh[:10])
+    sent_ids.update(analysis_id for _, analysis_id in analysis_fresh)
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(sorted(sent_ids), ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Telegram sent scan result with {min(len(fresh), 10)} new unique picks.")
