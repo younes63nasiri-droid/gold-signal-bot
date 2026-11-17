@@ -571,13 +571,14 @@ def fixture_crosschecks(tomorrow):
     return found, errors
 
 def collect_match_previews(target_date, limit=5):
-    """Build non-betting match previews from FotMob fixtures and ESPN recent results."""
+    """Build non-betting previews from public football fixtures and recent results."""
     headers = {
         **HEADERS,
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/130.0 Safari/537.36",
         "Accept": "application/json, text/plain, */*",
     }
     fixtures = []
+    # Primary schedule: FotMob.
     try:
         response = requests.get(
             "https://www.fotmob.com/api/data/matches",
@@ -596,9 +597,10 @@ def collect_match_previews(target_date, limit=5):
             away = away_obj.get("name") if isinstance(away_obj, dict) else str(away_obj)
             status = row.get("status") or {}
             start = parse_time(status.get("utcTime") or row.get("utcTime"))
-            league = (row.get("leagueName") or row.get("tournamentName")
-                      or row.get("league", {}).get("name", "")
-                      if isinstance(row.get("league"), dict) else row.get("leagueName", ""))
+            league_obj = row.get("league")
+            league = (row.get("leagueName") or row.get("tournamentName") or
+                      (league_obj.get("name") if isinstance(league_obj, dict) else "") or
+                      str(league_obj or ""))
             if not home or not away or start is None:
                 continue
             if start.astimezone(TEHRAN).date() != target_date:
@@ -610,13 +612,52 @@ def collect_match_previews(target_date, limit=5):
                 "start": start, "league": league or "لیگ نامشخص",
             })
     except Exception as exc:
-        print("PREVIEW_FIXTURE_ERROR:", type(exc).__name__, str(exc)[:120])
+        print("PREVIEW_FOTMOB_ERROR:", type(exc).__name__, str(exc)[:120])
+
+    # Fallback schedule: ESPN soccer scoreboard. This prevents an empty preview
+    # merely because FotMob changes its response shape or league labels.
+    if not fixtures:
+        try:
+            response = requests.get(
+                "https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard",
+                params={"dates": target_date.strftime("%Y%m%d")},
+                headers=headers, timeout=TIMEOUT,
+            )
+            response.raise_for_status()
+            for event in response.json().get("events") or []:
+                start = parse_time(event.get("date"))
+                if start is None or start.astimezone(TEHRAN).date() != target_date:
+                    continue
+                competitions = event.get("competitions") or []
+                if not competitions:
+                    continue
+                competitors = competitions[0].get("competitors") or []
+                sides = {}
+                for item in competitors:
+                    team = item.get("team") or {}
+                    name = team.get("displayName") or team.get("name") or item.get("displayName")
+                    if name and item.get("homeAway") in ("home", "away"):
+                        sides[item["homeAway"]] = name
+                if "home" not in sides or "away" not in sides:
+                    continue
+                season = event.get("season") or {}
+                league = season.get("name") or event.get("name") or "فوتبال"
+                notes = competitions[0].get("notes") or []
+                if notes and isinstance(notes[0], dict):
+                    league = notes[0].get("headline") or league
+                fixtures.append({
+                    "sport": "فوتبال", "home": sides["home"], "away": sides["away"],
+                    "start": start, "league": league,
+                })
+            print("PREVIEW_ESPN_FIXTURES:", len(fixtures))
+        except Exception as exc:
+            print("PREVIEW_ESPN_ERROR:", type(exc).__name__, str(exc)[:120])
 
     if not fixtures:
+        print("PREVIEW_NO_FIXTURES")
         return []
 
-    # ESPN scoreboard accepts one calendar date reliably (not a date range).
-    # Fetch the previous 35 days concurrently so recent form is actually populated.
+    # ESPN scoreboard accepts one calendar date at a time.
     form = {}
     from concurrent.futures import ThreadPoolExecutor, as_completed
     dates = [target_date - timedelta(days=offset) for offset in range(1, 36)]
@@ -643,9 +684,8 @@ def collect_match_previews(target_date, limit=5):
                 competitions = event.get("competitions") or []
                 if not competitions:
                     continue
-                competitors = competitions[0].get("competitors") or []
                 sides = {}
-                for item in competitors:
+                for item in competitions[0].get("competitors") or []:
                     team = item.get("team") or {}
                     name = team.get("displayName") or team.get("name")
                     try:
@@ -668,22 +708,22 @@ def collect_match_previews(target_date, limit=5):
     for fixture in fixtures:
         home_form = sorted(form.get(norm_team(fixture["home"]), []), key=lambda x: x["date"])[-5:]
         away_form = sorted(form.get(norm_team(fixture["away"]), []), key=lambda x: x["date"])[-5:]
-        if len(home_form) < 3 or len(away_form) < 3:
-            continue
-        for label, rows in (("home_form", home_form), ("away_form", away_form)):
-            fixture[label] = "".join(x["result"] for x in rows)
-        fixture["home_avg_scored"] = sum(x["scored"] for x in home_form) / len(home_form)
-        fixture["home_avg_conceded"] = sum(x["conceded"] for x in home_form) / len(home_form)
-        fixture["away_avg_scored"] = sum(x["scored"] for x in away_form) / len(away_form)
-        fixture["away_avg_conceded"] = sum(x["conceded"] for x in away_form) / len(away_form)
+        # Include the fixture even if a free historical feed lacks one team's form.
+        fixture["home_form"] = "".join(x["result"] for x in home_form) or "ناموجود"
+        fixture["away_form"] = "".join(x["result"] for x in away_form) or "ناموجود"
+        if home_form:
+            fixture["home_avg_scored"] = sum(x["scored"] for x in home_form) / len(home_form)
+            fixture["home_avg_conceded"] = sum(x["conceded"] for x in home_form) / len(home_form)
+        if away_form:
+            fixture["away_avg_scored"] = sum(x["scored"] for x in away_form) / len(away_form)
+            fixture["away_avg_conceded"] = sum(x["conceded"] for x in away_form) / len(away_form)
         fixture["form_matches"] = min(len(home_form), len(away_form))
         previews.append(fixture)
     previews.sort(key=lambda x: (
-        -(x["home_avg_scored"] + x["away_avg_scored"]),
+        -(x.get("home_avg_scored", 0) + x.get("away_avg_scored", 0)),
         x["start"],
     ))
     return previews[:limit]
-
 
 def collect():
     now = datetime.now(timezone.utc)
@@ -902,8 +942,8 @@ def main():
                     f"{esc(p['home'])}  مقابل  {esc(p['away'])}",
                     f"🕒 {local_time} تهران",
                     f"📈 فرم اخیر: میزبان <b>{p['home_form']}</b> | میهمان <b>{p['away_form']}</b>",
-                    f"⚽ میانگین گل زده: {p['home_avg_scored']:.1f} در برابر {p['away_avg_scored']:.1f}",
-                    f"🛡 میانگین گل خورده: {p['home_avg_conceded']:.1f} در برابر {p['away_avg_conceded']:.1f}",
+                    (f"⚽ میانگین گل زده: {p['home_avg_scored']:.1f} در برابر {p['away_avg_scored']:.1f}" if "home_avg_scored" in p and "away_avg_scored" in p else "⚽ میانگین گل زده: آمار کافی در منبع رایگان موجود نبود"),
+                    (f"🛡 میانگین گل خورده: {p['home_avg_conceded']:.1f} در برابر {p['away_avg_conceded']:.1f}" if "home_avg_conceded" in p and "away_avg_conceded" in p else "🛡 میانگین گل خورده: آمار کافی در منبع رایگان موجود نبود"),
                     "┄┄┄┄┄┄┄┄┄┄",
                 ]
         else:
