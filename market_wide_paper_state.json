@@ -15,7 +15,7 @@
       "opened_at": "2026-11-16T03:02:54.846687+00:00",
       "score": 86.73,
       "spread_pct": 0.0386,
-      "last_mark": 0.10095
+      "last_mark": 0.10049
     },
     "QNT-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-17T03:36:46.535689+00:00",
       "score": 86.67,
       "spread_pct": 0.013,
-      "last_mark": 153.58
+      "last_mark": 152.69
     }
   },
   "closed_trades": 39,
   "wins": 18,
   "losses": 21,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -0.8105126399939877,
-  "equity": 103674.64140745535,
-  "total_pnl": 3674.641407455347,
-  "last_scan": "2026-11-17T04:39:02.330900+00:00",
+  "unrealized_pnl": 285.718235874274,
+  "equity": 103961.17015596961,
+  "total_pnl": 3961.1701559696085,
+  "last_scan": "2026-11-17T05:40:40.181230+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 240,
+    "liquid": 246,
     "analyzed": 60,
     "qualified": 10
   }
