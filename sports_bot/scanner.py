@@ -705,8 +705,15 @@ def collect_match_previews(target_date, limit=5):
         data = response.json()
         rows = data.get("matches") or []
         if not rows and isinstance(data.get("leagues"), list):
-            rows = [m for league in data["leagues"] if isinstance(league, dict)
-                    for m in (league.get("matches") or []) if isinstance(m, dict)]
+            # FotMob's standard response nests fixtures under leagues[].matches.
+            # Preserve the parent competition metadata while flattening.
+            rows = [
+                {**m,
+                 "_league_name": league.get("name") or league.get("shortName") or "",
+                 "_league_gender": league.get("gender") or ""}
+                for league in data["leagues"] if isinstance(league, dict)
+                for m in (league.get("matches") or []) if isinstance(m, dict)
+            ]
         for row in rows:
             home_obj, away_obj = row.get("home") or {}, row.get("away") or {}
             home = home_obj.get("name") if isinstance(home_obj, dict) else str(home_obj)
@@ -716,14 +723,17 @@ def collect_match_previews(target_date, limit=5):
             # FotMob exposes the actual competition under tournament/leagueName.
             # Never use a stringified event label (often "Away at Home") as league.
             league_obj = row.get("tournament") or row.get("league") or {}
-            league = ""
+            league = row.get("_league_name") or ""
             if isinstance(league_obj, dict):
-                league = (league_obj.get("name") or league_obj.get("leagueName") or
+                league = (league or league_obj.get("name") or league_obj.get("leagueName") or
                           league_obj.get("parentLeagueName") or "")
-            league = (row.get("leagueName") or row.get("parentLeagueName") or
-                      row.get("tournamentName") or league)
+            league = (league or row.get("leagueName") or row.get("parentLeagueName") or
+                      row.get("tournamentName") or "")
             if not league or " at " in str(league).lower() or " vs " in str(league).lower():
                 league = "نام لیگ در منبع مشخص نیست"
+            gender = str(row.get("_league_gender") or "").lower()
+            if gender in ("female", "women", "w"):
+                league = f"{league} (زنان)"
             if not home or not away or start is None:
                 continue
             if start.astimezone(TEHRAN).date() != target_date:
@@ -1045,6 +1055,7 @@ def main():
             break
     import html
     esc = lambda value: html.escape(str(value or ""), quote=False)
+    displayed_preview_count = 0
     lines = [
         "✨ <b>VIVA AI</b>  <i>پیشنهادهای منتخب مسابقات</i>",
         f"📅 <b>{tomorrow.strftime('%d.%m.%Y')}</b>  |  به وقت تهران",
@@ -1103,6 +1114,7 @@ def main():
         # show up to five fixture previews even if those previews were sent before.
         print("NO_FRESH_PICKS: sending status report instead of exiting.")
         fallback_previews = previews[:5]
+        displayed_preview_count = len(fallback_previews)
         if fallback_previews:
             lines += [
                 "📊 <b>گزارش آنالیز آماری (بدون سیگنال ضریب‌دار تازه)</b>",
@@ -1126,7 +1138,7 @@ def main():
                 "━━━━━━━━━━━━━━━━━━━━",
             ]
         lines += [
-            f"📊 آنالیز تازه: {len(analysis_fresh)}",
+            f"📊 مسابقات نمایش‌داده‌شده: {displayed_preview_count}",
             "💎 سیگنال ضریب‌دار تازه: 0",
             "<i>این گزارش به معنی پیشنهاد شرط‌بندی نیست.</i>",
         ]
@@ -1162,7 +1174,7 @@ def main():
         pass
     lines += [
         f"💎 <b>سیگنال ضریب‌دار: {len(fresh[:10])}</b>",
-        f"📊 <b>آنالیز آماری: {len(analysis_fresh)}</b>",
+        f"📊 <b>آنالیز آماری: {len(analysis_fresh) if analysis_fresh else displayed_preview_count}</b>",
         "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
     ]
     if errors and fresh:
