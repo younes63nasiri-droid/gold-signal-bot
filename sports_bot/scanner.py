@@ -615,44 +615,54 @@ def collect_match_previews(target_date, limit=5):
     if not fixtures:
         return []
 
-    # One date-range request supplies recent completed matches for form calculations.
+    # ESPN scoreboard accepts one calendar date reliably (not a date range).
+    # Fetch the previous 35 days concurrently so recent form is actually populated.
     form = {}
-    start_date = target_date - timedelta(days=35)
-    try:
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    dates = [target_date - timedelta(days=offset) for offset in range(1, 36)]
+    def fetch_scoreboard(day):
         response = requests.get(
             "https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard",
-            params={"dates": f"{start_date.strftime('%Y%m%d')}-{target_date.strftime('%Y%m%d')}"},
-            headers=headers, timeout=TIMEOUT,
+            params={"dates": day.strftime("%Y%m%d")},
+            headers=headers, timeout=10,
         )
         response.raise_for_status()
-        for event in response.json().get("events") or []:
-            event_date = parse_time(event.get("date"))
-            if event_date is None or event_date.astimezone(TEHRAN).date() >= target_date:
+        return response.json().get("events") or []
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futures = {pool.submit(fetch_scoreboard, day): day for day in dates}
+        for future in as_completed(futures):
+            try:
+                events = future.result()
+            except Exception as exc:
+                print("PREVIEW_FORM_DAY_ERROR:", futures[future].isoformat(), type(exc).__name__)
                 continue
-            competitions = event.get("competitions") or []
-            if not competitions:
-                continue
-            competitors = competitions[0].get("competitors") or []
-            sides = {}
-            for item in competitors:
-                team = item.get("team") or {}
-                name = team.get("displayName") or team.get("name")
-                try:
-                    score = float(item.get("score"))
-                except (TypeError, ValueError):
+            for event in events:
+                event_date = parse_time(event.get("date"))
+                if event_date is None or event_date.astimezone(TEHRAN).date() >= target_date:
                     continue
-                if name and item.get("homeAway") in ("home", "away"):
-                    sides[item["homeAway"]] = (name, score)
-            if "home" not in sides or "away" not in sides:
-                continue
-            (hn, hs), (an, ass) = sides["home"], sides["away"]
-            for name, scored, conceded in ((hn, hs, ass), (an, ass, hs)):
-                form.setdefault(norm_team(name), []).append({
-                    "date": event_date, "scored": scored, "conceded": conceded,
-                    "result": "W" if scored > conceded else "D" if scored == conceded else "L",
-                })
-    except Exception as exc:
-        print("PREVIEW_FORM_ERROR:", type(exc).__name__, str(exc)[:120])
+                competitions = event.get("competitions") or []
+                if not competitions:
+                    continue
+                competitors = competitions[0].get("competitors") or []
+                sides = {}
+                for item in competitors:
+                    team = item.get("team") or {}
+                    name = team.get("displayName") or team.get("name")
+                    try:
+                        score = float(item.get("score"))
+                    except (TypeError, ValueError):
+                        continue
+                    if name and item.get("homeAway") in ("home", "away"):
+                        sides[item["homeAway"]] = (name, score)
+                if "home" not in sides or "away" not in sides:
+                    continue
+                (hn, hs), (an, away_score) = sides["home"], sides["away"]
+                for name, scored, conceded in ((hn, hs, away_score), (an, away_score, hs)):
+                    form.setdefault(norm_team(name), []).append({
+                        "date": event_date, "scored": scored, "conceded": conceded,
+                        "result": "W" if scored > conceded else "D" if scored == conceded else "L",
+                    })
+    print("PREVIEW_FORM_TEAMS:", len(form))
 
     previews = []
     for fixture in fixtures:
