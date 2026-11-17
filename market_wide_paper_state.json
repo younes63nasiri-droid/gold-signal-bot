@@ -1,22 +1,8 @@
 {
   "version": 1,
-  "balance": 103500.28939491611,
-  "realized_pnl": 3532.852632421963,
+  "balance": 103117.72453088722,
+  "realized_pnl": 3161.6288519466602,
   "positions": {
-    "BLESS-SWAP-USDT": {
-      "direction": "SHORT",
-      "entry": 0.009986,
-      "stop": 0.0104885,
-      "target": 0.008981,
-      "qty": 721124.3466934873,
-      "entry_fee": 4.320688635648698,
-      "leverage": 0.07,
-      "opened_candle": 1794933900000,
-      "opened_at": "2026-11-17T16:45:38.802366+00:00",
-      "score": 81.13,
-      "spread_pct": 0.01,
-      "last_mark": 0.009969
-    },
     "GOOGL-SWAP-USDT": {
       "direction": "SHORT",
       "entry": 282.66,
@@ -28,20 +14,34 @@
       "opened_candle": 1794937500000,
       "opened_at": "2026-11-17T17:53:26.302064+00:00",
       "score": 89.46,
-      "spread_pct": 0.0035
+      "spread_pct": 0.0035,
+      "last_mark": 281.97
+    },
+    "ETH-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 1788.19,
+      "stop": 1812.9389285714287,
+      "target": 1738.692142857143,
+      "qty": 14.59741618547655,
+      "entry_fee": 15.661772189224386,
+      "leverage": 0.25,
+      "opened_candle": 1794941100000,
+      "opened_at": "2026-11-17T18:47:19.555272+00:00",
+      "score": 80.77,
+      "spread_pct": 0.0006
     }
   },
-  "closed_trades": 47,
+  "closed_trades": 48,
   "wins": 21,
-  "losses": 26,
+  "losses": 27,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -20.29676814377286,
-  "equity": 103479.99262677233,
-  "total_pnl": 3479.992626772335,
-  "last_scan": "2026-11-17T17:53:26.302105+00:00",
+  "unrealized_pnl": 71.06921095604744,
+  "equity": 103188.79374184327,
+  "total_pnl": 3188.7937418432703,
+  "last_scan": "2026-11-17T18:47:19.555318+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 293,
+    "liquid": 291,
     "analyzed": 60,
     "qualified": 10
   }
