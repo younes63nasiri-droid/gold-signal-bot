@@ -2,7 +2,7 @@ name: VIVA AI Sports Scanner
 
 on:
   schedule:
-    - cron: "0 * * * *"  # هر ساعت؛ بدون محدودیت ارسال ساعت ۲۲
+    - cron: "30 18 * * *"  # روزانه ساعت ۲۲:۰۰ تهران؛ متناسب با سهمیه رایگان UK Odds API
   workflow_dispatch:
   push:
     branches:
@@ -56,6 +56,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || '601146458' }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           ODDSLINK_API_KEY: ${{ secrets.ODDSLINK_API_KEY }}
+          UK_ODDS_API_KEY: ${{ secrets.UK_ODDS_API_KEY }}
         run: python sports_bot/scanner.py
       - name: Save sent-pick history
         run: |
