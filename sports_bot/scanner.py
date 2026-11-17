@@ -796,13 +796,10 @@ def main():
                 "━━━━━━━━━━━━━━━━━━━━",
             ]
     else:
-        lines.append("فعلاً پیشنهادی که همه بررسی‌های اعتبار، زمان و ضریب را بگذراند پیدا نشد.")
-        if stats:
-            lines += ["", "📡 <b>گزارش منابع داده:</b>"]
-            lines.extend(f"• {esc(item)}" for item in stats[:8])
-        if errors:
-            lines += ["", "⚠️ <b>خطاهای منابع:</b>"]
-            lines.extend(f"• {esc(item)}" for item in errors[:5])
+        # No empty-result Telegram messages. Keep diagnostics in GitHub Actions logs;
+        # Telegram is reserved for fresh, qualified recommendations only.
+        print("NO_FRESH_PICKS: پیام خالی ارسال نشد؛ گزارش منابع در Actions ثبت شد.")
+        return
     lines += [
         f"📋 <b>تعداد پیشنهادهای تازه: {len(fresh[:10])}</b>",
         "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
@@ -810,7 +807,6 @@ def main():
     if errors and fresh:
         lines.append("⚠️ <i>برخی منابع داده خطا داشتند؛ جزئیات در گزارش اجرای GitHub ثبت شده است.</i>")
 
-    # Always send the scan result, including a clean zero-pick status.
     # Save fixture history only after Telegram confirms successful delivery.
     send_telegram("\n".join(lines))
     sent_ids.update(fixture_id(p) for p in fresh[:10])
