@@ -1,4 +1,7 @@
 import os
+import hmac
+import hashlib
+from urllib.parse import urlencode
 import json
 import base64
 import requests
@@ -280,6 +283,32 @@ def save_pending_gold_signal(entry, direction, candle_id):
         sha,
     )
 
+
+
+# Toobit account connection: READ-ONLY balance check; no order endpoints are used.
+TOOBIT_API_KEY = os.environ.get("TOOBIT_API_KEY", "").strip()
+TOOBIT_API_SECRET = os.environ.get("TOOBIT_API_SECRET", "").strip()
+
+def check_toobit_futures_balance():
+    if not TOOBIT_API_KEY or not TOOBIT_API_SECRET:
+        print("Toobit account check skipped: API credentials are not configured.")
+        return
+    params = {"timestamp": int(datetime.now(timezone.utc).timestamp() * 1000), "recvWindow": 5000}
+    query = urlencode(params)
+    signature = hmac.new(
+        TOOBIT_API_SECRET.encode("utf-8"),
+        query.encode("utf-8"),
+        hashlib.sha256,
+    ).hexdigest()
+    url = "https://api.toobit.com/api/v1/futures/balance?" + query + "&signature=" + signature
+    response = requests.get(
+        url,
+        headers={"X-BB-APIKEY": TOOBIT_API_KEY},
+        timeout=20,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    print("TOOBIT_READ_ONLY_FUTURES_BALANCE:", json.dumps(payload, ensure_ascii=False))
 
 def analyze():
     candles_15m = get_candles("15m")
