@@ -306,7 +306,11 @@ def check_toobit_futures_balance():
         headers={"X-BB-APIKEY": TOOBIT_API_KEY},
         timeout=20,
     )
-    response.raise_for_status()
+    if not response.ok:
+        # Include Toobit's diagnostic response body (never print API credentials).
+        raise RuntimeError(
+            f"HTTP {response.status_code} from Toobit: {response.text[:1000]}"
+        )
     payload = response.json()
     print("TOOBIT_READ_ONLY_FUTURES_BALANCE:", json.dumps(payload, ensure_ascii=False))
 
