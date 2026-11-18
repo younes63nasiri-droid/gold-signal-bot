@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 99142.19499411131,
-  "realized_pnl": -809.67187224337,
+  "balance": 99809.18581715971,
+  "realized_pnl": -163.6622670781013,
   "positions": {
     "SOL-SWAP-USDT": {
       "direction": "LONG",
@@ -15,35 +15,34 @@
       "opened_at": "2026-11-18T01:58:27.707842+00:00",
       "score": 79.61,
       "spread_pct": 0.027,
-      "last_mark": 74.55
+      "last_mark": 74.19
     },
-    "MSTR-SWAP-USDT": {
-      "direction": "SHORT",
-      "entry": 97.77,
-      "stop": 98.61107142857142,
-      "target": 96.08785714285713,
-      "qty": 412.56737408391564,
-      "entry_fee": 24.202027298510654,
-      "leverage": 0.41,
-      "opened_candle": 1795000500000,
-      "opened_at": "2026-11-18T11:25:49.073866+00:00",
-      "score": 95.09,
-      "spread_pct": 0.0102,
-      "last_mark": 97.8
+    "EVAA-SWAP-USDT": {
+      "direction": "LONG",
+      "entry": 3.5451,
+      "stop": 3.314667857142857,
+      "target": 4.005964285714286,
+      "qty": 1514.2071287943745,
+      "entry_fee": 3.220809415373362,
+      "leverage": 0.05,
+      "opened_candle": 1795008600000,
+      "opened_at": "2026-11-18T13:45:00.236541+00:00",
+      "score": 86.83,
+      "spread_pct": 0.0404
     }
   },
-  "closed_trades": 58,
-  "wins": 21,
+  "closed_trades": 59,
+  "wins": 22,
   "losses": 37,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 35.95981981914127,
-  "equity": 99178.15481393045,
-  "total_pnl": -821.8451860695495,
-  "last_scan": "2026-11-18T12:20:57.325800+00:00",
+  "unrealized_pnl": -123.62931666200552,
+  "equity": 99685.55650049771,
+  "total_pnl": -314.44349950228934,
+  "last_scan": "2026-11-18T13:45:00.236582+00:00",
   "last_scan_counts": {
-    "contracts": 776,
+    "contracts": 782,
     "liquid": 295,
     "analyzed": 60,
-    "qualified": 9
+    "qualified": 10
   }
 }
