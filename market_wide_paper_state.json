@@ -15,7 +15,7 @@
       "opened_at": "2026-11-18T01:58:27.707842+00:00",
       "score": 79.61,
       "spread_pct": 0.027,
-      "last_mark": 74.85
+      "last_mark": 75.02
     },
     "NBIS-SWAP-USDT": {
       "direction": "LONG",
@@ -28,19 +28,20 @@
       "opened_candle": 1794993300000,
       "opened_at": "2026-11-18T09:16:42.371281+00:00",
       "score": 97.65,
-      "spread_pct": 0.0174
+      "spread_pct": 0.0174,
+      "last_mark": 114.5
     }
   },
   "closed_trades": 57,
   "wins": 21,
   "losses": 36,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 211.2760157423757,
-  "equity": 99748.8046970306,
-  "total_pnl": -251.19530296939774,
-  "last_scan": "2026-11-18T09:16:42.371318+00:00",
+  "unrealized_pnl": 263.9138761498094,
+  "equity": 99801.44255743803,
+  "total_pnl": -198.55744256197067,
+  "last_scan": "2026-11-18T10:27:53.335641+00:00",
   "last_scan_counts": {
-    "contracts": 778,
+    "contracts": 776,
     "liquid": 303,
     "analyzed": 60,
     "qualified": 10
