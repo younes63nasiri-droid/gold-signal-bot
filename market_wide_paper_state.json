@@ -15,7 +15,7 @@
       "opened_at": "2026-11-18T13:45:00.236541+00:00",
       "score": 86.83,
       "spread_pct": 0.0404,
-      "last_mark": 3.7633
+      "last_mark": 3.9224
     },
     "TQQQX-SWAP-USDT": {
       "direction": "SHORT",
@@ -28,20 +28,21 @@
       "opened_candle": 1795015800000,
       "opened_at": "2026-11-18T15:37:07.237065+00:00",
       "score": 82.23,
-      "spread_pct": 0.1339
+      "spread_pct": 0.1339,
+      "last_mark": 51.56
     }
   },
   "closed_trades": 60,
   "wins": 22,
   "losses": 38,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 315.61061885717584,
-  "equity": 99735.17026222768,
-  "total_pnl": -264.8297377723211,
-  "last_scan": "2026-11-18T15:37:07.237113+00:00",
+  "unrealized_pnl": 920.6818267380556,
+  "equity": 100340.24147010857,
+  "total_pnl": 340.2414701085654,
+  "last_scan": "2026-11-18T16:44:01.905536+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 281,
+    "liquid": 288,
     "analyzed": 60,
     "qualified": 10
   }
