@@ -15,7 +15,7 @@
       "opened_at": "2026-11-18T15:37:07.237065+00:00",
       "score": 82.23,
       "spread_pct": 0.1339,
-      "last_mark": 52.16
+      "last_mark": 52.9
     },
     "EWY-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-18T17:39:43.179152+00:00",
       "score": 92.95,
       "spread_pct": 0.0146,
-      "last_mark": 136.5
+      "last_mark": 137.36
     }
   },
   "closed_trades": 61,
   "wins": 23,
   "losses": 38,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 390.60563991823153,
-  "equity": 100487.26230863125,
-  "total_pnl": 487.2623086312524,
-  "last_scan": "2026-11-18T20:35:20.500921+00:00",
+  "unrealized_pnl": -54.34895387632061,
+  "equity": 100042.3077148367,
+  "total_pnl": 42.30771483670105,
+  "last_scan": "2026-11-18T21:34:22.986290+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 282,
+    "liquid": 279,
     "analyzed": 60,
     "qualified": 10
   }
