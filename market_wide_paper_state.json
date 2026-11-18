@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 100340.6926270353,
-  "realized_pnl": 385.78819929657953,
+  "balance": 99939.18143416745,
+  "realized_pnl": -8.337686353486447,
   "positions": {
     "SOL-SWAP-USDT": {
       "direction": "LONG",
@@ -15,33 +15,33 @@
       "opened_at": "2026-11-18T01:58:27.707842+00:00",
       "score": 79.61,
       "spread_pct": 0.027,
-      "last_mark": 74.81
+      "last_mark": 75.14
     },
-    "ZEC-SWAP-USDT": {
+    "NBIS-SWAP-USDT": {
       "direction": "LONG",
-      "entry": 959.1,
-      "stop": 949.5289285714287,
-      "target": 978.2421428571429,
-      "qty": 36.77834413246107,
-      "entry_fee": 21.164465914466046,
-      "leverage": 0.35,
-      "opened_candle": 1794984300000,
-      "opened_at": "2026-11-18T06:57:13.190439+00:00",
-      "score": 87.25,
-      "spread_pct": 0.0011
+      "entry": 115.39,
+      "stop": 114.53821428571429,
+      "target": 117.09357142857144,
+      "qty": 412.36636814645027,
+      "entry_fee": 28.549773132251335,
+      "leverage": 0.48,
+      "opened_candle": 1794988800000,
+      "opened_at": "2026-11-18T08:13:00.399239+00:00",
+      "score": 89.44,
+      "spread_pct": 0.0263
     }
   },
-  "closed_trades": 55,
+  "closed_trades": 56,
   "wins": 21,
-  "losses": 34,
+  "losses": 35,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 190.73807438254929,
-  "equity": 100531.43070141785,
-  "total_pnl": 531.4307014178485,
-  "last_scan": "2026-11-18T06:57:13.190480+00:00",
+  "unrealized_pnl": 360.2280021476709,
+  "equity": 100299.40943631512,
+  "total_pnl": 299.40943631512346,
+  "last_scan": "2026-11-18T08:13:00.399282+00:00",
   "last_scan_counts": {
     "contracts": 778,
-    "liquid": 263,
+    "liquid": 300,
     "analyzed": 60,
     "qualified": 10
   }
