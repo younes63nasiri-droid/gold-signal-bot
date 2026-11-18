@@ -293,7 +293,7 @@ def check_toobit_futures_balance():
     if not TOOBIT_API_KEY or not TOOBIT_API_SECRET:
         print("Toobit account check skipped: API credentials are not configured.")
         return
-    params = {"timestamp": int(datetime.now(timezone.utc).timestamp() * 1000), "recvWindow": 5000}
+    params = {"recvWindow": 5000, "timestamp": int(datetime.now(timezone.utc).timestamp() * 1000)}
     query = urlencode(params)
     signature = hmac.new(
         TOOBIT_API_SECRET.encode("utf-8"),
