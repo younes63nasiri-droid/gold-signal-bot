@@ -1,22 +1,8 @@
 {
   "version": 1,
-  "balance": 99419.5596433705,
-  "realized_pnl": -565.8492199810912,
+  "balance": 100096.65666871303,
+  "realized_pnl": 125.13444163135944,
   "positions": {
-    "EVAA-SWAP-USDT": {
-      "direction": "LONG",
-      "entry": 3.5451,
-      "stop": 3.314667857142857,
-      "target": 4.005964285714286,
-      "qty": 1514.2071287943745,
-      "entry_fee": 3.220809415373362,
-      "leverage": 0.05,
-      "opened_candle": 1795008600000,
-      "opened_at": "2026-11-18T13:45:00.236541+00:00",
-      "score": 86.83,
-      "spread_pct": 0.0404,
-      "last_mark": 3.9224
-    },
     "TQQQX-SWAP-USDT": {
       "direction": "SHORT",
       "entry": 52.57,
@@ -29,20 +15,33 @@
       "opened_at": "2026-11-18T15:37:07.237065+00:00",
       "score": 82.23,
       "spread_pct": 0.1339,
-      "last_mark": 51.56
+      "last_mark": 53.01
+    },
+    "EWY-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 137.81,
+      "stop": 139.50071428571428,
+      "target": 134.42857142857144,
+      "qty": 206.896520394071,
+      "entry_fee": 17.107445685304153,
+      "leverage": 0.28,
+      "opened_candle": 1795023000000,
+      "opened_at": "2026-11-18T17:39:43.179152+00:00",
+      "score": 92.95,
+      "spread_pct": 0.0146
     }
   },
-  "closed_trades": 60,
-  "wins": 22,
+  "closed_trades": 61,
+  "wins": 23,
   "losses": 38,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 920.6818267380556,
-  "equity": 100340.24147010857,
-  "total_pnl": 340.2414701085654,
-  "last_scan": "2026-11-18T16:44:01.905536+00:00",
+  "unrealized_pnl": -187.18507584608028,
+  "equity": 99909.47159286695,
+  "total_pnl": -90.5284071330534,
+  "last_scan": "2026-11-18T17:39:43.179185+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 288,
+    "liquid": 286,
     "analyzed": 60,
     "qualified": 10
   }
