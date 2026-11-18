@@ -411,6 +411,11 @@ def analyze_best_crypto_market():
 
 
 if __name__ == "__main__":
+    print("بررسی اتصال حساب توبیت (فقط‌خواندنی)...")
+    try:
+        check_toobit_futures_balance()
+    except Exception as error:
+        print(f"Toobit read-only account check failed: {type(error).__name__}: {error}")
     print("شروع بررسی بازار طلا...")
     try:
         analyze()
