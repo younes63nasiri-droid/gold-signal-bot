@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 97853.2398350479,
-  "realized_pnl": -2088.24796792938,
+  "balance": 98479.77457859847,
+  "realized_pnl": -1497.607929483736,
   "positions": {
     "NVDA-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,34 +15,33 @@
       "opened_at": "2026-11-19T17:26:12.244648+00:00",
       "score": 85.75,
       "spread_pct": 0.0066,
-      "last_mark": 146.48
+      "last_mark": 146.79
     },
-    "XAU-SWAP-USDT": {
-      "direction": "SHORT",
-      "entry": 3681.52,
-      "stop": 3697.4157142857143,
-      "target": 3649.7285714285713,
-      "qty": 21.561966582560206,
-      "entry_fee": 47.628486727816224,
-      "leverage": 0.81,
-      "opened_candle": 1795115700000,
-      "opened_at": "2026-11-19T19:30:06.522619+00:00",
-      "score": 81.41,
-      "spread_pct": 0.0003,
-      "last_mark": 3667.38
+    "PIEVERSE-SWAP-USDT": {
+      "direction": "LONG",
+      "entry": 2.9397,
+      "stop": 2.887746428571429,
+      "target": 3.043607142857143,
+      "qty": 6652.482465840949,
+      "entry_fee": 11.733781622899583,
+      "leverage": 0.2,
+      "opened_candle": 1795126500000,
+      "opened_at": "2026-11-19T22:16:42.308602+00:00",
+      "score": 79.78,
+      "spread_pct": 0.034
     }
   },
-  "closed_trades": 74,
-  "wins": 26,
+  "closed_trades": 75,
+  "wins": 27,
   "losses": 48,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 552.3325390654102,
-  "equity": 98405.57237411331,
-  "total_pnl": -1594.4276258866885,
-  "last_scan": "2026-11-19T21:19:23.114283+00:00",
+  "unrealized_pnl": 245.39299140877915,
+  "equity": 98725.16757000725,
+  "total_pnl": -1274.832429992748,
+  "last_scan": "2026-11-19T22:16:42.308635+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 285,
+    "liquid": 299,
     "analyzed": 60,
     "qualified": 10
   }
