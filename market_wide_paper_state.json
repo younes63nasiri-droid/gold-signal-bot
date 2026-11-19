@@ -15,7 +15,7 @@
       "opened_at": "2026-11-18T17:39:43.179152+00:00",
       "score": 92.95,
       "spread_pct": 0.0146,
-      "last_mark": 137.54
+      "last_mark": 137.56
     },
     "XTI-SWAP-USDT": {
       "direction": "SHORT",
@@ -28,20 +28,21 @@
       "opened_candle": 1795043700000,
       "opened_at": "2026-11-18T23:30:18.542484+00:00",
       "score": 92.89,
-      "spread_pct": 0.0122
+      "spread_pct": 0.0122,
+      "last_mark": 82.01
     }
   },
   "closed_trades": 62,
   "wins": 23,
   "losses": 39,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -17.228798365685748,
-  "equity": 99662.67843286983,
-  "total_pnl": -337.3215671301732,
-  "last_scan": "2026-11-18T23:30:18.542523+00:00",
+  "unrealized_pnl": 205.8964924836642,
+  "equity": 99885.80372371917,
+  "total_pnl": -114.19627628082526,
+  "last_scan": "2026-11-19T00:22:36.136340+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 281,
+    "liquid": 251,
     "analyzed": 60,
     "qualified": 10
   }
