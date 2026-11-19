@@ -1,12 +1,23 @@
 {
-  "balance": 93391.43705759749,
-  "positions": {},
+  "balance": 93271.78433355862,
+  "positions": {
+    "ترون (TRX-SWAP-USDT)": {
+      "side": "LONG",
+      "entry": 0.31069,
+      "stop": 0.30996250000000003,
+      "target": 0.31214500000000006,
+      "qty": 641865.5467875995,
+      "entry_fee": 119.65272403886355,
+      "opened_at": "2026-11-19T19:15:00+00:00",
+      "leverage": 2.135326460481059
+    }
+  },
   "closed_trades": 90,
   "realized_pnl": -6608.562942402517,
   "wins": 23,
   "losses": 29,
   "accounting_version": 2,
-  "last_unrealized_pnl": 0.0,
-  "last_equity": 93391.43705759749,
-  "last_total_pnl": -6608.56294240251
+  "last_unrealized_pnl": -119.65272403886355,
+  "last_equity": 93152.13160951975,
+  "last_total_pnl": -6847.868390480246
 }
