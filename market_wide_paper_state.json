@@ -15,7 +15,7 @@
       "opened_at": "2026-11-19T17:26:12.244648+00:00",
       "score": 85.75,
       "spread_pct": 0.0066,
-      "last_mark": 146.79
+      "last_mark": 146.38
     },
     "PIEVERSE-SWAP-USDT": {
       "direction": "LONG",
@@ -28,20 +28,21 @@
       "opened_candle": 1795126500000,
       "opened_at": "2026-11-19T22:16:42.308602+00:00",
       "score": 79.78,
-      "spread_pct": 0.034
+      "spread_pct": 0.034,
+      "last_mark": 2.9816
     }
   },
   "closed_trades": 75,
   "wins": 27,
   "losses": 48,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 245.39299140877915,
-  "equity": 98725.16757000725,
-  "total_pnl": -1274.832429992748,
-  "last_scan": "2026-11-19T22:16:42.308635+00:00",
+  "unrealized_pnl": 573.9121715746484,
+  "equity": 99053.68675017312,
+  "total_pnl": -946.3132498268824,
+  "last_scan": "2026-11-19T23:13:47.088186+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 299,
+    "liquid": 295,
     "analyzed": 60,
     "qualified": 10
   }
