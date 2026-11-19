@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "balance": 98308.36986960756,
+  "balance": 98276.81757015585,
   "realized_pnl": -1680.7464200975464,
   "positions": {
     "NVDA-SWAP-USDT": {
@@ -14,21 +14,35 @@
       "opened_candle": 1795108500000,
       "opened_at": "2026-11-19T17:26:12.244648+00:00",
       "score": 85.75,
-      "spread_pct": 0.0066
+      "spread_pct": 0.0066,
+      "last_mark": 148.64
+    },
+    "AAPL-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 348.35,
+      "stop": 350.63,
+      "target": 343.7900000000001,
+      "qty": 150.96071695948788,
+      "entry_fee": 31.552299451702563,
+      "leverage": 0.53,
+      "opened_candle": 1795112100000,
+      "opened_at": "2026-11-19T18:17:13.852073+00:00",
+      "score": 84.3,
+      "spread_pct": 0.0029
     }
   },
   "closed_trades": 73,
   "wins": 26,
   "losses": 47,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -10.883710294960006,
-  "equity": 98297.4861593126,
-  "total_pnl": -1702.513840687403,
-  "last_scan": "2026-11-19T17:26:12.244686+00:00",
+  "unrealized_pnl": 0.20202169166876516,
+  "equity": 98277.01959184752,
+  "total_pnl": -1722.980408152478,
+  "last_scan": "2026-11-19T18:17:13.852108+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 290,
+    "liquid": 292,
     "analyzed": 60,
-    "qualified": 5
+    "qualified": 10
   }
 }
