@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 98382.27431463929,
-  "realized_pnl": -1573.8912184455144,
+  "balance": 98003.78604670365,
+  "realized_pnl": -1962.713062659992,
   "positions": {
     "XAG-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,33 +15,33 @@
       "opened_at": "2026-11-19T04:43:00.963248+00:00",
       "score": 83.14,
       "spread_pct": 0.0221,
-      "last_mark": 45.45
+      "last_mark": 44.66
     },
-    "HYPE-SWAP-USDT": {
+    "PLTR-SWAP-USDT": {
       "direction": "LONG",
-      "entry": 68.98,
-      "stop": 68.3487142857143,
-      "target": 70.24257142857144,
-      "qty": 544.8103364469928,
-      "entry_fee": 22.548610204868137,
-      "leverage": 0.38,
-      "opened_candle": 1795100400000,
-      "opened_at": "2026-11-19T15:15:00.633660+00:00",
-      "score": 96.22,
-      "spread_pct": 0.0015
+      "entry": 161.03,
+      "stop": 158.3032142857143,
+      "target": 166.48357142857142,
+      "qty": 126.42606891083183,
+      "entry_fee": 12.21503392602675,
+      "leverage": 0.21,
+      "opened_candle": 1795104900000,
+      "opened_at": "2026-11-19T16:18:43.506337+00:00",
+      "score": 86.07,
+      "spread_pct": 0.0062
     }
   },
-  "closed_trades": 70,
+  "closed_trades": 71,
   "wins": 25,
-  "losses": 45,
+  "losses": 46,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -161.37656528397935,
-  "equity": 98220.89774935531,
-  "total_pnl": -1779.1022506446898,
-  "last_scan": "2026-11-19T15:15:00.633695+00:00",
+  "unrealized_pnl": 468.012062403463,
+  "equity": 98471.79810910711,
+  "total_pnl": -1528.2018908928876,
+  "last_scan": "2026-11-19T16:18:43.506373+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 282,
+    "liquid": 283,
     "analyzed": 60,
     "qualified": 10
   }
