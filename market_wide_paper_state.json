@@ -1,22 +1,8 @@
 {
   "version": 1,
-  "balance": 98879.70460271178,
-  "realized_pnl": -1092.6509492332098,
+  "balance": 98497.48038758355,
+  "realized_pnl": -1468.1442389582123,
   "positions": {
-    "ZEC-SWAP-USDT": {
-      "direction": "SHORT",
-      "entry": 907.87,
-      "stop": 920.8257142857143,
-      "target": 881.9585714285714,
-      "qty": 26.719925589853194,
-      "entry_fee": 14.55493130715601,
-      "leverage": 0.25,
-      "opened_candle": 1795052700000,
-      "opened_at": "2026-11-19T01:45:41.222324+00:00",
-      "score": 82.75,
-      "spread_pct": 0.0198,
-      "last_mark": 906.79
-    },
     "SKHYNIX-SWAP-USDT": {
       "direction": "LONG",
       "entry": 852.53,
@@ -29,20 +15,33 @@
       "opened_at": "2026-11-19T02:43:35.751500+00:00",
       "score": 82.19,
       "spread_pct": 0.0012,
-      "last_mark": 851.85
+      "last_mark": 872.32
+    },
+    "XAG-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 45.3,
+      "stop": 45.7425,
+      "target": 44.41499999999999,
+      "qty": 783.1441026632073,
+      "entry_fee": 21.28585671038597,
+      "leverage": 0.36,
+      "opened_candle": 1795062600000,
+      "opened_at": "2026-11-19T04:43:00.963248+00:00",
+      "score": 83.14,
+      "spread_pct": 0.0221
     }
   },
-  "closed_trades": 64,
+  "closed_trades": 65,
   "wins": 23,
-  "losses": 41,
+  "losses": 42,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -16.160069111625333,
-  "equity": 98863.54453360016,
-  "total_pnl": -1136.4554663998424,
-  "last_scan": "2026-11-19T03:39:14.378028+00:00",
+  "unrealized_pnl": 471.73802141601595,
+  "equity": 98969.21840899957,
+  "total_pnl": -1030.7815910004283,
+  "last_scan": "2026-11-19T04:43:00.963280+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 252,
+    "liquid": 250,
     "analyzed": 60,
     "qualified": 10
   }
