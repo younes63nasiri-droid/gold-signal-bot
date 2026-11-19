@@ -15,7 +15,7 @@
       "opened_at": "2026-11-19T04:43:00.963248+00:00",
       "score": 83.14,
       "spread_pct": 0.0221,
-      "last_mark": 45.24
+      "last_mark": 45.17
     },
     "AMD-SWAP-USDT": {
       "direction": "LONG",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-19T10:00:27.808627+00:00",
       "score": 92.92,
       "spread_pct": 0.0018,
-      "last_mark": 550.41
+      "last_mark": 543.26
     }
   },
   "closed_trades": 68,
   "wins": 25,
   "losses": 43,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 431.78177879874266,
-  "equity": 99666.21927936818,
-  "total_pnl": -333.7807206318248,
-  "last_scan": "2026-11-19T11:54:32.674919+00:00",
+  "unrealized_pnl": -112.88357174544714,
+  "equity": 99121.55392882398,
+  "total_pnl": -878.4460711760184,
+  "last_scan": "2026-11-19T12:56:42.576448+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 284,
+    "liquid": 292,
     "analyzed": 60,
     "qualified": 10
   }
