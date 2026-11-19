@@ -15,7 +15,7 @@
       "opened_at": "2026-11-19T17:26:12.244648+00:00",
       "score": 85.75,
       "spread_pct": 0.0066,
-      "last_mark": 148.69
+      "last_mark": 147.19
     },
     "XAU-SWAP-USDT": {
       "direction": "SHORT",
@@ -28,20 +28,21 @@
       "opened_candle": 1795115700000,
       "opened_at": "2026-11-19T19:30:06.522619+00:00",
       "score": 81.41,
-      "spread_pct": 0.0003
+      "spread_pct": 0.0003,
+      "last_mark": 3674.1
     }
   },
   "closed_trades": 74,
   "wins": 26,
   "losses": 48,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -21.965312932778936,
-  "equity": 97831.27452211513,
-  "total_pnl": -2168.725477884873,
-  "last_scan": "2026-11-19T19:30:06.522662+00:00",
+  "unrealized_pnl": 320.85489343502445,
+  "equity": 98174.09472848293,
+  "total_pnl": -1825.9052715170692,
+  "last_scan": "2026-11-19T20:27:29.811064+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 293,
+    "liquid": 295,
     "analyzed": 60,
     "qualified": 10
   }
