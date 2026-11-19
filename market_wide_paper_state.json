@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 99234.43750056943,
-  "realized_pnl": -716.8295696542351,
+  "balance": 98805.03908938699,
+  "realized_pnl": -1118.8574060381839,
   "positions": {
     "XAG-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,34 +15,33 @@
       "opened_at": "2026-11-19T04:43:00.963248+00:00",
       "score": 83.14,
       "spread_pct": 0.0221,
-      "last_mark": 45.17
+      "last_mark": 45.42
     },
-    "AMD-SWAP-USDT": {
+    "BNB-SWAP-USDT": {
       "direction": "LONG",
-      "entry": 545.24,
-      "stop": 541.1,
-      "target": 553.52,
-      "qty": 83.89905688628957,
-      "entry_fee": 27.447073066008315,
-      "leverage": 0.46,
-      "opened_candle": 1795082400000,
-      "opened_at": "2026-11-19T10:00:27.808627+00:00",
-      "score": 92.92,
-      "spread_pct": 0.0018,
-      "last_mark": 543.26
+      "entry": 593.1,
+      "stop": 590.8564285714286,
+      "target": 597.5871428571428,
+      "qty": 154.04273552660152,
+      "entry_fee": 54.817647864496415,
+      "leverage": 0.92,
+      "opened_candle": 1795097700000,
+      "opened_at": "2026-11-19T14:15:25.164485+00:00",
+      "score": 86.91,
+      "spread_pct": 0.0017
     }
   },
-  "closed_trades": 68,
+  "closed_trades": 69,
   "wins": 25,
-  "losses": 43,
+  "losses": 44,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -112.88357174544714,
-  "equity": 99121.55392882398,
-  "total_pnl": -878.4460711760184,
-  "last_scan": "2026-11-19T12:56:42.576448+00:00",
+  "unrealized_pnl": -170.13718326986256,
+  "equity": 98634.90190611713,
+  "total_pnl": -1365.0980938828725,
+  "last_scan": "2026-11-19T14:15:25.164523+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 292,
+    "liquid": 281,
     "analyzed": 60,
     "qualified": 10
   }
