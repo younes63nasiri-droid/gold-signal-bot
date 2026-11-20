@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 99136.33085841434,
-  "realized_pnl": -830.2497910643204,
+  "balance": 98742.84626249259,
+  "realized_pnl": -1224.057513984973,
   "positions": {
     "NVDA-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,33 +15,33 @@
       "opened_at": "2026-11-19T17:26:12.244648+00:00",
       "score": 85.75,
       "spread_pct": 0.0066,
-      "last_mark": 145.45
+      "last_mark": 144.76
     },
-    "SKHYNIX-SWAP-USDT": {
+    "EWY-SWAP-USDT": {
       "direction": "SHORT",
-      "entry": 824.41,
-      "stop": 832.06,
-      "target": 809.11,
-      "qty": 45.559127591127876,
-      "entry_fee": 22.53564022644104,
-      "leverage": 0.38,
-      "opened_candle": 1795135500000,
-      "opened_at": "2026-11-20T00:47:41.035230+00:00",
-      "score": 93.35,
-      "spread_pct": 0.0012
+      "entry": 134.37,
+      "stop": 135.63107142857143,
+      "target": 131.84785714285715,
+      "qty": 275.51429172606174,
+      "entry_fee": 22.212513227538548,
+      "leverage": 0.37,
+      "opened_candle": 1795139100000,
+      "opened_at": "2026-11-20T01:59:04.626275+00:00",
+      "score": 96.57,
+      "spread_pct": 0.0075
     }
   },
-  "closed_trades": 76,
+  "closed_trades": 77,
   "wins": 28,
-  "losses": 48,
+  "losses": 49,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 397.8338817405532,
-  "equity": 99534.1647401549,
-  "total_pnl": -465.835259845102,
-  "last_scan": "2026-11-20T00:47:41.035279+00:00",
+  "unrealized_pnl": 482.214842146446,
+  "equity": 99225.06110463904,
+  "total_pnl": -774.9388953609596,
+  "last_scan": "2026-11-20T01:59:04.626327+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 268,
+    "liquid": 269,
     "analyzed": 60,
     "qualified": 10
   }
