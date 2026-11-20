@@ -2,6 +2,9 @@
 import os
 import json
 import base64
+import hashlib
+import hmac
+import time
 import requests
 from datetime import datetime, timezone
 
@@ -21,6 +24,45 @@ MIN_SCORE = 55.0
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID") or "601146458"
 TG_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 GH_TOKEN = os.environ["GITHUB_TOKEN"]
+
+
+
+def toobit_readonly_futures_balance():
+    """Read-only Toobit futures balance. This function only issues GET requests."""
+    api_key = os.environ.get("TOOBIT_API_KEY", "").strip()
+    secret = os.environ.get("TOOBIT_API_SECRET", "").strip()
+    if not api_key or not secret:
+        return "غیرفعال: کلیدهای امن API هنوز در GitHub Secrets تنظیم نشده‌اند."
+    params = {"timestamp": int(time.time() * 1000), "recvWindow": 5000}
+    query = "&".join(f"{key}={value}" for key, value in params.items())
+    signature = hmac.new(secret.encode("utf-8"), query.encode("utf-8"), hashlib.sha256).hexdigest()
+    response = requests.get(
+        "https://api.toobit.com/api/v1/futures/balance",
+        params={**params, "signature": signature},
+        headers={"X-BB-APIKEY": api_key},
+        timeout=20,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    # Do not print credentials, signed URL, or unfiltered server diagnostics.
+    if isinstance(payload, list):
+        rows = payload
+    elif isinstance(payload, dict):
+        rows = payload.get("data", payload.get("balances", []))
+        if not isinstance(rows, list):
+            rows = [payload]
+    else:
+        rows = []
+    usdt_rows = [
+        row for row in rows
+        if isinstance(row, dict) and str(row.get("asset", row.get("currency", ""))).upper() == "USDT"
+    ]
+    if usdt_rows:
+        row = usdt_rows[0]
+        total = row.get("balance", row.get("total", row.get("walletBalance", "نامشخص")))
+        available = row.get("availableBalance", row.get("available", row.get("availableMargin", "نامشخص")))
+        return f"متصل؛ موجودی USDT: {total} | قابل‌استفاده: {available}"
+    return "پاسخ دریافت شد؛ ساختار موجودی USDT در پاسخ قابل تشخیص نبود. برای بررسی دقیق‌تر باید خروجی امن API بررسی شود."
 
 
 def headers():
@@ -208,6 +250,12 @@ def gold_candidate():
 def main():
     state, sha = load_state()
     notices = manage_positions(state)
+    toobit_status = "خاموش؛ اتصال حساب فقط‌خواندنی فعال نشده است."
+    if os.environ.get("TOOBIT_READONLY_ENABLED", "").strip().lower() == "true":
+        try:
+            toobit_status = toobit_readonly_futures_balance()
+        except Exception as exc:
+            toobit_status = f"خطا در اتصال فقط‌خواندنی: {type(exc).__name__} (جزئیات حساس پنهان شد)"
     scan = scanner.scan_market()
     best = scan["best"]
     gold = None
@@ -246,6 +294,7 @@ def main():
 
     summary = (
         "📡 اسکن کامل بازار توبیت + طلا | حساب آزمایشی\n"
+        f"اتصال حساب Toobit (فقط‌خواندنی): {toobit_status}\n"
         f"قراردادهای فعال USDT: {scan['contracts_found']}\n"
         f"بازارهای نقدشونده: {scan['liquid_contracts']}\n"
         f"بررسی تکنیکال: {scan['analyzed_contracts']} نماد\n"
