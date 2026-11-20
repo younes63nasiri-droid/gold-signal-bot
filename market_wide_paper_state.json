@@ -15,7 +15,7 @@
       "opened_at": "2026-11-20T03:43:52.375996+00:00",
       "score": 85.25,
       "spread_pct": 0.0035,
-      "last_mark": 568.31
+      "last_mark": 569.84
     },
     "MSTR-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,20 +29,20 @@
       "opened_at": "2026-11-20T12:48:40.230032+00:00",
       "score": 88.49,
       "spread_pct": 0.0119,
-      "last_mark": 84.19
+      "last_mark": 84.59
     }
   },
   "closed_trades": 82,
   "wins": 32,
   "losses": 50,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 388.8742474518583,
-  "equity": 101126.65664505104,
-  "total_pnl": 1126.6566450510436,
-  "last_scan": "2026-11-20T12:59:49.167829+00:00",
+  "unrealized_pnl": 139.71019613468295,
+  "equity": 100877.49259373387,
+  "total_pnl": 877.4925937338703,
+  "last_scan": "2026-11-20T14:08:46.900820+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 308,
+    "liquid": 310,
     "analyzed": 60,
     "qualified": 10
   }
