@@ -261,6 +261,11 @@ def scan_market() -> dict:
             candidate = _analyze(symbol, ticker, book)
             if candidate:
                 ranked.append(candidate)
+        except RuntimeError as exc:
+            # Newly listed contracts can have too little 1h history.
+            # Skip them safely without treating missing history as a scanner failure.
+            if "Not enough closed candles" not in str(exc):
+                errors.append(f"{symbol}: {type(exc).__name__}: {exc}")
         except Exception as exc:
             errors.append(f"{symbol}: {type(exc).__name__}: {exc}")
 
