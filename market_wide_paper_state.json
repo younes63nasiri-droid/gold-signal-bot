@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 100737.78239759919,
-  "realized_pnl": 831.8935281552468,
+  "balance": 100323.98112210307,
+  "realized_pnl": 438.9772748710833,
   "positions": {
     "BNB-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,34 +15,33 @@
       "opened_at": "2026-11-20T03:43:52.375996+00:00",
       "score": 85.25,
       "spread_pct": 0.0035,
-      "last_mark": 569.84
+      "last_mark": 569.61
     },
-    "MSTR-SWAP-USDT": {
+    "XAU/USD (PAXG proxy)": {
       "direction": "SHORT",
-      "entry": 84.19,
-      "stop": 85.12107142857143,
-      "target": 82.32785714285714,
-      "qty": 380.4901778771808,
-      "entry_fee": 19.22008084528791,
-      "leverage": 0.32,
-      "opened_candle": 1795178700000,
-      "opened_at": "2026-11-20T12:48:40.230032+00:00",
-      "score": 88.49,
-      "spread_pct": 0.0119,
-      "last_mark": 84.59
+      "entry": 3578.511,
+      "stop": 3597.3782142857144,
+      "target": 3540.7765714285715,
+      "qty": 18.678673456291243,
+      "entry_fee": 40.10510305724773,
+      "leverage": 0.67,
+      "opened_candle": "2026-11-20T14:45:00Z",
+      "opened_at": "2026-11-20T15:02:40.048033+00:00",
+      "score": 70.0,
+      "spread_pct": 0.0
     }
   },
-  "closed_trades": 82,
+  "closed_trades": 83,
   "wins": 32,
-  "losses": 50,
+  "losses": 51,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 139.71019613468295,
-  "equity": 100877.49259373387,
-  "total_pnl": 877.4925937338703,
-  "last_scan": "2026-11-20T14:08:46.900820+00:00",
+  "unrealized_pnl": 285.6757211348704,
+  "equity": 100609.65684323794,
+  "total_pnl": 609.6568432379427,
+  "last_scan": "2026-11-20T15:02:40.048062+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 310,
+    "liquid": 313,
     "analyzed": 60,
     "qualified": 10
   }
