@@ -114,8 +114,9 @@ def _closed_candles(symbol: str, interval: str) -> list[dict]:
             "quote_volume": _float(row[7]),
         })
     bars.sort(key=lambda x: x["open_time"])
-    if len(bars) < 105:
-        raise RuntimeError(f"Not enough closed candles for {symbol} {interval}: {len(bars)}")
+    # New listings may have shorter history; require enough data for RSI/ATR.
+    if len(bars) < 30:
+        raise RuntimeError(f"Not enough closed candles for {symbol} {interval}: {len(bars)} (minimum 30)")
     max_age_ms = duration_ms * 2
     if now_ms - bars[-1]["close_time"] > max_age_ms:
         raise RuntimeError(f"Stale candles for {symbol} {interval}")
@@ -170,8 +171,10 @@ def _analyze(symbol: str, ticker: dict, book: dict) -> dict | None:
     bars1h = _closed_candles(symbol, "1h")
     c15 = [x["close"] for x in bars15]
     c1h = [x["close"] for x in bars1h]
-    e20_15, e50_15 = _ema(c15, 20), _ema(c15, 50)
-    e20_1h, e50_1h = _ema(c1h, 20), _ema(c1h, 50)
+    slow15 = 50 if len(c15) >= 50 else 30
+    slow1h = 50 if len(c1h) >= 50 else 30
+    e20_15, e50_15 = _ema(c15, 20), _ema(c15, slow15)
+    e20_1h, e50_1h = _ema(c1h, 20), _ema(c1h, slow1h)
     rsi = _rsi(c15)
     atr_pct = _atr_pct(bars15)
     if atr_pct < 0.08 or atr_pct > 5.0:
