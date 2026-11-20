@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "balance": 99420.61026812198,
+  "balance": 99398.77483267058,
   "realized_pnl": -557.1772186505397,
   "positions": {
     "EWY-SWAP-USDT": {
@@ -15,20 +15,33 @@
       "opened_at": "2026-11-20T01:59:04.626275+00:00",
       "score": 96.57,
       "spread_pct": 0.0075,
-      "last_mark": 133.95
+      "last_mark": 133.75
+    },
+    "BNB-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 575.1,
+      "stop": 580.6071428571429,
+      "target": 564.0857142857144,
+      "qty": 63.28011201357933,
+      "entry_fee": 21.83543545140568,
+      "leverage": 0.37,
+      "opened_candle": 1795145400000,
+      "opened_at": "2026-11-20T03:43:52.375996+00:00",
+      "score": 85.25,
+      "spread_pct": 0.0035
     }
   },
   "closed_trades": 78,
   "wins": 29,
   "losses": 49,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 93.57291889892673,
-  "equity": 99514.1831870209,
-  "total_pnl": -485.8168129791011,
-  "last_scan": "2026-11-20T02:48:45.910379+00:00",
+  "unrealized_pnl": 126.87340350773741,
+  "equity": 99525.64823617831,
+  "total_pnl": -474.3517638216872,
+  "last_scan": "2026-11-20T03:43:52.376031+00:00",
   "last_scan_counts": {
     "contracts": 782,
-    "liquid": 272,
+    "liquid": 273,
     "analyzed": 60,
     "qualified": 10
   }
