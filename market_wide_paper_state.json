@@ -15,7 +15,7 @@
       "opened_at": "2026-11-20T16:03:38.405208+00:00",
       "score": 70.0,
       "spread_pct": 0.0,
-      "last_mark": 3530.544
+      "last_mark": 3535.191
     },
     "AAPL-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,17 +29,17 @@
       "opened_at": "2026-11-20T17:05:18.621661+00:00",
       "score": 85.02,
       "spread_pct": 0.0029,
-      "last_mark": 346.58
+      "last_mark": 345.95
     }
   },
   "closed_trades": 86,
   "wins": 34,
   "losses": 52,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 384.8922541662787,
-  "equity": 101630.01459022606,
-  "total_pnl": 1630.0145902260556,
-  "last_scan": "2026-11-20T18:04:12.366385+00:00",
+  "unrealized_pnl": 394.23466016558496,
+  "equity": 101639.35699622537,
+  "total_pnl": 1639.3569962253678,
+  "last_scan": "2026-11-20T19:08:09.255219+00:00",
   "last_scan_counts": {
     "contracts": 785,
     "liquid": 323,
