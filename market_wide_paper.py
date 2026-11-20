@@ -6,6 +6,7 @@ import requests
 from datetime import datetime, timezone
 
 import market_scanner as scanner
+import gold2
 
 REPO = "younes63nasiri-droid/gold-signal-bot"
 BRANCH = "market-wide-paper-scanner"
@@ -85,10 +86,17 @@ def manage_positions(state):
     unrealized = 0.0
     for symbol, position in list(state["positions"].items()):
         try:
-            bars = scanner._closed_candles(symbol, "15m")
-            newer = [bar for bar in bars if bar["close_time"] > int(position["opened_candle"])]
+            if symbol == "XAU/USD (PAXG proxy)":
+                bars = gold2.get_candles("15m")
+                opened = str(position["opened_candle"])
+                newer = [bar for bar in bars if bar["openTime"] > opened]
+                normalized = [{"high": bar["high"], "low": bar["low"], "close": bar["close"]} for bar in newer]
+            else:
+                bars = scanner._closed_candles(symbol, "15m")
+                newer = [bar for bar in bars if bar["close_time"] > int(position["opened_candle"])]
+                normalized = newer
             closed = False
-            for bar in newer:
+            for bar in normalized:
                 if position["direction"] == "LONG":
                     stop_hit = bar["low"] <= position["stop"]
                     target_hit = bar["high"] >= position["target"]
@@ -165,11 +173,52 @@ def open_best(state, best):
     )
 
 
+def gold_candidate():
+    """Build a paper-only XAU/USD setup from closed spot-gold candles."""
+    bars15 = gold2.get_candles("15m")
+    bars1h = gold2.get_candles("1h")
+    c15 = [float(x["close"]) for x in bars15]
+    c1h = [float(x["close"]) for x in bars1h]
+    current_rsi = gold2.rsi(c15)
+    current_atr = gold2.atr(bars15)
+    fast15, slow15 = gold2.ema(c15, 50), gold2.ema(c15, 100)
+    fast1h, slow1h = gold2.ema(c1h, 50), gold2.ema(c1h, 100)
+    direction = None
+    if fast1h > slow1h and fast15 > slow15 and 50 < current_rsi < 65:
+        direction = "LONG"
+    elif fast1h < slow1h and fast15 < slow15 and 35 < current_rsi < 50:
+        direction = "SHORT"
+    if not direction or current_atr <= 0:
+        return None
+    entry = c15[-1]
+    distance = 1.5 * current_atr
+    stop = entry - distance if direction == "LONG" else entry + distance
+    target = entry + 3 * current_atr if direction == "LONG" else entry - 3 * current_atr
+    stop_pct = distance / entry
+    leverage_hint = max(1.0, min(10.0, 0.01 / stop_pct)) if stop_pct > 0 else 1.0
+    return {
+        "symbol": "XAU/USD (PAXG proxy)", "direction": direction,
+        "score": 70.0, "entry": entry, "stop": stop, "target": target,
+        "rsi": round(current_rsi, 1), "spread_pct": 0.0,
+        "last_candle_time": bars15[-1]["openTime"],
+        "leverage_hint": round(leverage_hint, 2),
+    }
+
+
 def main():
     state, sha = load_state()
     notices = manage_positions(state)
     scan = scanner.scan_market()
     best = scan["best"]
+    gold = None
+    try:
+        gold = gold_candidate()
+        if gold:
+            opened_gold = open_best(state, gold)
+            if opened_gold:
+                notices.append("🥇 معامله آزمایشی طلا\\n" + opened_gold)
+    except Exception as exc:
+        notices.append(f"⚠️ تحلیل آزمایشی طلا ناموفق بود: {type(exc).__name__}: {exc}")
 
     if best and best["score"] >= MIN_SCORE:
         opened = open_best(state, best)
@@ -196,16 +245,20 @@ def main():
     save_state(state, sha)
 
     summary = (
-        "📡 اسکن کامل بازار توبیت | حساب آزمایشی\n"
+        "📡 اسکن کامل بازار توبیت + طلا | حساب آزمایشی\n"
         f"قراردادهای فعال USDT: {scan['contracts_found']}\n"
         f"بازارهای نقدشونده: {scan['liquid_contracts']}\n"
         f"بررسی تکنیکال: {scan['analyzed_contracts']} نماد\n"
         f"فرصت‌های واجد شرایط: {len(scan['candidates'])}\n"
     )
-    if best:
-        summary += f"رتبه اول: {best['symbol']} | {best['direction']} | امتیاز {best['score']}\n"
+    if gold:
+        summary += f"طلا: {gold['direction']} | قیمت {gold['entry']:.2f} | اهرم محاسباتی پیشنهادی {gold['leverage_hint']}x\\n"
     else:
-        summary += "فرصت قوی پیدا نشد؛ معامله جدیدی باز نشد.\n"
+        summary += "طلا: فعلاً سیگنال معتبر ندارد.\\n"
+    if best:
+        summary += f"بهترین ارز: {best['symbol']} | {best['direction']} | امتیاز {best['score']}\\n"
+    else:
+        summary += "ارز دیجیتال: فرصت واجد شرایط پیدا نشد.\\n"
     summary += (
         f"موجودی: {state['balance']:.2f} USDT\n"
         f"سود/زیان باز تقریبی: {state['unrealized_pnl']:+.2f} USDT\n"
