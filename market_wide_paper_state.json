@@ -39,10 +39,10 @@
   "unrealized_pnl": 388.8742474518583,
   "equity": 101126.65664505104,
   "total_pnl": 1126.6566450510436,
-  "last_scan": "2026-11-20T12:54:23.201825+00:00",
+  "last_scan": "2026-11-20T12:59:14.174242+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 304,
+    "liquid": 306,
     "analyzed": 60,
     "qualified": 10
   }
