@@ -158,7 +158,7 @@ def open_best(state, best):
         "direction": best["direction"], "entry": entry, "stop": stop,
         "target": target, "qty": qty, "entry_fee": entry_fee,
         "leverage": round(leverage, 2),
-        "opened_candle": int(best["last_candle_time"]),
+        "opened_candle": (str(best["last_candle_time"]) if symbol == "XAU/USD (PAXG proxy)" else int(best["last_candle_time"])) ,
         "opened_at": datetime.now(timezone.utc).isoformat(),
         "score": best["score"], "spread_pct": best["spread_pct"]
     }
