@@ -15,7 +15,7 @@
       "opened_at": "2026-11-20T01:59:04.626275+00:00",
       "score": 96.57,
       "spread_pct": 0.0075,
-      "last_mark": 133.75
+      "last_mark": 133.33
     },
     "BNB-SWAP-USDT": {
       "direction": "SHORT",
@@ -28,20 +28,21 @@
       "opened_candle": 1795145400000,
       "opened_at": "2026-11-20T03:43:52.375996+00:00",
       "score": 85.25,
-      "spread_pct": 0.0035
+      "spread_pct": 0.0035,
+      "last_mark": 569.58
     }
   },
   "closed_trades": 78,
   "wins": 29,
   "losses": 49,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 126.87340350773741,
-  "equity": 99525.64823617831,
-  "total_pnl": -474.3517638216872,
-  "last_scan": "2026-11-20T03:43:52.376031+00:00",
+  "unrealized_pnl": 592.1746376801404,
+  "equity": 99990.94947035072,
+  "total_pnl": -9.05052964927745,
+  "last_scan": "2026-11-20T04:43:42.201650+00:00",
   "last_scan_counts": {
-    "contracts": 782,
-    "liquid": 273,
+    "contracts": 783,
+    "liquid": 267,
     "analyzed": 60,
     "qualified": 10
   }
