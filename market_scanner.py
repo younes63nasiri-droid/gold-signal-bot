@@ -220,7 +220,7 @@ def _analyze(symbol: str, ticker: dict, book: dict) -> dict | None:
         "quote_volume_24h": quote_volume,
         "volume_ratio": round(current_volume_ratio, 2),
         "change_24h_pct": change_pct,
-        "leverage_cap": 3,
+        "leverage_cap": 10,
         "last_candle_time": bars15[-1]["close_time"],
     }
 
