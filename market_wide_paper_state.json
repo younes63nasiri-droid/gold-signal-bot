@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 103177.95829324519,
-  "realized_pnl": 3367.609806141226,
+  "balance": 103766.23346760958,
+  "realized_pnl": 3848.8021590488547,
   "positions": {
     "PLTR-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,33 +15,33 @@
       "opened_at": "2026-11-20T21:42:11.370188+00:00",
       "score": 87.95,
       "spread_pct": 0.0069,
-      "last_mark": 146.08
+      "last_mark": 144.86
     },
-    "XAU/USD (PAXG proxy)": {
-      "direction": "SHORT",
-      "entry": 3526.22,
-      "stop": 3532.5478571428566,
-      "target": 3513.5642857142857,
-      "qty": 57.06846203664508,
-      "entry_fee": 120.74157132171516,
-      "leverage": 1.95,
-      "opened_candle": "2026-11-21T02:45:00+00:00",
-      "opened_at": "2026-11-21T03:13:16.024999+00:00",
-      "score": 70.0,
-      "spread_pct": 0.0
+    "SOXS-SWAP-USDT": {
+      "direction": "LONG",
+      "entry": 78.69,
+      "stop": 77.43321428571429,
+      "target": 81.20357142857142,
+      "qty": 289.2944860626386,
+      "entry_fee": 13.658749864961418,
+      "leverage": 0.22,
+      "opened_candle": 1795233600000,
+      "opened_at": "2026-11-21T04:04:11.367003+00:00",
+      "score": 86.21,
+      "spread_pct": 0.0252
     }
   },
-  "closed_trades": 89,
-  "wins": 37,
+  "closed_trades": 90,
+  "wins": 38,
   "losses": 52,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -241.9913986205288,
-  "equity": 102935.96689462465,
-  "total_pnl": 2935.966894624653,
-  "last_scan": "2026-11-21T03:13:16.025019+00:00",
+  "unrealized_pnl": 86.785405560853,
+  "equity": 103853.01887317043,
+  "total_pnl": 3853.0188731704256,
+  "last_scan": "2026-11-21T04:04:11.367022+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 282,
+    "liquid": 300,
     "analyzed": 60,
     "qualified": 10
   }
