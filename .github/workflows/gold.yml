@@ -46,4 +46,5 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           TOOBIT_API_KEY: ${{ secrets.TOOBIT_API_KEY }}
           TOOBIT_API_SECRET: ${{ secrets.TOOBIT_API_SECRET }}
+          ORDER_MARGIN_USDT: ${{ vars.ORDER_MARGIN_USDT }}
         run: python gold2.py
