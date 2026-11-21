@@ -1,6 +1,6 @@
 import unittest
 
-from risk_manager import calculate_position_plan
+from risk_manager import calculate_position_plan, calculate_fixed_margin_plan
 
 
 class PositionSizingTests(unittest.TestCase):
@@ -115,3 +115,23 @@ class PaperLedgerCandleIdempotencyTests(unittest.TestCase):
             self.assertEqual(first["reason"], "OPEN")
             self.assertEqual(second["reason"], "DUPLICATE_CANDLE")
             self.assertEqual(ledger.summary()["open_count"], 1)
+
+
+class FixedMarginSizingTests(unittest.TestCase):
+    def test_uses_exact_half_dollar_margin_and_dynamic_minimum_leverage(self):
+        plan = calculate_fixed_margin_plan(1000, 100, 98, "LONG")
+        self.assertTrue(plan.allowed)
+        self.assertAlmostEqual(plan.margin_usdt, 0.50)
+        self.assertGreaterEqual(plan.notional_usdt, 5.0)
+        self.assertEqual(plan.leverage, 10)
+
+    def test_rejects_contract_minimum_that_cannot_fit_margin_and_leverage_cap(self):
+        plan = calculate_fixed_margin_plan(
+            1000, 100, 98, "LONG", min_notional_usdt=10.0, max_leverage=10
+        )
+        self.assertFalse(plan.allowed)
+        self.assertIn("needs at least 20x", plan.reason)
+
+    def test_rejects_margin_above_balance(self):
+        plan = calculate_fixed_margin_plan(0.25, 100, 98, "LONG")
+        self.assertFalse(plan.allowed)
