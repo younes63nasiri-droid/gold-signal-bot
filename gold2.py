@@ -349,7 +349,7 @@ def analyze():
         margin_usdt=ORDER_MARGIN_USDT, risk_pct=0.5,
         max_leverage=gold_leverage_cap, min_notional_usdt=gold_min_notional,
     )
-    leverage = paper_plan.leverage if paper_plan.allowed else dynamic_gold_leverage(price, stop_loss)
+    leverage = paper_plan.leverage if paper_plan.allowed else 0
     if paper_plan.allowed and not any(t.get("symbol") == gold_symbol for t in ledger.state["open"].values()):
         trade_id = f"{gold_symbol}:{candle_id}"
         if ledger.open_trade(trade_id, gold_symbol, "LONG" if direction == "BUY" else "SHORT",
@@ -362,7 +362,7 @@ def analyze():
         f"💰 قیمت ورود: {format_price(price)}\n"
         f"🎯 حد سود اول: {format_price(target_1)}\n"
         f"🛑 حد ضرر: {format_price(stop_loss)}\n"
-        f"⚖️ اهرم متغیر: {leverage}x (سقف رسمی قرارداد: {gold_leverage_cap}x)\n"
+        + (f"⚖️ اهرم متغیر: {leverage}x (سقف رسمی قرارداد: {gold_leverage_cap}x)\n" if paper_plan.allowed else "⚖️ ورود انجام نمی‌شود؛ شرایط مارجین/ریسک با مارجین ثابت ۰٫۵۰ USDT سازگار نیست.\n")
         + (f"🧪 مارجین ثابت آزمایشی: {paper_plan.margin_usdt:.2f} USDT | حجم اسمی: {paper_plan.notional_usdt:.2f} USDT | ریسک: {paper_plan.max_loss_usdt:.4f} USDT\n" if paper_plan.allowed else "🧪 ورود آزمایشی رد شد: " + paper_plan.reason + "\n")
         + "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\n\n"
         f"⏱ زمان سیگنال: {candle_id}\n"
