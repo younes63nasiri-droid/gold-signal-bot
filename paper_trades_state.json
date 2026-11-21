@@ -9,11 +9,11 @@
       "target": 0.1991142857142857,
       "quantity": 827.4231678486981,
       "entry_candle": "2026-11-21T20:00:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-21T20:15:00+00:00"
     }
   },
   "closed": [],
   "meta": {
-    "last_crypto_signal": "MMT-SWAP-USDT:1795292100000"
+    "last_crypto_signal": "MMT-SWAP-USDT:1795293000000"
   }
 }
