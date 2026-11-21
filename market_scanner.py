@@ -82,12 +82,25 @@ def contract_trading_limits(contract: dict) -> tuple[float, int]:
         if item.get("filterType") == "MIN_NOTIONAL":
             min_notional = _float(item.get("minNotional"))
             break
+
     symbol = str(contract.get("symbol", ""))
-    risk_limits = _get(RISK_LIMITS, {"symbol": symbol})
-    if not isinstance(risk_limits, list) or not risk_limits:
+    risk_limits = []
+    try:
+        payload = _get(RISK_LIMITS, {"symbol": symbol})
+        if isinstance(payload, list):
+            risk_limits = payload
+        elif isinstance(payload, dict):
+            risk_limits = payload.get("list") or payload.get("data") or payload.get("riskLimits") or []
+    except Exception:
+        # Exchange info also embeds risk tiers; use those documented values
+        # rather than inventing a leverage ceiling.
+        risk_limits = []
+
+    if not risk_limits:
         risk_limits = contract.get("riskLimits") or []
+
     max_leverage = 0
-    if risk_limits:
+    if risk_limits and isinstance(risk_limits[0], dict):
         first_tier = risk_limits[0]
         max_leverage = int(_float(first_tier.get("maxLeverage")))
         if max_leverage <= 0:
