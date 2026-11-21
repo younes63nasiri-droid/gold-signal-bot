@@ -15,7 +15,7 @@
       "opened_at": "2026-11-20T21:42:11.370188+00:00",
       "score": 87.95,
       "spread_pct": 0.0069,
-      "last_mark": 147.22
+      "last_mark": 147.21
     },
     "AKE-SWAP-USDT": {
       "direction": "SHORT",
@@ -28,21 +28,22 @@
       "opened_candle": 1795280400000,
       "opened_at": "2026-11-21T17:12:13.919052+00:00",
       "score": 75.56,
-      "spread_pct": 0.0582
+      "spread_pct": 0.0582,
+      "last_mark": 0.005202
     }
   },
   "closed_trades": 95,
   "wins": 41,
   "losses": 54,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -331.715398336525,
-  "equity": 104652.81969899083,
-  "total_pnl": 4652.819698990832,
-  "last_scan": "2026-11-21T17:12:13.919076+00:00",
+  "unrealized_pnl": -369.4279885967735,
+  "equity": 104615.10710873059,
+  "total_pnl": 4615.10710873059,
+  "last_scan": "2026-11-21T17:52:32.069109+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 284,
+    "liquid": 273,
     "analyzed": 60,
-    "qualified": 3
+    "qualified": 4
   }
 }
