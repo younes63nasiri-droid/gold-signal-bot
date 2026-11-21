@@ -1,5 +1,5 @@
 {
-  "balance": 95363.75266154233,
+  "balance": 94672.33240494046,
   "positions": {
     "دوج‌کوین (DOGE-SWAP-USDT)": {
       "side": "SHORT",
@@ -10,24 +10,14 @@
       "entry_fee": 35.65012392770546,
       "opened_at": "2026-11-21T17:00:00+00:00",
       "leverage": 1.0
-    },
-    "XAU/USD (PAXG proxy)": {
-      "side": "SHORT",
-      "entry": 3547.56,
-      "stop": 3552.33,
-      "target": 3538.02,
-      "qty": 100.18553582938728,
-      "entry_fee": 213.24851969214066,
-      "opened_at": "2026-11-21T18:30:00+00:00",
-      "leverage": 3.7186163522012965
     }
   },
-  "closed_trades": 110,
-  "realized_pnl": -4387.34869483782,
+  "closed_trades": 111,
+  "realized_pnl": -5292.017471131821,
   "wins": 33,
-  "losses": 39,
+  "losses": 40,
   "accounting_version": 2,
-  "last_unrealized_pnl": -443.01172543770576,
-  "last_equity": 94920.74093610462,
-  "last_total_pnl": -5079.259063895384
+  "last_unrealized_pnl": -208.1950855435815,
+  "last_equity": 94464.13731939688,
+  "last_total_pnl": -5535.862680603124
 }
