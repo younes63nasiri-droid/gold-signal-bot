@@ -73,6 +73,34 @@ def discover_contracts() -> list[dict]:
     return result
 
 
+def contract_trading_limits(contract: dict) -> tuple[float, int]:
+    """Return exchange-published minimum notional and first-tier max leverage."""
+    filters = contract.get("filters") or []
+    min_notional = 0.0
+    for item in filters:
+        if item.get("filterType") == "MIN_NOTIONAL":
+            min_notional = _float(item.get("minNotional"))
+            break
+    risk_limits = contract.get("riskLimits") or []
+    max_leverage = 0
+    if risk_limits:
+        # The first tier is the least restrictive notional tier. Never guess a cap.
+        max_leverage = int(_float(risk_limits[0].get("maxLeverage")))
+    return min_notional, max_leverage
+
+
+def find_gold_perpetual() -> dict:
+    """Find a live linear USDT-margined XAU perpetual; never fall back to spot."""
+    matches = [
+        c for c in discover_contracts()
+        if str(c.get("underlying", "")).upper() == "XAU"
+        or str(c.get("symbol", "")).upper() in {"XAU-SWAP-USDT", "XAUUSDT-SWAP"}
+    ]
+    if not matches:
+        raise RuntimeError("Toobit has no active linear USDT XAU perpetual contract")
+    return matches[0]
+
+
 def _ticker_map() -> dict[str, dict]:
     payload = _get(TICKER_24H)
     if not isinstance(payload, list):
@@ -220,7 +248,6 @@ def _analyze(symbol: str, ticker: dict, book: dict) -> dict | None:
         "quote_volume_24h": quote_volume,
         "volume_ratio": round(current_volume_ratio, 2),
         "change_24h_pct": change_pct,
-        "leverage_cap": 10,
         "last_candle_time": bars15[-1]["close_time"],
     }
 
@@ -251,12 +278,19 @@ def scan_market() -> dict:
             liquid.append((qv, symbol, ticker, book))
 
     liquid.sort(key=lambda x: x[0], reverse=True)
+    contract_by_symbol = {str(c.get("symbol")): c for c in contracts}
     ranked = []
     errors = []
     for _, symbol, ticker, book in liquid[:MAX_CANDLE_CANDIDATES]:
         try:
             candidate = _analyze(symbol, ticker, book)
             if candidate:
+                min_notional, leverage_cap = contract_trading_limits(contract_by_symbol[symbol])
+                if min_notional <= 0 or leverage_cap <= 0:
+                    errors.append(f"{symbol}: exchange min-notional or leverage cap unavailable")
+                    continue
+                candidate["min_notional_usdt"] = min_notional
+                candidate["leverage_cap"] = leverage_cap
                 ranked.append(candidate)
         except Exception as exc:
             errors.append(f"{symbol}: {type(exc).__name__}: {exc}")
