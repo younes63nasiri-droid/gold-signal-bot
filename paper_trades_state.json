@@ -12,5 +12,8 @@
       "last_processed_candle": null
     }
   },
-  "closed": []
+  "closed": [],
+  "meta": {
+    "last_crypto_signal": "MMT-SWAP-USDT:1795292100000"
+  }
 }
