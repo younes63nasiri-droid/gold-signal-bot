@@ -298,7 +298,8 @@ def analyze():
         embedded_tiers = gold_contract.get("riskLimits") or []
         print("XAU_LIMIT_DIAGNOSTIC:", json.dumps({"symbol": gold_symbol, "min_notional_filters": filter_details, "risk_tiers": embedded_tiers}, ensure_ascii=False))
         filter_types = [str(item.get("filterType")) for item in (gold_contract.get("filters") or [])]
-        embedded_tier_count = len(embedded_tiers)        raise RuntimeError(
+        embedded_tier_count = len(embedded_tiers)
+        raise RuntimeError(
             "Toobit XAU perpetual limits unavailable: "
             f"symbol={gold_symbol}, min_notional={gold_min_notional}, "
             f"max_leverage={gold_leverage_cap}, filters={filter_types}, "
