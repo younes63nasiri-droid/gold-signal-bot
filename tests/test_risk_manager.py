@@ -60,3 +60,36 @@ class PaperTradeExitTests(unittest.TestCase):
         result = evaluate_exit("SHORT", 100, 105, 90, 104, 91)
         self.assertFalse(result["closed"])
         self.assertEqual(result["reason"], "OPEN")
+
+
+import tempfile
+from pathlib import Path
+from paper_ledger import PaperLedger
+
+
+class PaperLedgerTests(unittest.TestCase):
+    def test_open_close_persists_and_updates_balance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "ledger.json"
+            ledger = PaperLedger(path, starting_balance=1000, fee_rate=0)
+            self.assertTrue(ledger.open_trade("id1", "BTCUSDT", "LONG", 100, 95, 110, 2))
+            self.assertFalse(ledger.open_trade("id1", "BTCUSDT", "LONG", 100, 95, 110, 2))
+            closed = ledger.process_candle("id1", high=111, low=99)
+            self.assertEqual(closed["net_pnl"], 20)
+            reloaded = PaperLedger(path, starting_balance=1000, fee_rate=0)
+            self.assertEqual(reloaded.summary()["balance"], 1020)
+            self.assertEqual(reloaded.summary()["closed_count"], 1)
+
+    def test_open_trade_stays_open_before_exit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = PaperLedger(Path(directory) / "ledger.json")
+            ledger.open_trade("id2", "ETHUSDT", "SHORT", 100, 105, 90, 1)
+            self.assertEqual(ledger.process_candle("id2", 104, 91)["reason"], "OPEN")
+            self.assertEqual(ledger.summary()["open_count"], 1)
+
+    def test_fee_deducted_from_result(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = PaperLedger(Path(directory) / "ledger.json", 1000, fee_rate=0.001)
+            ledger.open_trade("id3", "X", "LONG", 100, 95, 110, 1)
+            closed = ledger.process_candle("id3", 111, 99)
+            self.assertAlmostEqual(closed["net_pnl"], 9.79)
