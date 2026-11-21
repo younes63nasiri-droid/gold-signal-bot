@@ -366,6 +366,11 @@ def analyze():
     candles_15m = get_candles("15m")
     candles_1h = get_candles("1h")
     expire_previous_gold_signal(candles_15m)
+    ledger, paper_sha = load_paper_ledger()
+    for trade_id, trade in list(ledger.state["open"].items()):
+        if trade.get("symbol") == "XAUUSD":
+            for bar in candles_15m:
+                ledger.process_candle(trade_id, bar["high"], bar["low"], bar["openTime"])
     closes_15m = [bar["close"] for bar in candles_15m]
     closes_1h = [bar["close"] for bar in candles_1h]
     fast_1h, slow_1h = ema(closes_1h, 50), ema(closes_1h, 100)
@@ -382,6 +387,7 @@ def analyze():
     print("Price:", price, "RSI:", round(current_rsi, 2), "ATR:", round(current_atr, 3))
     print("Signal:", direction or "NO TRADE")
     if direction is None or current_atr <= 0:
+        save_paper_ledger(ledger, paper_sha)
         status_message = (
             "🥇 گزارش ربات طلا | XAU/USD\n\n"
             "🟡 فعلاً موقعیت معاملاتی معتبری وجود ندارد.\n"
@@ -401,6 +407,17 @@ def analyze():
     else:
         stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
     leverage = dynamic_gold_leverage(price, stop_loss)
+    paper_plan = calculate_position_plan(
+        ledger.summary()["balance"], price, stop_loss,
+        "LONG" if direction == "BUY" else "SHORT",
+        risk_pct=0.5, max_leverage=3, min_notional_usdt=5.0,
+    )
+    if paper_plan.allowed:
+        trade_id = f"XAUUSD:{candle_id}"
+        if ledger.open_trade(trade_id, "XAUUSD", "LONG" if direction == "BUY" else "SHORT",
+                             price, stop_loss, target_1, paper_plan.quantity):
+            ledger.state["open"][trade_id]["entry_candle"] = str(candle_id)
+    save_paper_ledger(ledger, paper_sha)
     message = (
         "🥇 سیگنال طلا | XAU/USD\n\n"
         f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
@@ -408,7 +425,8 @@ def analyze():
         f"🎯 حد سود اول: {format_price(target_1)}\n"
         f"🛑 حد ضرر: {format_price(stop_loss)}\n"
         f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (حداکثر ۱۰x)\n"
-        "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\n\n"
+        + (f"🧪 حجم شبیه‌سازی: {paper_plan.quantity:.6f} | ریسک: {paper_plan.max_loss_usdt:.2f} واحد حساب آزمایشی\n" if paper_plan.allowed else "🧪 ورود آزمایشی رد شد: " + paper_plan.reason + "\n")
+        + "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\n\n"
         f"⏱ زمان سیگنال: {candle_id}\n"
         "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
     )
@@ -418,7 +436,18 @@ def analyze():
 
 
 def analyze_best_crypto_market():
-    """اسکن بازار قراردادهای پرپچوال USDT توبیت و ارسال فقط بهترین فرصت."""
+    """اسکن بازار قراردادهای پرپچوال USDT توبیت و ثبت فقط بهترین فرصت در دفتر آزمایشی."""
+    ledger, paper_sha = load_paper_ledger()
+    # Process every newly closed 15m candle for already-open crypto paper positions.
+    for trade_id, trade in list(ledger.state["open"].items()):
+        symbol = trade.get("symbol", "")
+        if symbol.endswith("-SWAP-USDT"):
+            try:
+                bars = get_crypto_candles(symbol, "15m")
+                for bar in bars:
+                    ledger.process_candle(trade_id, bar["high"], bar["low"], bar["openTime"])
+            except Exception as error:
+                print(f"Paper position candle update failed for {symbol}: {error}")
     scan = market_scanner.scan_market()
     best = scan.get("best")
     header = (
@@ -428,11 +457,14 @@ def analyze_best_crypto_market():
         f"📊 بررسی تکنیکال: {scan.get('analyzed_contracts', 0)} نماد\n"
     )
     if not best:
+        save_paper_ledger(ledger, paper_sha)
+        summary = ledger.summary()
         send_telegram(
             header
             + "\n🟡 فعلاً هیچ موقعیت قدرتمندی پیدا نشد.\n"
             + "برای جلوگیری از سیگنال ضعیف، ورود پیشنهاد نمی‌شود.\n"
-            + "ربات در نوبت بعدی دوباره بازار را اسکن می‌کند."
+            + "ربات در نوبت بعدی دوباره بازار را اسکن می‌کند.\n"
+            + f"\n🧪 دفتر آزمایشی: موجودی {summary['balance']:.2f} | باز {summary['open_count']} | بسته {summary['closed_count']} | سود/زیان خالص {summary['net_pnl']:.2f}"
         )
         print("No qualifying crypto opportunity.")
         return
@@ -456,6 +488,21 @@ def analyze_best_crypto_market():
         if sizing.allowed
         else "\n⛔ معامله از نظر مدیریت ریسک مجاز نیست: " + sizing.reason
     )
+    # Open only one simulated position per unique closed candle.
+    try:
+        crypto_bars = get_crypto_candles(symbol, "15m")
+        latest_bar = crypto_bars[-1]
+        trade_id = f"{symbol}:{latest_bar['openTime']}"
+        if sizing.allowed and not any(t.get("symbol") == symbol for t in ledger.state["open"].values()):
+            if ledger.open_trade(trade_id, symbol, direction, entry, stop, target, sizing.quantity):
+                ledger.state["open"][trade_id]["entry_candle"] = str(latest_bar["openTime"])
+        for bar in crypto_bars:
+            if trade_id in ledger.state["open"]:
+                ledger.process_candle(trade_id, bar["high"], bar["low"], bar["openTime"])
+    except Exception as error:
+        print(f"Paper crypto ledger update failed for {symbol}: {error}")
+    save_paper_ledger(ledger, paper_sha)
+    paper_summary = ledger.summary()
     message = (
         header
         + "\n🏆 بهترین موقعیت فعلی بازار\n"
@@ -469,7 +516,8 @@ def analyze_best_crypto_market():
         + f"📈 RSI: {best['rsi']} | ATR: {best['atr_pct']}%\n"
         + f"💧 حجم معاملات ۲۴ساعته: {best['quote_volume_24h']:.0f} USDT\n"
         + sizing_message
-        + "\n⚠️ فقط محاسبه و سیگنال آزمایشی است؛ هیچ سفارش واقعی ثبت نمی‌شود."
+        + f"\n🧪 دفتر آزمایشی: موجودی {paper_summary['balance']:.2f} | باز {paper_summary['open_count']} | بسته {paper_summary['closed_count']} | سود/زیان خالص {paper_summary['net_pnl']:.2f}"
+        + "\n⚠️ فقط شبیه‌سازی است؛ هیچ سفارش واقعی ثبت نمی‌شود."
     )
     send_telegram(message)
     print(f"Best crypto opportunity sent: {symbol} {direction} score={best['score']}")
