@@ -46,18 +46,27 @@ class PaperLedger:
         evaluate_exit(direction, entry, stop, target, entry, entry)
         self.state["open"][trade_id] = {
             "symbol": symbol, "direction": direction.upper(), "entry": float(entry),
-            "stop": float(stop), "target": float(target), "quantity": float(quantity)
+            "stop": float(stop), "target": float(target), "quantity": float(quantity),
+            "entry_candle": None, "last_processed_candle": None
         }
         self._save()
         return True
 
-    def process_candle(self, trade_id, high, low):
+    def process_candle(self, trade_id, high, low, candle_id=None):
         trade = self.state["open"].get(trade_id)
         if not trade:
             return None
+        if candle_id is not None:
+            if trade.get("entry_candle") is not None and str(candle_id) <= str(trade["entry_candle"]):
+                return {"closed": False, "reason": "ENTRY_CANDLE", "exit_price": None, "pnl_per_unit": 0.0}
+            if trade.get("last_processed_candle") == str(candle_id):
+                return {"closed": False, "reason": "DUPLICATE_CANDLE", "exit_price": None, "pnl_per_unit": 0.0}
+            trade["last_processed_candle"] = str(candle_id)
         result = evaluate_exit(trade["direction"], trade["entry"], trade["stop"],
                                trade["target"], float(high), float(low))
         if not result["closed"]:
+            if candle_id is not None:
+                self._save()
             return result
         gross = result["pnl_per_unit"] * trade["quantity"]
         notional_in = trade["entry"] * trade["quantity"]
@@ -72,6 +81,9 @@ class PaperLedger:
         del self.state["open"][trade_id]
         self._save()
         return record
+
+    def export_state(self):
+        return self.state
 
     def summary(self):
         closed = self.state["closed"]
