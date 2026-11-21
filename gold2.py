@@ -9,7 +9,7 @@ import market_scanner as market_scanner
 from risk_manager import calculate_position_plan
 from datetime import datetime, timezone
 
-TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+TOKEN = (os.environ.get("GOLD_TELEGRAM_BOT_TOKEN") or os.environ.get("TELEGRAM_BOT_TOKEN", "")).strip()
 CHAT_ID = "601146458"
 BASE = "https://biquote.io/api/XAUUSD/ohlc"
 KRAKEN_OHLC = "https://api.kraken.com/0/public/OHLC"
