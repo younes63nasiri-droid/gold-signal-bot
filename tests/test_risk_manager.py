@@ -31,3 +31,32 @@ class PositionSizingTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+from paper_trader import evaluate_exit
+
+
+class PaperTradeExitTests(unittest.TestCase):
+    def test_long_take_profit(self):
+        result = evaluate_exit("LONG", 100, 95, 110, 111, 99)
+        self.assertEqual(result["reason"], "TAKE_PROFIT")
+        self.assertEqual(result["pnl_per_unit"], 10)
+
+    def test_long_stop_loss(self):
+        result = evaluate_exit("LONG", 100, 95, 110, 105, 94)
+        self.assertEqual(result["reason"], "STOP_LOSS")
+        self.assertEqual(result["pnl_per_unit"], -5)
+
+    def test_short_take_profit(self):
+        result = evaluate_exit("SHORT", 100, 105, 90, 101, 89)
+        self.assertEqual(result["reason"], "TAKE_PROFIT")
+        self.assertEqual(result["pnl_per_unit"], 10)
+
+    def test_stop_wins_when_both_levels_touch(self):
+        result = evaluate_exit("LONG", 100, 95, 110, 111, 94)
+        self.assertEqual(result["reason"], "STOP_LOSS")
+
+    def test_position_remains_open(self):
+        result = evaluate_exit("SHORT", 100, 105, 90, 104, 91)
+        self.assertFalse(result["closed"])
+        self.assertEqual(result["reason"], "OPEN")
