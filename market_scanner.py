@@ -14,6 +14,7 @@ import requests
 
 BASE = "https://api.toobit.com"
 EXCHANGE_INFO = f"{BASE}/api/v1/exchangeInfo"
+RISK_LIMITS = f"{BASE}/api/v1/futures/riskLimits"
 TICKER_24H = f"{BASE}/quote/v1/contract/ticker/24hr"
 BOOK_TICKER = f"{BASE}/quote/v1/contract/ticker/bookTicker"
 KLINES = f"{BASE}/quote/v1/klines"
@@ -81,11 +82,18 @@ def contract_trading_limits(contract: dict) -> tuple[float, int]:
         if item.get("filterType") == "MIN_NOTIONAL":
             min_notional = _float(item.get("minNotional"))
             break
-    risk_limits = contract.get("riskLimits") or []
+    symbol = str(contract.get("symbol", ""))
+    risk_limits = _get(RISK_LIMITS, {"symbol": symbol})
+    if not isinstance(risk_limits, list) or not risk_limits:
+        risk_limits = contract.get("riskLimits") or []
     max_leverage = 0
     if risk_limits:
-        # The first tier is the least restrictive notional tier. Never guess a cap.
-        max_leverage = int(_float(risk_limits[0].get("maxLeverage")))
+        first_tier = risk_limits[0]
+        max_leverage = int(_float(first_tier.get("maxLeverage")))
+        if max_leverage <= 0:
+            initial_margin = _float(first_tier.get("initialMargin"))
+            if initial_margin > 0:
+                max_leverage = int(1.0 / initial_margin)
     return min_notional, max_leverage
 
 
