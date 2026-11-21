@@ -412,13 +412,13 @@ def analyze():
         stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
     else:
         stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
-    leverage = paper_plan.leverage if paper_plan.allowed else dynamic_gold_leverage(price, stop_loss)
     paper_plan = calculate_fixed_margin_plan(
         ledger.summary()["balance"], price, stop_loss,
         "LONG" if direction == "BUY" else "SHORT",
         margin_usdt=ORDER_MARGIN_USDT, risk_pct=0.5,
         max_leverage=10, min_notional_usdt=5.0,
     )
+    leverage = paper_plan.leverage if paper_plan.allowed else dynamic_gold_leverage(price, stop_loss)
     if paper_plan.allowed and not any(t.get("symbol") == "XAUUSD" for t in ledger.state["open"].values()):
         trade_id = f"XAUUSD:{candle_id}"
         if ledger.open_trade(trade_id, "XAUUSD", "LONG" if direction == "BUY" else "SHORT",
@@ -432,7 +432,7 @@ def analyze():
         f"🎯 حد سود اول: {format_price(target_1)}\n"
         f"🛑 حد ضرر: {format_price(stop_loss)}\n"
         f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (حداکثر ۱۰x)\n"
-        + (f"🧪 حجم شبیه‌سازی: {paper_plan.quantity:.6f} | ریسک: {paper_plan.max_loss_usdt:.2f} واحد حساب آزمایشی\n" if paper_plan.allowed else "🧪 ورود آزمایشی رد شد: " + paper_plan.reason + "\n")
+        + (f"🧪 مارجین ثابت آزمایشی: {paper_plan.margin_usdt:.2f} USDT | حجم اسمی: {paper_plan.notional_usdt:.2f} USDT | ریسک: {paper_plan.max_loss_usdt:.4f} USDT\n" if paper_plan.allowed else "🧪 ورود آزمایشی رد شد: " + paper_plan.reason + "\n")
         + "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\n\n"
         f"⏱ زمان سیگنال: {candle_id}\n"
         "⚠️ سیگنال آزمایشی است؛ قبل از معامله بررسی شود."
@@ -487,16 +487,15 @@ def analyze_best_crypto_market():
     entry = float(best["entry"])
     stop = float(best["stop"])
     target = float(best["target"])
-    stop_pct = abs(entry - stop) / entry if entry else 1.0
-    leverage = sizing.leverage if sizing.allowed else 1
     sizing = calculate_fixed_margin_plan(
         ledger.summary()["balance"], entry, stop, direction,
         margin_usdt=ORDER_MARGIN_USDT, risk_pct=0.5,
         max_leverage=int(best.get("leverage_cap", 10)), min_notional_usdt=5.0,
     )
+    leverage = sizing.leverage if sizing.allowed else 1
     sizing_message = (
         "\n📐 برنامه حجم (محاسبه آزمایشی)\n"
-        + f"حجم اسمی: {sizing.notional_usdt:.4f} USDT | مارجین: {sizing.margin_usdt:.4f} USDT\n"
+        + f"مارجین ثابت: {sizing.margin_usdt:.2f} USDT | حجم اسمی: {sizing.notional_usdt:.2f} USDT\n"
         + f"مقدار: {sizing.quantity:.8f} | اهرم: {sizing.leverage}x\n"
         + f"ریسک تا حد ضرر: {sizing.max_loss_usdt:.4f} USDT"
         if sizing.allowed
@@ -527,7 +526,7 @@ def analyze_best_crypto_market():
         + f"💰 ورود: {format_price(entry)} USDT\n"
         + f"🎯 حد سود: {format_price(target)} USDT\n"
         + f"🛑 حد ضرر: {format_price(stop)} USDT\n"
-        + f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (سقف 3x)\n"
+        + f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (سقف 10x در شبیه‌سازی)\n"
         + f"📈 RSI: {best['rsi']} | ATR: {best['atr_pct']}%\n"
         + f"💧 حجم معاملات ۲۴ساعته: {best['quote_volume_24h']:.0f} USDT\n"
         + sizing_message
