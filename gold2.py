@@ -6,6 +6,7 @@ import json
 import base64
 import requests
 import market_scanner as market_scanner
+from risk_manager import calculate_position_plan
 from datetime import datetime, timezone
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
@@ -288,6 +289,7 @@ def save_pending_gold_signal(entry, direction, candle_id):
 # Toobit account connection: READ-ONLY balance check; no order endpoints are used.
 TOOBIT_API_KEY = os.environ.get("TOOBIT_API_KEY", "").strip()
 TOOBIT_API_SECRET = os.environ.get("TOOBIT_API_SECRET", "").strip()
+FUTURES_AVAILABLE_USDT = 0.0
 
 def check_toobit_futures_balance():
     if not TOOBIT_API_KEY or not TOOBIT_API_SECRET:
@@ -313,6 +315,15 @@ def check_toobit_futures_balance():
         )
     payload = response.json()
     print("TOOBIT_READ_ONLY_FUTURES_BALANCE:", json.dumps(payload, ensure_ascii=False))
+    rows = payload if isinstance(payload, list) else payload.get("balances", [payload]) if isinstance(payload, dict) else []
+    usdt_row = next(
+        (row for row in rows if isinstance(row, dict) and str(row.get("coin", row.get("asset", ""))).upper() == "USDT"),
+        None,
+    )
+    if usdt_row:
+        global FUTURES_AVAILABLE_USDT
+        FUTURES_AVAILABLE_USDT = float(usdt_row.get("availableBalance", usdt_row.get("balance", 0)) or 0)
+    return FUTURES_AVAILABLE_USDT
 
 def analyze():
     candles_15m = get_candles("15m")
@@ -396,6 +407,18 @@ def analyze_best_crypto_market():
     target = float(best["target"])
     stop_pct = abs(entry - stop) / entry if entry else 1.0
     leverage = max(1.0, min(float(best.get("leverage_cap", 3)), round(0.01 / stop_pct, 1))) if stop_pct > 0 else 1.0
+    sizing = calculate_position_plan(
+        FUTURES_AVAILABLE_USDT, entry, stop, direction,
+        risk_pct=0.5, max_leverage=3, min_notional_usdt=5.0,
+    )
+    sizing_message = (
+        "\n📐 برنامه حجم (محاسبه آزمایشی)\n"
+        + f"حجم اسمی: {sizing.notional_usdt:.4f} USDT | مارجین: {sizing.margin_usdt:.4f} USDT\n"
+        + f"مقدار: {sizing.quantity:.8f} | اهرم: {sizing.leverage}x\n"
+        + f"ریسک تا حد ضرر: {sizing.max_loss_usdt:.4f} USDT"
+        if sizing.allowed
+        else "\n⛔ معامله از نظر مدیریت ریسک مجاز نیست: " + sizing.reason
+    )
     message = (
         header
         + "\n🏆 بهترین موقعیت فعلی بازار\n"
@@ -408,7 +431,8 @@ def analyze_best_crypto_market():
         + f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (سقف 3x)\n"
         + f"📈 RSI: {best['rsi']} | ATR: {best['atr_pct']}%\n"
         + f"💧 حجم معاملات ۲۴ساعته: {best['quote_volume_24h']:.0f} USDT\n"
-        + "\n⚠️ فقط سیگنال تحلیلی است؛ سفارش واقعی ثبت نمی‌شود."
+        + sizing_message
+        + "\n⚠️ فقط محاسبه و سیگنال آزمایشی است؛ هیچ سفارش واقعی ثبت نمی‌شود."
     )
     send_telegram(message)
     print(f"Best crypto opportunity sent: {symbol} {direction} score={best['score']}")
