@@ -1,12 +1,23 @@
 {
-  "balance": 95612.65130516216,
-  "positions": {},
+  "balance": 95577.00118123446,
+  "positions": {
+    "دوج‌کوین (DOGE-SWAP-USDT)": {
+      "side": "SHORT",
+      "entry": 0.05513,
+      "stop": 0.055573571428571424,
+      "target": 0.05424285714285714,
+      "qty": 1077759.3544865306,
+      "entry_fee": 35.65012392770546,
+      "opened_at": "2026-11-21T17:00:00+00:00",
+      "leverage": 1.0
+    }
+  },
   "closed_trades": 110,
   "realized_pnl": -4387.34869483782,
   "wins": 33,
   "losses": 39,
   "accounting_version": 2,
-  "last_unrealized_pnl": 0.0,
-  "last_equity": 95612.65130516216,
-  "last_total_pnl": -4387.348694837841
+  "last_unrealized_pnl": -35.65012392770546,
+  "last_equity": 95541.35105730676,
+  "last_total_pnl": -4458.6489426932385
 }
