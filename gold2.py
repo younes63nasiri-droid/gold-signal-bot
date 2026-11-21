@@ -4,9 +4,12 @@ import hashlib
 from urllib.parse import urlencode
 import json
 import base64
+import tempfile
+from pathlib import Path
 import requests
 import market_scanner as market_scanner
 from risk_manager import calculate_position_plan
+from paper_ledger import PaperLedger
 from datetime import datetime, timezone
 
 TOKEN = (os.environ.get("GOLD_TELEGRAM_BOT_TOKEN") or os.environ.get("TELEGRAM_BOT_TOKEN", "")).strip()
@@ -245,6 +248,40 @@ def save_gold_state(state, sha=None):
     )
     response.raise_for_status()
 
+
+
+
+PAPER_STATE_PATH = "paper_trades_state.json"
+PAPER_CONTENTS_API = "https://api.github.com/repos/younes63nasiri-droid/gold-signal-bot/contents/" + PAPER_STATE_PATH
+PAPER_LOCAL_PATH = Path(tempfile.gettempdir()) / "gold_signal_paper_trades.json"
+
+
+def _github_headers():
+    if not GITHUB_TOKEN:
+        raise RuntimeError("توکن GitHub برای ذخیره دفتر معاملات آزمایشی تنظیم نشده است.")
+    return {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
+
+
+def load_paper_ledger():
+    response = requests.get(PAPER_CONTENTS_API, headers=_github_headers(), timeout=20)
+    if response.status_code == 404:
+        PAPER_LOCAL_PATH.write_text(json.dumps({"balance": 1000.0, "open": {}, "closed": []}), encoding="utf-8")
+        return PaperLedger(PAPER_LOCAL_PATH), None
+    response.raise_for_status()
+    payload = response.json()
+    state = json.loads(base64.b64decode(payload["content"]).decode("utf-8"))
+    PAPER_LOCAL_PATH.write_text(json.dumps(state, ensure_ascii=False), encoding="utf-8")
+    return PaperLedger(PAPER_LOCAL_PATH), payload["sha"]
+
+
+def save_paper_ledger(ledger, sha):
+    encoded = base64.b64encode(json.dumps(ledger.export_state(), ensure_ascii=False, indent=2).encode("utf-8")).decode("ascii")
+    body = {"message": "Update paper trading ledger state", "content": encoded}
+    if sha:
+        body["sha"] = sha
+    response = requests.put(PAPER_CONTENTS_API, headers=_github_headers(), json=body, timeout=20)
+    response.raise_for_status()
+    return response.json().get("content", {}).get("sha")
 
 def dynamic_gold_leverage(entry, stop_loss):
     stop_pct = abs(entry - stop_loss) / entry
