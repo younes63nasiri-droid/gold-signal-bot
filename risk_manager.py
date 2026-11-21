@@ -76,3 +76,66 @@ def calculate_position_plan(
         leverage=leverage,
         max_loss_usdt=max_loss,
     )
+
+
+def calculate_fixed_margin_plan(
+    balance_usdt: float,
+    entry: float,
+    stop: float,
+    direction: str,
+    *,
+    margin_usdt: float = 0.50,
+    risk_pct: float = 0.5,
+    max_leverage: int = 10,
+    min_notional_usdt: float = 5.0,
+) -> PositionPlan:
+    """Plan a paper position using a user-fixed margin; never places orders."""
+    values = (balance_usdt, entry, stop, margin_usdt, risk_pct, min_notional_usdt)
+    if any(not isinstance(v, (int, float)) for v in values):
+        return PositionPlan(False, "invalid numeric input")
+    if balance_usdt <= 0 or entry <= 0 or stop <= 0 or margin_usdt <= 0:
+        return PositionPlan(False, "balance, prices and margin must be positive")
+    if margin_usdt > balance_usdt:
+        return PositionPlan(False, "fixed margin exceeds available balance")
+    if not 0 < risk_pct <= 1:
+        return PositionPlan(False, "risk_pct must be greater than 0 and at most 1")
+    if not isinstance(max_leverage, int) or max_leverage < 1:
+        return PositionPlan(False, "max_leverage must be a positive integer")
+    direction = direction.upper()
+    if direction == "LONG" and stop >= entry:
+        return PositionPlan(False, "LONG stop must be below entry")
+    if direction == "SHORT" and stop <= entry:
+        return PositionPlan(False, "SHORT stop must be above entry")
+    if direction not in ("LONG", "SHORT"):
+        return PositionPlan(False, "direction must be LONG or SHORT")
+
+    min_leverage = max(1, int((min_notional_usdt / margin_usdt) - 1e-12))
+    if min_leverage * margin_usdt < min_notional_usdt:
+        min_leverage += 1
+    if min_leverage > max_leverage:
+        return PositionPlan(
+            False,
+            f"minimum order {min_notional_usdt:.2f} USDT needs at least "
+            f"{min_leverage}x leverage; configured cap is {max_leverage}x",
+        )
+
+    stop_fraction = abs(entry - stop) / entry
+    risk_budget = balance_usdt * (risk_pct / 100.0)
+    # Adapt leverage to stop distance, but never exceed the user's fixed margin
+    # or the configured leverage ceiling.
+    target_leverage = max(1, int(0.01 / stop_fraction)) if stop_fraction > 0 else 1
+    leverage = max(min_leverage, min(max_leverage, target_leverage))
+    notional = margin_usdt * leverage
+    max_loss = notional * stop_fraction
+    if max_loss > risk_budget * (1 + 1e-9):
+        return PositionPlan(False, "fixed-margin position exceeds account risk budget")
+    quantity = notional / entry
+    return PositionPlan(
+        True,
+        "paper fixed-margin sizing only; no order submitted",
+        notional_usdt=notional,
+        margin_usdt=margin_usdt,
+        quantity=quantity,
+        leverage=leverage,
+        max_loss_usdt=max_loss,
+    )
