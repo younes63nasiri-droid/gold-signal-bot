@@ -8,7 +8,7 @@ import tempfile
 from pathlib import Path
 import requests
 import market_scanner as market_scanner
-from risk_manager import calculate_position_plan
+from risk_manager import calculate_fixed_margin_plan
 from paper_ledger import PaperLedger
 from datetime import datetime, timezone
 
@@ -18,6 +18,7 @@ BASE = "https://biquote.io/api/XAUUSD/ohlc"
 KRAKEN_OHLC = "https://api.kraken.com/0/public/OHLC"
 GOLD_PROXY_PAIR = "PAXGUSD"
 TOOBIT_KLINES = "https://api.toobit.com/quote/v1/klines"
+ORDER_MARGIN_USDT = float(os.environ.get("ORDER_MARGIN_USDT") or "0.50")
 
 
 def get_candles(interval):
@@ -411,11 +412,12 @@ def analyze():
         stop_loss, target_1, target_2 = price - risk, price + 2 * risk, price + 3 * risk
     else:
         stop_loss, target_1, target_2 = price + risk, price - 2 * risk, price - 3 * risk
-    leverage = dynamic_gold_leverage(price, stop_loss)
-    paper_plan = calculate_position_plan(
+    leverage = paper_plan.leverage if paper_plan.allowed else dynamic_gold_leverage(price, stop_loss)
+    paper_plan = calculate_fixed_margin_plan(
         ledger.summary()["balance"], price, stop_loss,
         "LONG" if direction == "BUY" else "SHORT",
-        risk_pct=0.5, max_leverage=3, min_notional_usdt=5.0,
+        margin_usdt=ORDER_MARGIN_USDT, risk_pct=0.5,
+        max_leverage=10, min_notional_usdt=5.0,
     )
     if paper_plan.allowed and not any(t.get("symbol") == "XAUUSD" for t in ledger.state["open"].values()):
         trade_id = f"XAUUSD:{candle_id}"
@@ -486,10 +488,11 @@ def analyze_best_crypto_market():
     stop = float(best["stop"])
     target = float(best["target"])
     stop_pct = abs(entry - stop) / entry if entry else 1.0
-    leverage = max(1.0, min(float(best.get("leverage_cap", 3)), round(0.01 / stop_pct, 1))) if stop_pct > 0 else 1.0
-    sizing = calculate_position_plan(
+    leverage = sizing.leverage if sizing.allowed else 1
+    sizing = calculate_fixed_margin_plan(
         ledger.summary()["balance"], entry, stop, direction,
-        risk_pct=0.5, max_leverage=3, min_notional_usdt=5.0,
+        margin_usdt=ORDER_MARGIN_USDT, risk_pct=0.5,
+        max_leverage=int(best.get("leverage_cap", 10)), min_notional_usdt=5.0,
     )
     sizing_message = (
         "\n📐 برنامه حجم (محاسبه آزمایشی)\n"
