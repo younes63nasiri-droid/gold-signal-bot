@@ -14,79 +14,13 @@ from datetime import datetime, timezone
 
 TOKEN = (os.environ.get("GOLD_TELEGRAM_BOT_TOKEN") or os.environ.get("TELEGRAM_BOT_TOKEN", "")).strip()
 CHAT_ID = "601146458"
-BASE = "https://biquote.io/api/XAUUSD/ohlc"
-KRAKEN_OHLC = "https://api.kraken.com/0/public/OHLC"
-GOLD_PROXY_PAIR = "PAXGUSD"
 TOOBIT_KLINES = "https://api.toobit.com/quote/v1/klines"
 ORDER_MARGIN_USDT = float(os.environ.get("ORDER_MARGIN_USDT") or "0.50")
 
 
-def get_candles(interval):
-    candle_minutes = 15 if interval == "15m" else 60
-    max_age = 35 if interval == "15m" else 75
-    now = datetime.now(timezone.utc).timestamp()
-
-    # Primary source: BiQuote spot XAU/USD
-    try:
-        response = requests.get(BASE, params={"interval": interval, "limit": 1000}, timeout=20)
-        response.raise_for_status()
-        bars = response.json()["bars"]
-        bars = [bar for bar in bars if not bar.get("isOpen", False)]
-        bars.sort(key=lambda bar: bar["openTime"])
-        if len(bars) >= 110:
-            latest_open = datetime.fromisoformat(bars[-1]["openTime"].replace("Z", "+00:00"))
-            age_minutes = (now - latest_open.timestamp() - candle_minutes * 60) / 60
-            print(f"BiQuote {interval}: سن آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه")
-            if -5 <= age_minutes <= max_age:
-                return bars
-        print(f"BiQuote {interval} قدیمی یا ناقص است؛ تلاش با منبع جایگزین.")
-    except Exception as error:
-        print(f"BiQuote {interval} خطا داد: {error}; تلاش با منبع جایگزین.")
-
-    # Fallback: Kraken PAXG/USD OHLC. PAXG is a gold-backed token proxy,
-    # not identical to spot XAU/USD. Kraken returns the current candle last; exclude it.
-    kraken_interval = 15 if interval == "15m" else 60
-    response = requests.get(
-        KRAKEN_OHLC,
-        params={"pair": GOLD_PROXY_PAIR, "interval": kraken_interval},
-        headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"},
-        timeout=25,
-    )
-    response.raise_for_status()
-    payload = response.json()
-    errors = payload.get("error") or []
-    if errors:
-        raise RuntimeError(f"خطای Kraken برای {GOLD_PROXY_PAIR}: {errors}")
-    result = payload.get("result") or {}
-    pair_key = next((key for key in result if key != "last"), None)
-    if not pair_key:
-        raise RuntimeError(f"Kraken برای {GOLD_PROXY_PAIR} داده‌ای برنگرداند.")
-    rows = result[pair_key]
-    bars = []
-    interval_seconds = candle_minutes * 60
-    for row in rows:
-        try:
-            open_ts = int(row[0])
-            if open_ts + interval_seconds > now:
-                continue
-            bars.append({
-                "openTime": datetime.fromtimestamp(open_ts, timezone.utc).isoformat(),
-                "high": float(row[2]),
-                "low": float(row[3]),
-                "close": float(row[4]),
-            })
-        except (IndexError, TypeError, ValueError):
-            continue
-
-    bars.sort(key=lambda bar: bar["openTime"])
-    if len(bars) < 110:
-        raise RuntimeError(f"کندل کافی از Kraken برای {GOLD_PROXY_PAIR} در {interval} دریافت نشد؛ تعداد: {len(bars)}")
-    latest_open = datetime.fromisoformat(bars[-1]["openTime"])
-    age_minutes = (now - latest_open.timestamp() - interval_seconds) / 60
-    print(f"Kraken {GOLD_PROXY_PAIR} fallback {interval}: {len(bars)} کندل؛ آخرین کندل بسته‌شده {age_minutes:.1f} دقیقه قبل")
-    if age_minutes < -5 or age_minutes > max_age:
-        raise RuntimeError(f"داده Kraken برای {interval} هم قدیمی است: {age_minutes:.1f} دقیقه")
-    return bars
+def get_candles(interval, symbol):
+    """Gold candles must come from Toobit's own XAU USDT perpetual contract."""
+    return get_crypto_candles(symbol, interval)
 
 
 def get_crypto_candles(symbol, interval):
@@ -284,14 +218,6 @@ def save_paper_ledger(ledger, sha):
     response.raise_for_status()
     return response.json().get("content", {}).get("sha")
 
-def dynamic_gold_leverage(entry, stop_loss):
-    stop_pct = abs(entry - stop_loss) / entry
-    if stop_pct <= 0:
-        return 1
-    # Aim to keep the stop-distance loss near 1% of margin; cap leverage at 10x.
-    return max(1, min(10, round(0.01 / stop_pct, 1)))
-
-
 def expire_previous_gold_signal(candles):
     state, sha = load_gold_state()
     if not state:
@@ -364,12 +290,17 @@ def check_toobit_futures_balance():
     return FUTURES_AVAILABLE_USDT
 
 def analyze():
-    candles_15m = get_candles("15m")
-    candles_1h = get_candles("1h")
+    gold_contract = market_scanner.find_gold_perpetual()
+    gold_symbol = str(gold_contract["symbol"])
+    gold_min_notional, gold_leverage_cap = market_scanner.contract_trading_limits(gold_contract)
+    if gold_min_notional <= 0 or gold_leverage_cap <= 0:
+        raise RuntimeError("Toobit did not publish valid XAU perpetual minimum-notional/leverage limits")
+    candles_15m = get_candles("15m", gold_symbol)
+    candles_1h = get_candles("1h", gold_symbol)
     expire_previous_gold_signal(candles_15m)
     ledger, paper_sha = load_paper_ledger()
     for trade_id, trade in list(ledger.state["open"].items()):
-        if trade.get("symbol") == "XAUUSD":
+        if trade.get("symbol") == gold_symbol:
             for bar in candles_15m:
                 ledger.process_candle(trade_id, bar["high"], bar["low"], bar["openTime"])
     closes_15m = [bar["close"] for bar in candles_15m]
@@ -395,7 +326,7 @@ def analyze():
     if direction is None or current_atr <= 0:
         save_paper_ledger(ledger, paper_sha)
         status_message = (
-            "🥇 گزارش ربات طلا | XAU/USD\n\n"
+            f"🥇 گزارش ربات طلا | {gold_symbol}\n\n"
             "🟡 فعلاً موقعیت معاملاتی معتبری وجود ندارد.\n"
             f"💰 قیمت بررسی‌شده: {price:.2f}\n"
             f"📈 RSI: {current_rsi:.1f}\n"
@@ -416,22 +347,22 @@ def analyze():
         ledger.summary()["balance"], price, stop_loss,
         "LONG" if direction == "BUY" else "SHORT",
         margin_usdt=ORDER_MARGIN_USDT, risk_pct=0.5,
-        max_leverage=10, min_notional_usdt=5.0,
+        max_leverage=gold_leverage_cap, min_notional_usdt=gold_min_notional,
     )
     leverage = paper_plan.leverage if paper_plan.allowed else dynamic_gold_leverage(price, stop_loss)
-    if paper_plan.allowed and not any(t.get("symbol") == "XAUUSD" for t in ledger.state["open"].values()):
-        trade_id = f"XAUUSD:{candle_id}"
-        if ledger.open_trade(trade_id, "XAUUSD", "LONG" if direction == "BUY" else "SHORT",
+    if paper_plan.allowed and not any(t.get("symbol") == gold_symbol for t in ledger.state["open"].values()):
+        trade_id = f"{gold_symbol}:{candle_id}"
+        if ledger.open_trade(trade_id, gold_symbol, "LONG" if direction == "BUY" else "SHORT",
                              price, stop_loss, target_1, paper_plan.quantity):
             ledger.state["open"][trade_id]["entry_candle"] = str(candle_id)
     save_paper_ledger(ledger, paper_sha)
     message = (
-        "🥇 سیگنال طلا | XAU/USD\n\n"
+        f"🥇 سیگنال طلا | {gold_symbol}\n\n"
         f"📍 جهت معامله: {'خرید' if direction == 'BUY' else 'فروش'}\n"
         f"💰 قیمت ورود: {format_price(price)}\n"
         f"🎯 حد سود اول: {format_price(target_1)}\n"
         f"🛑 حد ضرر: {format_price(stop_loss)}\n"
-        f"⚖️ اهرم پیشنهادی متغیر: {leverage}x (حداکثر ۱۰x)\n"
+        f"⚖️ اهرم متغیر: {leverage}x (سقف رسمی قرارداد: {gold_leverage_cap}x)\n"
         + (f"🧪 مارجین ثابت آزمایشی: {paper_plan.margin_usdt:.2f} USDT | حجم اسمی: {paper_plan.notional_usdt:.2f} USDT | ریسک: {paper_plan.max_loss_usdt:.4f} USDT\n" if paper_plan.allowed else "🧪 ورود آزمایشی رد شد: " + paper_plan.reason + "\n")
         + "⏳ اعتبار ورود: ۱۵ دقیقه؛ اگر قیمت ورود نرسید، سیگنال لغو می‌شود.\n\n"
         f"⏱ زمان سیگنال: {candle_id}\n"
@@ -490,7 +421,7 @@ def analyze_best_crypto_market():
     sizing = calculate_fixed_margin_plan(
         ledger.summary()["balance"], entry, stop, direction,
         margin_usdt=ORDER_MARGIN_USDT, risk_pct=0.5,
-        max_leverage=int(best.get("leverage_cap", 10)), min_notional_usdt=5.0,
+        max_leverage=int(best["leverage_cap"]), min_notional_usdt=float(best["min_notional_usdt"]),
     )
     leverage = sizing.leverage if sizing.allowed else 1
     sizing_message = (
