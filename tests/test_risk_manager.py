@@ -93,3 +93,25 @@ class PaperLedgerTests(unittest.TestCase):
             ledger.open_trade("id3", "X", "LONG", 100, 95, 110, 1)
             closed = ledger.process_candle("id3", 111, 99)
             self.assertAlmostEqual(closed["net_pnl"], 9.79)
+
+
+class PaperLedgerCandleIdempotencyTests(unittest.TestCase):
+    def test_entry_candle_is_not_used_to_exit_new_trade(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = PaperLedger(Path(directory) / "ledger.json", fee_rate=0)
+            ledger.open_trade("id4", "BTCUSDT", "LONG", 100, 95, 110, 1)
+            ledger.state["open"]["id4"]["entry_candle"] = "2026-11-21T10:00:00+00:00"
+            result = ledger.process_candle("id4", 111, 94, "2026-11-21T10:00:00+00:00")
+            self.assertEqual(result["reason"], "ENTRY_CANDLE")
+            self.assertEqual(ledger.summary()["open_count"], 1)
+
+    def test_same_candle_is_processed_only_once(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ledger = PaperLedger(Path(directory) / "ledger.json", fee_rate=0)
+            ledger.open_trade("id5", "BTCUSDT", "LONG", 100, 95, 110, 1)
+            candle = "2026-11-21T10:15:00+00:00"
+            first = ledger.process_candle("id5", 105, 99, candle)
+            second = ledger.process_candle("id5", 111, 94, candle)
+            self.assertEqual(first["reason"], "OPEN")
+            self.assertEqual(second["reason"], "DUPLICATE_CANDLE")
+            self.assertEqual(ledger.summary()["open_count"], 1)
