@@ -15,7 +15,7 @@
       "opened_at": "2026-11-20T21:42:11.370188+00:00",
       "score": 87.95,
       "spread_pct": 0.0069,
-      "last_mark": 146.21
+      "last_mark": 146.28
     },
     "ZEC-SWAP-USDT": {
       "direction": "SHORT",
@@ -29,21 +29,21 @@
       "opened_at": "2026-11-20T22:27:37.213846+00:00",
       "score": 85.61,
       "spread_pct": 0.0014,
-      "last_mark": 759.42
+      "last_mark": 755.67
     }
   },
   "closed_trades": 88,
   "wins": 36,
   "losses": 52,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -367.02519726475316,
-  "equity": 102221.19170506069,
-  "total_pnl": 2221.191705060686,
-  "last_scan": "2026-11-21T00:12:02.951166+00:00",
+  "unrealized_pnl": -313.3552634735322,
+  "equity": 102274.8616388519,
+  "total_pnl": 2274.8616388519004,
+  "last_scan": "2026-11-21T01:23:17.206850+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 303,
+    "liquid": 291,
     "analyzed": 60,
-    "qualified": 4
+    "qualified": 10
   }
 }
