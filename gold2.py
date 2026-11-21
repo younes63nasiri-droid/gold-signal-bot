@@ -294,7 +294,14 @@ def analyze():
     gold_symbol = str(gold_contract["symbol"])
     gold_min_notional, gold_leverage_cap = market_scanner.contract_trading_limits(gold_contract)
     if gold_min_notional <= 0 or gold_leverage_cap <= 0:
-        raise RuntimeError("Toobit did not publish valid XAU perpetual minimum-notional/leverage limits")
+        filter_types = [str(item.get("filterType")) for item in (gold_contract.get("filters") or [])]
+        embedded_tiers = len(gold_contract.get("riskLimits") or [])
+        raise RuntimeError(
+            "Toobit XAU perpetual limits unavailable: "
+            f"symbol={gold_symbol}, min_notional={gold_min_notional}, "
+            f"max_leverage={gold_leverage_cap}, filters={filter_types}, "
+            f"embedded_risk_tiers={embedded_tiers}"
+        )
     candles_15m = get_candles("15m", gold_symbol)
     candles_1h = get_candles("1h", gold_symbol)
     expire_previous_gold_signal(candles_15m)
