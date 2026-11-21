@@ -3,6 +3,9 @@ name: Gold Signal Bot
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "paper_trades_state.json"
+      - "gold_signal_state.json"
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch:
