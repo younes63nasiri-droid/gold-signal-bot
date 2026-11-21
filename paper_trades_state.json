@@ -10,10 +10,20 @@
       "quantity": 827.4231678486981,
       "entry_candle": "2026-11-21T20:00:00+00:00",
       "last_processed_candle": "2026-11-21T20:15:00+00:00"
+    },
+    "DODOX-SWAP-USDT:2026-11-21T20:15:00+00:00": {
+      "symbol": "DODOX-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.039142,
+      "stop": 0.037944035714285715,
+      "target": 0.04153792857142857,
+      "quantity": 127.74002350416431,
+      "entry_candle": "2026-11-21T20:15:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [],
   "meta": {
-    "last_crypto_signal": "MMT-SWAP-USDT:1795293000000"
+    "last_crypto_signal": "DODOX-SWAP-USDT:1795293000000"
   }
 }
