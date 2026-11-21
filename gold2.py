@@ -379,6 +379,11 @@ def analyze():
     current_atr = atr(candles_15m)
     price = closes_15m[-1]
     candle_id = candles_15m[-1]["openTime"]
+    previous_signal, _ = load_gold_state()
+    if previous_signal and previous_signal.get("candle_id") == candle_id:
+        save_paper_ledger(ledger, paper_sha)
+        print("Duplicate gold signal suppressed for the same closed candle.")
+        return
     direction = None
     if fast_1h > slow_1h and fast_15m > slow_15m and 50 < current_rsi < 65:
         direction = "BUY"
@@ -471,6 +476,12 @@ def analyze_best_crypto_market():
 
     symbol = best["symbol"]
     direction = best["direction"]
+    meta = ledger.state.setdefault("meta", {})
+    crypto_signal_key = f"{symbol}:{best.get('last_candle_time')}"
+    if meta.get("last_crypto_signal") == crypto_signal_key:
+        save_paper_ledger(ledger, paper_sha)
+        print("Duplicate crypto signal suppressed for the same closed candle.")
+        return
     entry = float(best["entry"])
     stop = float(best["stop"])
     target = float(best["target"])
@@ -501,6 +512,7 @@ def analyze_best_crypto_market():
                 ledger.process_candle(trade_id, bar["high"], bar["low"], bar["openTime"])
     except Exception as error:
         print(f"Paper crypto ledger update failed for {symbol}: {error}")
+    meta["last_crypto_signal"] = crypto_signal_key
     save_paper_ledger(ledger, paper_sha)
     paper_summary = ledger.summary()
     message = (
