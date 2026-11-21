@@ -15,7 +15,7 @@
       "opened_at": "2026-11-20T21:42:11.370188+00:00",
       "score": 87.95,
       "spread_pct": 0.0069,
-      "last_mark": 145.99
+      "last_mark": 146.04
     },
     "RARE-SWAP-USDT": {
       "direction": "LONG",
@@ -28,21 +28,22 @@
       "opened_candle": 1795262400000,
       "opened_at": "2026-11-21T12:12:53.157216+00:00",
       "score": 80.91,
-      "spread_pct": 0.0698
+      "spread_pct": 0.0698,
+      "last_mark": 0.01488
     }
   },
   "closed_trades": 93,
   "wins": 39,
   "losses": 54,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -109.3540589127226,
-  "equity": 103450.87510303984,
-  "total_pnl": 3450.8751030398416,
-  "last_scan": "2026-11-21T12:12:53.157244+00:00",
+  "unrealized_pnl": 139.79091291380195,
+  "equity": 103700.02007486636,
+  "total_pnl": 3700.020074866363,
+  "last_scan": "2026-11-21T13:10:39.511381+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 312,
+    "liquid": 311,
     "analyzed": 60,
-    "qualified": 7
+    "qualified": 10
   }
 }
