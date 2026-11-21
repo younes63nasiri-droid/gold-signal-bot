@@ -412,7 +412,7 @@ def analyze():
         "LONG" if direction == "BUY" else "SHORT",
         risk_pct=0.5, max_leverage=3, min_notional_usdt=5.0,
     )
-    if paper_plan.allowed:
+    if paper_plan.allowed and not any(t.get("symbol") == "XAUUSD" for t in ledger.state["open"].values()):
         trade_id = f"XAUUSD:{candle_id}"
         if ledger.open_trade(trade_id, "XAUUSD", "LONG" if direction == "BUY" else "SHORT",
                              price, stop_loss, target_1, paper_plan.quantity):
@@ -477,7 +477,7 @@ def analyze_best_crypto_market():
     stop_pct = abs(entry - stop) / entry if entry else 1.0
     leverage = max(1.0, min(float(best.get("leverage_cap", 3)), round(0.01 / stop_pct, 1))) if stop_pct > 0 else 1.0
     sizing = calculate_position_plan(
-        FUTURES_AVAILABLE_USDT, entry, stop, direction,
+        ledger.summary()["balance"], entry, stop, direction,
         risk_pct=0.5, max_leverage=3, min_notional_usdt=5.0,
     )
     sizing_message = (
