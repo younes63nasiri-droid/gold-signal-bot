@@ -74,8 +74,8 @@ def discover_contracts() -> list[dict]:
     return result
 
 
-def contract_trading_limits(contract: dict) -> tuple[float, int]:
-    """Return exchange-published minimum notional and first-tier max leverage."""
+def contract_trading_limits(contract: dict, reference_price: float | None = None) -> tuple[float, int]:
+    """Return minimum order value and first-tier max leverage."""
     filters = contract.get("filters") or []
     min_notional = 0.0
     # Toobit normally publishes MIN_NOTIONAL.minNotional. Some contracts
@@ -108,6 +108,24 @@ def contract_trading_limits(contract: dict) -> tuple[float, int]:
 
     if not risk_limits:
         risk_limits = contract.get("riskLimits") or []
+
+    # XAU may publish MIN_NOTIONAL=0 despite a non-zero LOT_SIZE.minQty.
+    # Derive a conservative USDT floor from minQty times the live contract price.
+    if min_notional <= 0:
+        lot = next(
+            (item for item in filters if str(item.get("filterType", "")).upper() == "LOT_SIZE"),
+            {},
+        )
+        min_qty = _float(lot.get("minQty"))
+        price = _float(reference_price)
+        if price <= 0:
+            try:
+                ticker = _ticker_map().get(symbol, {})
+                price = _float(ticker.get("c", ticker.get("lastPrice", ticker.get("price"))))
+            except Exception:
+                price = 0.0
+        if min_qty > 0 and price > 0:
+            min_notional = min_qty * price
 
     max_leverage = 0
     if risk_limits and isinstance(risk_limits[0], dict):
@@ -316,7 +334,7 @@ def scan_market() -> dict:
         try:
             candidate = _analyze(symbol, ticker, book)
             if candidate:
-                min_notional, leverage_cap = contract_trading_limits(contract_by_symbol[symbol])
+                min_notional, leverage_cap = contract_trading_limits(contract_by_symbol[symbol], candidate.get("entry", 0.0))
                 if min_notional <= 0 or leverage_cap <= 0:
                     errors.append(f"{symbol}: exchange min-notional or leverage cap unavailable")
                     continue
