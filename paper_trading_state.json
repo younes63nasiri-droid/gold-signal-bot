@@ -1,12 +1,23 @@
 {
-  "balance": 95593.3824699722,
-  "positions": {},
+  "balance": 95456.896786533,
+  "positions": {
+    "XAU/USD (PAXG proxy)": {
+      "side": "SHORT",
+      "entry": 3527.62,
+      "stop": 3535.032142857143,
+      "target": 3512.795714285714,
+      "qty": 64.48430926951896,
+      "entry_fee": 136.48568343920425,
+      "opened_at": "2026-11-22T06:00:00+00:00",
+      "leverage": 2.3796222414955897
+    }
+  },
   "closed_trades": 112,
   "realized_pnl": -4406.617530027779,
   "wins": 34,
   "losses": 40,
   "accounting_version": 2,
-  "last_unrealized_pnl": 0.0,
-  "last_equity": 95593.3824699722,
-  "last_total_pnl": -4406.617530027797
+  "last_unrealized_pnl": -136.48568343920425,
+  "last_equity": 95320.41110309381,
+  "last_total_pnl": -4679.5888969061925
 }
