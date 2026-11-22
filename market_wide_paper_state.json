@@ -15,7 +15,7 @@
       "opened_at": "2026-11-22T10:29:24.384791+00:00",
       "score": 64.57,
       "spread_pct": 0.108,
-      "last_mark": 0.002788
+      "last_mark": 0.002793
     },
     "BTC-SWAP-USDT": {
       "direction": "LONG",
@@ -28,17 +28,18 @@
       "opened_candle": 1795363200000,
       "opened_at": "2026-11-22T16:13:50.806321+00:00",
       "score": 82.04,
-      "spread_pct": 0.0002
+      "spread_pct": 0.0002,
+      "last_mark": 61313.0
     }
   },
   "closed_trades": 105,
   "wins": 44,
   "losses": 61,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -50.56903599230543,
-  "equity": 104127.9963484079,
-  "total_pnl": 4127.996348407905,
-  "last_scan": "2026-11-22T16:13:50.806339+00:00",
+  "unrealized_pnl": 373.34662231412767,
+  "equity": 104551.91200671434,
+  "total_pnl": 4551.912006714338,
+  "last_scan": "2026-11-22T16:59:09.036703+00:00",
   "last_scan_counts": {
     "contracts": 785,
     "liquid": 181,
