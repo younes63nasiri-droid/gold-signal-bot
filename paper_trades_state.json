@@ -9,7 +9,7 @@
       "target": 1740.2735714285714,
       "quantity": 0.0011681492427472536,
       "entry_candle": "2026-11-22T14:45:00+00:00",
-      "last_processed_candle": "2026-11-22T17:00:00+00:00"
+      "last_processed_candle": "2026-11-22T17:45:00+00:00"
     },
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -19,7 +19,17 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-22T17:00:00+00:00"
+      "last_processed_candle": "2026-11-22T17:45:00+00:00"
+    },
+    "BNB-SWAP-USDT:2026-11-22T17:45:00+00:00": {
+      "symbol": "BNB-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 557.45,
+      "stop": 554.5432142857144,
+      "target": 563.2635714285714,
+      "quantity": 0.010763297156695667,
+      "entry_candle": "2026-11-22T17:45:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -57,6 +67,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "ETH-SWAP-USDT:1795367700000"
+    "last_crypto_signal": "BNB-SWAP-USDT:1795370400000"
   }
 }
