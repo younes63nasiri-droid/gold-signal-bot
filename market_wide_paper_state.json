@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "balance": 104658.68581107583,
+  "balance": 104619.97319276784,
   "realized_pnl": 4718.34872143841,
   "positions": {
     "AKE-SWAP-USDT": {
@@ -15,21 +15,34 @@
       "opened_at": "2026-11-22T10:29:24.384791+00:00",
       "score": 64.57,
       "spread_pct": 0.108,
-      "last_mark": 0.002776
+      "last_mark": 0.002744
+    },
+    "ANT-SWAP-USDT": {
+      "direction": "LONG",
+      "entry": 90.26,
+      "stop": 89.74678571428572,
+      "target": 91.28642857142857,
+      "qty": 714.8352593988172,
+      "entry_fee": 38.71261830800234,
+      "leverage": 0.62,
+      "opened_candle": 1795347900000,
+      "opened_at": "2026-11-22T11:57:32.340415+00:00",
+      "score": 81.46,
+      "spread_pct": 0.0111
     }
   },
   "closed_trades": 104,
   "wins": 44,
   "losses": 60,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 32.94319732158105,
-  "equity": 104691.62900839742,
-  "total_pnl": 4691.629008397416,
-  "last_scan": "2026-11-22T11:15:35.743574+00:00",
+  "unrealized_pnl": 120.7921579729713,
+  "equity": 104740.76535074081,
+  "total_pnl": 4740.76535074081,
+  "last_scan": "2026-11-22T11:57:32.340438+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 194,
+    "liquid": 187,
     "analyzed": 60,
-    "qualified": 6
+    "qualified": 10
   }
 }
