@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "balance": 105289.30472964476,
-  "realized_pnl": 5393.242255713628,
+  "balance": 104836.2736541962,
+  "realized_pnl": 4938.5882815498135,
   "positions": {
     "MMT-SWAP-USDT": {
       "direction": "SHORT",
@@ -15,33 +15,33 @@
       "opened_at": "2026-11-21T20:15:28.200173+00:00",
       "score": 77.47,
       "spread_pct": 0.0473,
-      "last_mark": 0.2121
+      "last_mark": 0.2088
     },
-    "ANT-SWAP-USDT": {
-      "direction": "LONG",
-      "entry": 90.27,
-      "stop": 89.80821428571429,
-      "target": 91.19357142857142,
-      "qty": 797.8728138215829,
-      "entry_fee": 43.21438734220457,
-      "leverage": 0.68,
-      "opened_candle": 1795311900000,
-      "opened_at": "2026-11-22T01:52:16.266027+00:00",
-      "score": 86.21,
-      "spread_pct": 0.0111
+    "AAVE-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 96.79,
+      "stop": 97.30321428571429,
+      "target": 95.76357142857144,
+      "qty": 716.1808834754879,
+      "entry_fee": 41.59148862695548,
+      "leverage": 0.66,
+      "opened_candle": 1795314600000,
+      "opened_at": "2026-11-22T02:44:42.061711+00:00",
+      "score": 83.46,
+      "spread_pct": 0.0208
     }
   },
-  "closed_trades": 97,
+  "closed_trades": 98,
   "wins": 42,
-  "losses": 55,
+  "losses": 56,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -105.37143582936108,
-  "equity": 105183.9332938154,
-  "total_pnl": 5183.933293815397,
-  "last_scan": "2026-11-22T01:52:16.266050+00:00",
+  "unrealized_pnl": 96.04638429197655,
+  "equity": 104932.32003848816,
+  "total_pnl": 4932.320038488164,
+  "last_scan": "2026-11-22T02:44:42.061730+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 225,
+    "liquid": 226,
     "analyzed": 60,
     "qualified": 10
   }
