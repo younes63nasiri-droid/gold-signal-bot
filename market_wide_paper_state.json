@@ -1,22 +1,8 @@
 {
   "version": 1,
-  "balance": 105525.92213420125,
-  "realized_pnl": 5590.954890518763,
+  "balance": 105126.92427329146,
+  "realized_pnl": 5209.761608879479,
   "positions": {
-    "MMT-SWAP-USDT": {
-      "direction": "SHORT",
-      "entry": 0.2112,
-      "stop": 0.21724285714285715,
-      "target": 0.1991142857142857,
-      "qty": 60507.61101099604,
-      "entry_fee": 7.667524467313418,
-      "leverage": 0.12,
-      "opened_candle": 1795292100000,
-      "opened_at": "2026-11-21T20:15:28.200173+00:00",
-      "score": 77.47,
-      "spread_pct": 0.0473,
-      "last_mark": 0.2154
-    },
     "SKYAI-SWAP-USDT": {
       "direction": "LONG",
       "entry": 0.03867,
@@ -29,20 +15,33 @@
       "opened_at": "2026-11-22T03:37:21.150389+00:00",
       "score": 69.89,
       "spread_pct": 0.0774,
-      "last_mark": 0.04107
+      "last_mark": 0.04198
+    },
+    "SOXL-SWAP-USDT": {
+      "direction": "SHORT",
+      "entry": 32.44,
+      "stop": 32.72285714285714,
+      "target": 31.874285714285715,
+      "qty": 1308.6777506071983,
+      "entry_fee": 25.472103737818504,
+      "leverage": 0.4,
+      "opened_candle": 1795333500000,
+      "opened_at": "2026-11-22T07:54:16.140001+00:00",
+      "score": 88.44,
+      "spread_pct": 0.0307
     }
   },
-  "closed_trades": 99,
+  "closed_trades": 100,
   "wins": 43,
-  "losses": 56,
+  "losses": 57,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 179.25502180562847,
-  "equity": 105705.17715600687,
-  "total_pnl": 5705.177156006874,
-  "last_scan": "2026-11-22T06:37:38.425796+00:00",
+  "unrealized_pnl": 584.6599356500803,
+  "equity": 105711.58420894154,
+  "total_pnl": 5711.584208941538,
+  "last_scan": "2026-11-22T07:54:16.140024+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 199,
+    "liquid": 188,
     "analyzed": 60,
     "qualified": 10
   }
