@@ -15,7 +15,7 @@
       "opened_at": "2026-11-21T20:15:28.200173+00:00",
       "score": 77.47,
       "spread_pct": 0.0473,
-      "last_mark": 0.2054
+      "last_mark": 0.2018
     },
     "SKYAI-SWAP-USDT": {
       "direction": "LONG",
@@ -28,21 +28,22 @@
       "opened_candle": 1795318200000,
       "opened_at": "2026-11-22T03:37:21.150389+00:00",
       "score": 69.89,
-      "spread_pct": 0.0774
+      "spread_pct": 0.0774,
+      "last_mark": 0.03941
     }
   },
   "closed_trades": 99,
   "wins": 43,
   "losses": 56,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": 339.1775682919188,
-  "equity": 105865.09970249317,
-  "total_pnl": 5865.099702493171,
-  "last_scan": "2026-11-22T03:37:21.150409+00:00",
+  "unrealized_pnl": 694.5032855689562,
+  "equity": 106220.4254197702,
+  "total_pnl": 6220.425419770196,
+  "last_scan": "2026-11-22T04:40:24.232432+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 215,
+    "liquid": 200,
     "analyzed": 60,
-    "qualified": 9
+    "qualified": 10
   }
 }
