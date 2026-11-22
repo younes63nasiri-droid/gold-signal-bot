@@ -1,5 +1,5 @@
 {
-  "balance": 994.6283617031178,
+  "balance": 994.5865986112582,
   "open": {
     "ETH-SWAP-USDT:2026-11-22T14:45:00+00:00": {
       "symbol": "ETH-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 1740.2735714285714,
       "quantity": 0.0011681492427472536,
       "entry_candle": "2026-11-22T14:45:00+00:00",
-      "last_processed_candle": "2026-11-22T20:00:00+00:00"
+      "last_processed_candle": "2026-11-22T20:30:00+00:00"
     },
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-22T20:00:00+00:00"
+      "last_processed_candle": "2026-11-22T20:30:00+00:00"
     },
     "BNB-SWAP-USDT:2026-11-22T17:45:00+00:00": {
       "symbol": "BNB-SWAP-USDT",
@@ -29,17 +29,7 @@
       "target": 563.2635714285714,
       "quantity": 0.010763297156695667,
       "entry_candle": "2026-11-22T17:45:00+00:00",
-      "last_processed_candle": "2026-11-22T20:00:00+00:00"
-    },
-    "AVAX-SWAP-USDT:2026-11-22T19:45:00+00:00": {
-      "symbol": "AVAX-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 6.695,
-      "stop": 6.6630714285714285,
-      "target": 6.758857142857143,
-      "quantity": 1.0455563853622105,
-      "entry_candle": "2026-11-22T19:45:00+00:00",
-      "last_processed_candle": "2026-11-22T20:00:00+00:00"
+      "last_processed_candle": "2026-11-22T20:30:00+00:00"
     }
   },
   "closed": [
@@ -74,9 +64,25 @@
       "gross_pnl": -5.0,
       "fees": 0.21270212765957403,
       "net_pnl": -5.212702127659574
+    },
+    {
+      "symbol": "AVAX-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 6.695,
+      "stop": 6.6630714285714285,
+      "target": 6.758857142857143,
+      "quantity": 1.0455563853622105,
+      "entry_candle": "2026-11-22T19:45:00+00:00",
+      "last_processed_candle": "2026-11-22T20:15:00+00:00",
+      "trade_id": "AVAX-SWAP-USDT:2026-11-22T19:45:00+00:00",
+      "exit": 6.6630714285714285,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.03338312173263663,
+      "fees": 0.008379970126960417,
+      "net_pnl": -0.04176309185959704
     }
   ],
   "meta": {
-    "last_crypto_signal": "DODOX-SWAP-USDT:1795378500000"
+    "last_crypto_signal": "ETH-SWAP-USDT:1795380300000"
   }
 }
