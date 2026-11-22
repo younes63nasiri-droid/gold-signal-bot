@@ -15,7 +15,7 @@
       "opened_at": "2026-11-22T10:29:24.384791+00:00",
       "score": 64.57,
       "spread_pct": 0.108,
-      "last_mark": 0.002783
+      "last_mark": 0.002763
     },
     "ANT-SWAP-USDT": {
       "direction": "LONG",
@@ -29,21 +29,21 @@
       "opened_at": "2026-11-22T11:57:32.340415+00:00",
       "score": 81.46,
       "spread_pct": 0.0111,
-      "last_mark": 89.97
+      "last_mark": 89.86
     }
   },
   "closed_trades": 104,
   "wins": 44,
   "losses": 60,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -240.6326102743148,
-  "equity": 104379.34058249352,
-  "total_pnl": 4379.340582493518,
-  "last_scan": "2026-11-22T14:31:20.449663+00:00",
+  "unrealized_pnl": -240.1163228314432,
+  "equity": 104379.8568699364,
+  "total_pnl": 4379.856869936397,
+  "last_scan": "2026-11-22T15:27:07.813852+00:00",
   "last_scan_counts": {
     "contracts": 785,
-    "liquid": 184,
+    "liquid": 183,
     "analyzed": 60,
-    "qualified": 7
+    "qualified": 10
   }
 }
