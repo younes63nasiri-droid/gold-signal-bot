@@ -9,7 +9,7 @@
       "target": 0.1991142857142857,
       "quantity": 827.4231678486981,
       "entry_candle": "2026-11-21T20:00:00+00:00",
-      "last_processed_candle": "2026-11-22T00:00:00+00:00"
+      "last_processed_candle": "2026-11-22T01:30:00+00:00"
     },
     "DODOX-SWAP-USDT:2026-11-21T20:15:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 0.04153792857142857,
       "quantity": 127.74002350416431,
       "entry_candle": "2026-11-21T20:15:00+00:00",
-      "last_processed_candle": "2026-11-22T00:00:00+00:00"
+      "last_processed_candle": "2026-11-22T01:30:00+00:00"
     }
   },
   "closed": [],
