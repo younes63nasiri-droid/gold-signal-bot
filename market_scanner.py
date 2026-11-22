@@ -78,10 +78,20 @@ def contract_trading_limits(contract: dict) -> tuple[float, int]:
     """Return exchange-published minimum notional and first-tier max leverage."""
     filters = contract.get("filters") or []
     min_notional = 0.0
+    # Toobit normally publishes MIN_NOTIONAL.minNotional. Some contracts
+    # expose the equivalent minimum under TRADE_AMOUNT.minAmount instead.
     for item in filters:
-        if item.get("filterType") == "MIN_NOTIONAL":
-            min_notional = _float(item.get("minNotional"))
-            break
+        filter_type = str(item.get("filterType", "")).upper()
+        if filter_type == "MIN_NOTIONAL":
+            min_notional = _float(
+                item.get("minNotional", item.get("minAmount", item.get("notional")))
+            )
+            if min_notional > 0:
+                break
+        elif filter_type == "TRADE_AMOUNT" and min_notional <= 0:
+            min_notional = _float(
+                item.get("minAmount", item.get("minNotional", item.get("minQty")))
+            )
 
     symbol = str(contract.get("symbol", ""))
     risk_limits = []
