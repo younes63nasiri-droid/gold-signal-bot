@@ -1,22 +1,8 @@
 {
   "version": 1,
-  "balance": 104178.56538440021,
-  "realized_pnl": 4274.279935966891,
+  "balance": 103763.08350347469,
+  "realized_pnl": 3894.51702076978,
   "positions": {
-    "AKE-SWAP-USDT": {
-      "direction": "SHORT",
-      "entry": 0.002786,
-      "stop": 0.002878678571428571,
-      "target": 0.002600642857142857,
-      "qty": 3952677.7358395257,
-      "entry_fee": 6.60729610322935,
-      "leverage": 0.11,
-      "opened_candle": 1795342500000,
-      "opened_at": "2026-11-22T10:29:24.384791+00:00",
-      "score": 64.57,
-      "spread_pct": 0.108,
-      "last_mark": 0.002785
-    },
     "BTC-SWAP-USDT": {
       "direction": "LONG",
       "entry": 60863.3,
@@ -29,17 +15,30 @@
       "opened_at": "2026-11-22T16:13:50.806321+00:00",
       "score": 82.04,
       "spread_pct": 0.0002,
-      "last_mark": 60695.2
+      "last_mark": 60709.3
+    },
+    "AVAX-SWAP-USDT": {
+      "direction": "LONG",
+      "entry": 6.69,
+      "stop": 6.655607142857144,
+      "target": 6.758785714285715,
+      "qty": 10544.659150880967,
+      "entry_fee": 42.3262618316362,
+      "leverage": 0.68,
+      "opened_candle": 1795374900000,
+      "opened_at": "2026-11-22T19:21:42.488621+00:00",
+      "score": 81.88,
+      "spread_pct": 0.015
     }
   },
-  "closed_trades": 105,
+  "closed_trades": 106,
   "wins": 44,
-  "losses": 61,
+  "losses": 62,
   "created_at": "2026-11-13T13:16:16.017Z",
-  "unrealized_pnl": -204.55765966526195,
-  "equity": 103974.00772473494,
-  "total_pnl": 3974.00772473494,
-  "last_scan": "2026-11-22T18:21:39.888133+00:00",
+  "unrealized_pnl": -230.32008531927465,
+  "equity": 103532.76341815542,
+  "total_pnl": 3532.7634181554167,
+  "last_scan": "2026-11-22T19:21:42.488640+00:00",
   "last_scan_counts": {
     "contracts": 785,
     "liquid": 181,
