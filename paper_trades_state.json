@@ -1,17 +1,6 @@
 {
-  "balance": 999.8410638307773,
-  "open": {
-    "MMT-SWAP-USDT:2026-11-21T20:00:00+00:00": {
-      "symbol": "MMT-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 0.2112,
-      "stop": 0.21724285714285715,
-      "target": 0.1991142857142857,
-      "quantity": 827.4231678486981,
-      "entry_candle": "2026-11-21T20:00:00+00:00",
-      "last_processed_candle": "2026-11-22T05:30:00+00:00"
-    }
-  },
+  "balance": 994.6283617031178,
+  "open": {},
   "closed": [
     {
       "symbol": "DODOX-SWAP-USDT",
@@ -28,6 +17,22 @@
       "gross_pnl": -0.1530279860142926,
       "fees": 0.005908183208391424,
       "net_pnl": -0.15893616922268403
+    },
+    {
+      "symbol": "MMT-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.2112,
+      "stop": 0.21724285714285715,
+      "target": 0.1991142857142857,
+      "quantity": 827.4231678486981,
+      "entry_candle": "2026-11-21T20:00:00+00:00",
+      "last_processed_candle": "2026-11-22T06:30:00+00:00",
+      "trade_id": "MMT-SWAP-USDT:2026-11-21T20:00:00+00:00",
+      "exit": 0.21724285714285715,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -5.0,
+      "fees": 0.21270212765957403,
+      "net_pnl": -5.212702127659574
     }
   ],
   "meta": {
