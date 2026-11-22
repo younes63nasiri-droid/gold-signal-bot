@@ -9,7 +9,7 @@
       "target": 1740.2735714285714,
       "quantity": 0.0011681492427472536,
       "entry_candle": "2026-11-22T14:45:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-22T15:00:00+00:00"
     }
   },
   "closed": [
@@ -47,6 +47,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "ETH-SWAP-USDT:1795359600000"
+    "last_crypto_signal": "ETH-SWAP-USDT:1795360500000"
   }
 }
