@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-23T09:00:00+00:00"
+      "last_processed_candle": "2026-11-23T10:15:00+00:00"
     },
     "ETH-SWAP-USDT:2026-11-23T04:30:00+00:00": {
       "symbol": "ETH-SWAP-USDT",
@@ -19,7 +19,17 @@
       "target": 1757.0585714285714,
       "quantity": 0.001158970139134365,
       "entry_candle": "2026-11-23T04:30:00+00:00",
-      "last_processed_candle": "2026-11-23T09:00:00+00:00"
+      "last_processed_candle": "2026-11-23T10:15:00+00:00"
+    },
+    "NVDA-SWAP-USDT:2026-11-23T10:15:00+00:00": {
+      "symbol": "NVDA-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 136.11,
+      "stop": 134.80714285714288,
+      "target": 138.71571428571428,
+      "quantity": 0.033061494379545954,
+      "entry_candle": "2026-11-23T10:15:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -201,6 +211,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "HYPE-SWAP-USDT:1795425300000"
+    "last_crypto_signal": "NVDA-SWAP-USDT:1795429800000"
   }
 }
