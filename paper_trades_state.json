@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-23T15:15:00+00:00"
+      "last_processed_candle": "2026-11-23T16:15:00+00:00"
     },
     "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00": {
       "symbol": "GOOGL-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 290.38714285714286,
       "quantity": 0.010607828577490187,
       "entry_candle": "2026-11-23T15:15:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-23T16:15:00+00:00"
     }
   },
   "closed": [
@@ -265,6 +265,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "GOOGL-SWAP-USDT:1795447800000"
+    "last_crypto_signal": "GOOGL-SWAP-USDT:1795451400000"
   }
 }
