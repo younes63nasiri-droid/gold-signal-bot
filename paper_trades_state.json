@@ -1,5 +1,5 @@
 {
-  "balance": 994.5083031412223,
+  "balance": 994.4899454814436,
   "open": {
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -20,16 +20,6 @@
       "quantity": 0.001158970139134365,
       "entry_candle": "2026-11-23T04:30:00+00:00",
       "last_processed_candle": "2026-11-23T07:30:00+00:00"
-    },
-    "XAU-SWAP-USDT:2026-11-23T07:30:00+00:00": {
-      "symbol": "XAU-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 3632.77,
-      "stop": 3620.449642857143,
-      "target": 3657.410714285714,
-      "quantity": 0.0011010881503645978,
-      "entry_candle": "2026-11-23T07:30:00+00:00",
-      "last_processed_candle": null
     }
   },
   "closed": [
@@ -192,6 +182,22 @@
       "gross_pnl": -0.09586350444138327,
       "fees": 0.012057518102664828,
       "net_pnl": -0.10792102254404809
+    },
+    {
+      "symbol": "XAU-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 3632.77,
+      "stop": 3620.449642857143,
+      "target": 3657.410714285714,
+      "quantity": 0.0011010881503645978,
+      "entry_candle": "2026-11-23T07:30:00+00:00",
+      "last_processed_candle": "2026-11-23T08:00:00+00:00",
+      "trade_id": "XAU-SWAP-USDT:2026-11-23T07:30:00+00:00",
+      "exit": 3620.449642857143,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.013565799258259806,
+      "fees": 0.004791860520445044,
+      "net_pnl": -0.01835765977870485
     }
   ],
   "meta": {
