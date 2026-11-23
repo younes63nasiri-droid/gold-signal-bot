@@ -1,5 +1,5 @@
 {
-  "balance": 994.4569944746266,
+  "balance": 994.4909510645722,
   "open": {
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -9,17 +9,17 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-23T12:30:00+00:00"
+      "last_processed_candle": "2026-11-23T14:00:00+00:00"
     },
-    "ETH-SWAP-USDT:2026-11-23T04:30:00+00:00": {
-      "symbol": "ETH-SWAP-USDT",
+    "META-SWAP-USDT:2026-11-23T14:00:00+00:00": {
+      "symbol": "META-SWAP-USDT",
       "direction": "LONG",
-      "entry": 1725.67,
-      "stop": 1709.9757142857143,
-      "target": 1757.0585714285714,
-      "quantity": 0.001158970139134365,
-      "entry_candle": "2026-11-23T04:30:00+00:00",
-      "last_processed_candle": "2026-11-23T12:30:00+00:00"
+      "entry": 594.28,
+      "stop": 588.5607142857143,
+      "target": 605.7185714285713,
+      "quantity": 0.010096250925489669,
+      "entry_candle": "2026-11-23T14:00:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -230,9 +230,25 @@
       "gross_pnl": 0.020309738489650373,
       "fees": 0.00481218584309379,
       "net_pnl": 0.015497552646556584
+    },
+    {
+      "symbol": "ETH-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 1725.67,
+      "stop": 1709.9757142857143,
+      "target": 1757.0585714285714,
+      "quantity": 0.001158970139134365,
+      "entry_candle": "2026-11-23T04:30:00+00:00",
+      "last_processed_candle": "2026-11-23T13:45:00+00:00",
+      "trade_id": "ETH-SWAP-USDT:2026-11-23T04:30:00+00:00",
+      "exit": 1757.0585714285714,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.036378416995800314,
+      "fees": 0.00242182705019748,
+      "net_pnl": 0.033956589945602834
     }
   ],
   "meta": {
-    "last_crypto_signal": "XAU-SWAP-USDT:1795437900000"
+    "last_crypto_signal": "META-SWAP-USDT:1795443300000"
   }
 }
