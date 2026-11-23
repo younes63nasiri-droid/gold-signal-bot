@@ -1,16 +1,6 @@
 {
-  "balance": 994.4351366739811,
+  "balance": 994.6162241637663,
   "open": {
-    "ETH-SWAP-USDT:2026-11-22T14:45:00+00:00": {
-      "symbol": "ETH-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 1712.11,
-      "stop": 1698.028214285714,
-      "target": 1740.2735714285714,
-      "quantity": 0.0011681492427472536,
-      "entry_candle": "2026-11-22T14:45:00+00:00",
-      "last_processed_candle": "2026-11-23T02:15:00+00:00"
-    },
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
       "direction": "LONG",
@@ -19,16 +9,16 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-23T02:15:00+00:00"
+      "last_processed_candle": "2026-11-23T03:15:00+00:00"
     },
-    "ELSA-SWAP-USDT:2026-11-23T02:15:00+00:00": {
-      "symbol": "ELSA-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 0.0882,
-      "stop": 0.08461821428571428,
-      "target": 0.09536357142857142,
-      "quantity": 28.34467120181406,
-      "entry_candle": "2026-11-23T02:15:00+00:00",
+    "AAVE-SWAP-USDT:2026-11-23T03:15:00+00:00": {
+      "symbol": "AAVE-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 97.46,
+      "stop": 98.39428571428572,
+      "target": 95.59142857142857,
+      "quantity": 0.10260619741432384,
+      "entry_candle": "2026-11-23T03:15:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -144,9 +134,41 @@
       "gross_pnl": -0.15511754969834,
       "fees": 0.010106929470180995,
       "net_pnl": -0.16522447916852098
+    },
+    {
+      "symbol": "ETH-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 1712.11,
+      "stop": 1698.028214285714,
+      "target": 1740.2735714285714,
+      "quantity": 0.0011681492427472536,
+      "entry_candle": "2026-11-22T14:45:00+00:00",
+      "last_processed_candle": "2026-11-23T02:30:00+00:00",
+      "trade_id": "ETH-SWAP-USDT:2026-11-22T14:45:00+00:00",
+      "exit": 1698.028214285714,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.0164496273186721,
+      "fees": 0.0023901302236087967,
+      "net_pnl": -0.018839757542280896
+    },
+    {
+      "symbol": "ELSA-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.0882,
+      "stop": 0.08461821428571428,
+      "target": 0.09536357142857142,
+      "quantity": 28.34467120181406,
+      "entry_candle": "2026-11-23T02:15:00+00:00",
+      "last_processed_candle": "2026-11-23T03:15:00+00:00",
+      "trade_id": "ELSA-SWAP-USDT:2026-11-23T02:15:00+00:00",
+      "exit": 0.09536357142857142,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.20304907677356637,
+      "fees": 0.0031218294460641396,
+      "net_pnl": 0.19992724732750222
     }
   ],
   "meta": {
-    "last_crypto_signal": "ELSA-SWAP-USDT:1795401000000"
+    "last_crypto_signal": "AAVE-SWAP-USDT:1795404600000"
   }
 }
