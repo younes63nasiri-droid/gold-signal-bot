@@ -1,5 +1,5 @@
 {
-  "balance": 994.4899454814436,
+  "balance": 994.44149692198,
   "open": {
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-23T11:15:00+00:00"
+      "last_processed_candle": "2026-11-23T12:30:00+00:00"
     },
     "ETH-SWAP-USDT:2026-11-23T04:30:00+00:00": {
       "symbol": "ETH-SWAP-USDT",
@@ -19,17 +19,17 @@
       "target": 1757.0585714285714,
       "quantity": 0.001158970139134365,
       "entry_candle": "2026-11-23T04:30:00+00:00",
-      "last_processed_candle": "2026-11-23T11:15:00+00:00"
+      "last_processed_candle": "2026-11-23T12:30:00+00:00"
     },
-    "NVDA-SWAP-USDT:2026-11-23T10:15:00+00:00": {
-      "symbol": "NVDA-SWAP-USDT",
+    "XAU-SWAP-USDT:2026-11-23T12:30:00+00:00": {
+      "symbol": "XAU-SWAP-USDT",
       "direction": "LONG",
-      "entry": 136.11,
-      "stop": 134.80714285714288,
-      "target": 138.71571428571428,
-      "quantity": 0.033061494379545954,
-      "entry_candle": "2026-11-23T10:15:00+00:00",
-      "last_processed_candle": "2026-11-23T11:15:00+00:00"
+      "entry": 3624.44,
+      "stop": 3615.2385714285715,
+      "target": 3642.842857142857,
+      "quantity": 0.0011036187659334959,
+      "entry_candle": "2026-11-23T12:30:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -208,9 +208,25 @@
       "gross_pnl": -0.013565799258259806,
       "fees": 0.004791860520445044,
       "net_pnl": -0.01835765977870485
+    },
+    {
+      "symbol": "NVDA-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 136.11,
+      "stop": 134.80714285714288,
+      "target": 138.71571428571428,
+      "quantity": 0.033061494379545954,
+      "entry_candle": "2026-11-23T10:15:00+00:00",
+      "last_processed_candle": "2026-11-23T12:15:00+00:00",
+      "trade_id": "NVDA-SWAP-USDT:2026-11-23T10:15:00+00:00",
+      "exit": 134.80714285714288,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.04307440410592248,
+      "fees": 0.005374155357536446,
+      "net_pnl": -0.048448559463458926
     }
   ],
   "meta": {
-    "last_crypto_signal": "NVDA-SWAP-USDT:1795433400000"
+    "last_crypto_signal": "XAU-SWAP-USDT:1795437900000"
   }
 }
