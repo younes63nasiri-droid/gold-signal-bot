@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-23T03:15:00+00:00"
+      "last_processed_candle": "2026-11-23T04:30:00+00:00"
     },
     "AAVE-SWAP-USDT:2026-11-23T03:15:00+00:00": {
       "symbol": "AAVE-SWAP-USDT",
@@ -19,6 +19,16 @@
       "target": 95.59142857142857,
       "quantity": 0.10260619741432384,
       "entry_candle": "2026-11-23T03:15:00+00:00",
+      "last_processed_candle": "2026-11-23T04:30:00+00:00"
+    },
+    "ETH-SWAP-USDT:2026-11-23T04:30:00+00:00": {
+      "symbol": "ETH-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 1725.67,
+      "stop": 1709.9757142857143,
+      "target": 1757.0585714285714,
+      "quantity": 0.001158970139134365,
+      "entry_candle": "2026-11-23T04:30:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -169,6 +179,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "AAVE-SWAP-USDT:1795404600000"
+    "last_crypto_signal": "ETH-SWAP-USDT:1795409100000"
   }
 }
