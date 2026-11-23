@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-23T16:15:00+00:00"
+      "last_processed_candle": "2026-11-23T17:15:00+00:00"
     },
     "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00": {
       "symbol": "GOOGL-SWAP-USDT",
@@ -19,7 +19,17 @@
       "target": 290.38714285714286,
       "quantity": 0.010607828577490187,
       "entry_candle": "2026-11-23T15:15:00+00:00",
-      "last_processed_candle": "2026-11-23T16:15:00+00:00"
+      "last_processed_candle": "2026-11-23T17:15:00+00:00"
+    },
+    "XBR-SWAP-USDT:2026-11-23T17:15:00+00:00": {
+      "symbol": "XBR-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 87.45,
+      "stop": 88.15285714285714,
+      "target": 86.04428571428572,
+      "quantity": 0.10291595197255574,
+      "entry_candle": "2026-11-23T17:15:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -265,6 +275,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "GOOGL-SWAP-USDT:1795451400000"
+    "last_crypto_signal": "XBR-SWAP-USDT:1795455000000"
   }
 }
