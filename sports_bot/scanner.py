@@ -1224,6 +1224,21 @@ def main():
         (norm_team(p.get("home")), norm_team(p.get("away"))): p
         for p in previews
     }
+    # A bookmaker consensus alone is not enough: a VIVA betting pick must
+    # also have complete, recent five-match form for BOTH teams.
+    before_form_gate = len(fresh)
+    fresh = [
+        p for p in fresh
+        if (
+            (form_data := preview_by_fixture.get(
+                (norm_team(p.get("home")), norm_team(p.get("away")))
+            )) is not None
+            and form_data.get("form_matches") == 5
+            and len(form_data.get("home_form", "")) == 5
+            and len(form_data.get("away_form", "")) == 5
+        )
+    ]
+    print(f"FORM_QUALITY_GATE: accepted={len(fresh)} rejected={before_form_gate-len(fresh)}")
     pick_fixture_keys = {
         (norm_team(p.get("home")), norm_team(p.get("away")))
         for p in fresh
@@ -1320,7 +1335,7 @@ def main():
             form_key = (norm_team(p.get("home")), norm_team(p.get("away")))
             form_data = preview_by_fixture.get(form_key)
             statistical_lines = []
-            if form_data and form_data.get("form_matches", 0) >= 3:
+            if form_data and form_data.get("form_matches", 0) == 5 and len(form_data.get("home_form", "")) == 5 and len(form_data.get("away_form", "")) == 5:
                 hf, af = form_data.get("home_form", "ناموجود"), form_data.get("away_form", "ناموجود")
                 if hf != "ناموجود" and af != "ناموجود":
                     statistical_lines = [
