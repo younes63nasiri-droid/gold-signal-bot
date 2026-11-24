@@ -1,5 +1,5 @@
 {
-  "balance": 994.3491632485886,
+  "balance": 994.2867905376004,
   "open": {
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-24T07:45:00+00:00"
+      "last_processed_candle": "2026-11-24T09:15:00+00:00"
     },
     "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00": {
       "symbol": "GOOGL-SWAP-USDT",
@@ -19,17 +19,7 @@
       "target": 290.38714285714286,
       "quantity": 0.010607828577490187,
       "entry_candle": "2026-11-23T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T07:45:00+00:00"
-    },
-    "MU-SWAP-USDT:2026-11-23T18:15:00+00:00": {
-      "symbol": "MU-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 704.66,
-      "stop": 691.1857142857142,
-      "target": 731.6085714285715,
-      "quantity": 0.010643430874464281,
-      "entry_candle": "2026-11-23T18:15:00+00:00",
-      "last_processed_candle": "2026-11-24T07:45:00+00:00"
+      "last_processed_candle": "2026-11-24T09:15:00+00:00"
     },
     "META-SWAP-USDT:2026-11-23T19:30:00+00:00": {
       "symbol": "META-SWAP-USDT",
@@ -39,27 +29,7 @@
       "target": 607.3114285714286,
       "quantity": 0.010030090270812437,
       "entry_candle": "2026-11-23T19:30:00+00:00",
-      "last_processed_candle": "2026-11-24T07:45:00+00:00"
-    },
-    "ZEC-SWAP-USDT:2026-11-24T05:15:00+00:00": {
-      "symbol": "ZEC-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 766.22,
-      "stop": 777.7582142857143,
-      "target": 743.1435714285715,
-      "quantity": 0.00913575735428467,
-      "entry_candle": "2026-11-24T05:15:00+00:00",
-      "last_processed_candle": "2026-11-24T07:45:00+00:00"
-    },
-    "SOXS-SWAP-USDT:2026-11-24T06:30:00+00:00": {
-      "symbol": "SOXS-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 49.9,
-      "stop": 50.86107142857143,
-      "target": 47.97785714285714,
-      "quantity": 0.11022044088176353,
-      "entry_candle": "2026-11-24T06:30:00+00:00",
-      "last_processed_candle": "2026-11-24T07:45:00+00:00"
+      "last_processed_candle": "2026-11-24T09:15:00+00:00"
     }
   },
   "closed": [
@@ -366,9 +336,57 @@
       "gross_pnl": 0.14467042391570656,
       "fees": 0.010713197745650575,
       "net_pnl": 0.13395722617005598
+    },
+    {
+      "symbol": "MU-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 704.66,
+      "stop": 691.1857142857142,
+      "target": 731.6085714285715,
+      "quantity": 0.010643430874464281,
+      "entry_candle": "2026-11-23T18:15:00+00:00",
+      "last_processed_candle": "2026-11-24T08:30:00+00:00",
+      "trade_id": "MU-SWAP-USDT:2026-11-23T18:15:00+00:00",
+      "exit": 691.1857142857142,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.14341262858278217,
+      "fees": 0.00891395242285033,
+      "net_pnl": -0.1523265810056325
+    },
+    {
+      "symbol": "ZEC-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 766.22,
+      "stop": 777.7582142857143,
+      "target": 743.1435714285715,
+      "quantity": 0.00913575735428467,
+      "entry_candle": "2026-11-24T05:15:00+00:00",
+      "last_processed_candle": "2026-11-24T09:15:00+00:00",
+      "trade_id": "ZEC-SWAP-USDT:2026-11-24T05:15:00+00:00",
+      "exit": 743.1435714285715,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.21082065203205327,
+      "fees": 0.008273507608780768,
+      "net_pnl": 0.2025471444232725
+    },
+    {
+      "symbol": "SOXS-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 49.9,
+      "stop": 50.86107142857143,
+      "target": 47.97785714285714,
+      "quantity": 0.11022044088176353,
+      "entry_candle": "2026-11-24T06:30:00+00:00",
+      "last_processed_candle": "2026-11-24T08:15:00+00:00",
+      "trade_id": "SOXS-SWAP-USDT:2026-11-24T06:30:00+00:00",
+      "exit": 50.86107142857143,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.10592971657600926,
+      "fees": 0.006663557829945605,
+      "net_pnl": -0.11259327440595486
     }
   ],
   "meta": {
-    "last_crypto_signal": "ZEC-SWAP-USDT:1795507200000"
+    "last_crypto_signal": "PIEVERSE-SWAP-USDT:1795512600000"
   }
 }
