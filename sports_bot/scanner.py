@@ -1057,9 +1057,15 @@ def deduplicate_picks(picks):
     for quotes in grouped.values():
         best = max(quotes, key=lambda item: item["odds"]).copy()
         prices = [float(item["odds"]) for item in quotes]
-        best["book_count"] = len({str(item.get("book", "")).lower() for item in quotes})
+        best["book_count"] = len({str(item.get("book", "")).strip().lower() for item in quotes if str(item.get("book", "")).strip()})
         best["median_odds"] = statistics.median(prices)
         best["quote_count"] = len(quotes)
+        # Reject outlier prices: a real consensus should not be built from
+        # wildly divergent bookmaker quotes.
+        best["quote_spread_pct"] = (
+            (max(prices) - min(prices)) / best["median_odds"] * 100
+            if best["median_odds"] else 999.0
+        )
         unique.append(best)
     return unique
 
@@ -1109,12 +1115,14 @@ def main():
     # Strictly reject matches that have started or start within the next 20 minutes.
     now_utc = datetime.now(timezone.utc)
     cutoff = now_utc + timedelta(minutes=20)
+    # Schedule confirmation proves that a match exists; it does NOT validate
+    # a betting price. Require at least two distinct bookmakers and close
+    # agreement between their quotes before a pick can reach Telegram.
     upcoming = [p for p in picks
                 if p.get("start")
                 and p["start"].astimezone(timezone.utc) > cutoff
-                # Accept an independent schedule confirmation OR matching odds
-                # from at least two distinct bookmakers for the same fixture.
-                and (bool(p.get("fixture_sources")) or p.get("book_count", 1) >= 2)]
+                and p.get("book_count", 1) >= 2
+                and p.get("quote_spread_pct", 999.0) <= 20.0]
     # Emit source/filter diagnostics in the Actions log so a zero-pick run
     # can be traced to provider failures, league filtering, timing, or history.
     upcoming_fixture_ids = {fixture_id(p) for p in upcoming}
@@ -1161,7 +1169,11 @@ def main():
     # Always include fresh statistical previews, even when odds-qualified picks exist.
     # Preview data comes from fixture/results feeds, not bookmaker price feeds.
     analysis_fresh = []
-    previews = collect_match_previews(tomorrow, limit=5)
+    previews = collect_match_previews(tomorrow, limit=15)
+    preview_by_fixture = {
+        (norm_team(p.get("home")), norm_team(p.get("away"))): p
+        for p in previews
+    }
     pick_fixture_keys = {
         (norm_team(p.get("home")), norm_team(p.get("away")))
         for p in fresh
@@ -1171,6 +1183,7 @@ def main():
         same_as_pick = (norm_team(p.get("home")), norm_team(p.get("away"))) in pick_fixture_keys
         if analysis_id not in sent_ids and not same_as_pick:
             analysis_fresh.append((p, analysis_id))
+    attached_analysis_count = 0
 
     if not fresh and not analysis_fresh:
         print("NO_NEW_CONTENT: no new odds picks or unseen previews; Telegram message suppressed.")
@@ -1253,6 +1266,20 @@ def main():
             home, away = esc(p["home"]), esc(p["away"])
             status = ("🟢 <b>برنامه تأییدشده:</b> " + esc("، ".join(p["fixture_sources"]))
                       if p.get("fixture_sources") else "⚪ <i>تأیید مستقل برنامه موجود نیست</i>")
+            form_key = (norm_team(p.get("home")), norm_team(p.get("away")))
+            form_data = preview_by_fixture.get(form_key)
+            statistical_lines = []
+            if form_data and form_data.get("form_matches", 0) >= 3:
+                hf, af = form_data.get("home_form", "ناموجود"), form_data.get("away_form", "ناموجود")
+                if hf != "ناموجود" and af != "ناموجود":
+                    statistical_lines = [
+                        f"📊 فرم ۵ بازی: میزبان <b>{esc(hf)}</b> | میهمان <b>{esc(af)}</b>",
+                        f"⚽ میانگین گل زده: {form_data.get('home_avg_scored', 0):.1f} - {form_data.get('away_avg_scored', 0):.1f}",
+                        f"🛡 میانگین گل خورده: {form_data.get('home_avg_conceded', 0):.1f} - {form_data.get('away_avg_conceded', 0):.1f}",
+                    ]
+                    attached_analysis_count += 1
+            if not statistical_lines:
+                statistical_lines = ["📊 <i>آمار اخیر کافی نیست؛ این انتخاب بدون تأیید آماری ارسال نمی‌شود.</i>"]
             lines += [
                 f"<b>⚽ مسابقه {i:02d}</b>",
                 f"🏆 <b>{league}</b>",
@@ -1266,8 +1293,10 @@ def main():
                 f"🎯 <b>{esc(market_names.get(p['market'], p['market']))}</b>",
                 f"📌 انتخاب: <b>{esc(p['selection'])}{point}</b>",
                 f"💎 ضریب: <b>{p['odds']:.2f}</b>",
-                f"📡 منبع ضریب: {esc(p['book'])}",
+                f"📡 منبع بهترین ضریب: {esc(p['book'])}",
+                f"📚 تأیید قیمت: {p.get('book_count', 1)} منبع مستقل | اختلاف قیمت‌ها: {p.get('quote_spread_pct', 0):.1f}٪",
                 status,
+                *statistical_lines,
                 "━━━━━━━━━━━━━━━━━━━━",
             ]
     else:
@@ -1275,7 +1304,7 @@ def main():
         pass
     lines += [
         f"💎 <b>سیگنال ضریب‌دار: {len(fresh[:10])}</b>",
-        f"📊 <b>آنالیز آماری: {len(analysis_fresh) if analysis_fresh else displayed_preview_count}</b>",
+        f"📊 <b>آنالیز آماری: {attached_analysis_count + len(analysis_fresh) if fresh else displayed_preview_count}</b>",
         "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
     ]
     if errors and fresh:
