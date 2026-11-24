@@ -1,8 +1,6 @@
 name: VIVA AI Sports Scanner
 
 on:
-  schedule:
-    - cron: "30 18 * * *"  # روزانه ساعت ۲۲:۰۰ تهران؛ متناسب با سهمیه رایگان UK Odds API
   workflow_dispatch:
   push:
     branches:
