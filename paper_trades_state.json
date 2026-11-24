@@ -1,14 +1,14 @@
 {
-  "balance": 994.2789845375004,
+  "balance": 994.127923344661,
   "open": {
-    "BLESS-SWAP-USDT:2026-11-24T12:30:00+00:00": {
-      "symbol": "BLESS-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 0.019344,
-      "stop": 0.017905285714285714,
-      "target": 0.022221428571428573,
-      "quantity": 103.3912324234905,
-      "entry_candle": "2026-11-24T12:30:00+00:00",
+    "AMD-SWAP-USDT:2026-11-24T14:00:00+00:00": {
+      "symbol": "AMD-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 430.73,
+      "stop": 436.3957142857143,
+      "target": 419.3985714285715,
+      "quantity": 0.020894760058505327,
+      "entry_candle": "2026-11-24T14:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -428,9 +428,25 @@
       "gross_pnl": -0.016766096639153818,
       "fees": 0.0024100596579834923,
       "net_pnl": -0.01917615629713731
+    },
+    {
+      "symbol": "BLESS-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.019344,
+      "stop": 0.017905285714285714,
+      "target": 0.022221428571428573,
+      "quantity": 103.3912324234905,
+      "entry_candle": "2026-11-24T12:30:00+00:00",
+      "last_processed_candle": "2026-11-24T13:30:00+00:00",
+      "trade_id": "BLESS-SWAP-USDT:2026-11-24T12:30:00+00:00",
+      "exit": 0.017905285714285714,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.14875044310528188,
+      "fees": 0.0023107497341368307,
+      "net_pnl": -0.1510611928394187
     }
   ],
   "meta": {
-    "last_crypto_signal": "BLESS-SWAP-USDT:1795524300000"
+    "last_crypto_signal": "AMD-SWAP-USDT:1795529700000"
   }
 }
