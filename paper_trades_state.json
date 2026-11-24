@@ -9,7 +9,17 @@
       "target": 58635.235714285714,
       "quantity": 0.00010023756302436775,
       "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T16:30:00+00:00"
+      "last_processed_candle": "2026-11-24T17:30:00+00:00"
+    },
+    "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
+      "symbol": "ANT-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 81.16,
+      "stop": 83.77428571428571,
+      "target": 75.93142857142857,
+      "quantity": 0.05544603252833909,
+      "entry_candle": "2026-11-24T17:30:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -463,6 +473,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "BTC-SWAP-USDT:1795538700000"
+    "last_crypto_signal": "ANT-SWAP-USDT:1795542300000"
   }
 }
