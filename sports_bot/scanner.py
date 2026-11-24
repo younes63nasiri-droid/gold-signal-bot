@@ -490,6 +490,86 @@ def odds_api_market_candidates(event_odds):
                     })
     return results
 
+def collect_espn_public_odds(tomorrow):
+    """Use ESPN's publicly accessible scoreboard/Core API odds; no API key."""
+    picks, stats, errors = [], [], []
+    leagues = [
+        ("eng.1", "Premier League"), ("esp.1", "La Liga"),
+        ("ger.1", "Bundesliga"), ("ita.1", "Serie A"),
+        ("fra.1", "Ligue 1"), ("uefa.champions", "Champions League"),
+        ("uefa.europa", "Europa League"), ("uefa.europa.conf", "Conference League"),
+        ("irn.1", "Iran Pro League"), ("ksa.1", "Saudi Pro League"),
+        ("uae.1", "UAE Pro League"),
+    ]
+    checked = 0
+    for league_key, league_label in leagues:
+        try:
+            response = requests.get(
+                f"https://site.api.espn.com/apis/site/v2/sports/soccer/{league_key}/scoreboard",
+                params={"dates": tomorrow.strftime("%Y%m%d")},
+                headers=HEADERS, timeout=TIMEOUT,
+            )
+            if response.status_code in (404, 400):
+                continue
+            response.raise_for_status()
+            events = response.json().get("events", [])
+        except Exception as exc:
+            errors.append(f"ESPN {league_label}: {type(exc).__name__} {str(exc)[:90]}")
+            continue
+        for event in events:
+            if not isinstance(event, dict):
+                continue
+            start = parse_time(event.get("date"))
+            competitions = event.get("competitions") or []
+            if start is None or start.astimezone(TEHRAN).date() != tomorrow or not competitions:
+                continue
+            comp = competitions[0]
+            comp_id = str(comp.get("id") or event.get("id") or "")
+            event_id = str(event.get("id") or "")
+            if not event_id or not comp_id:
+                continue
+            checked += 1
+            try:
+                odds_url = (
+                    f"https://sports.core.api.espn.com/v2/sports/soccer/leagues/{league_key}"
+                    f"/events/{event_id}/competitions/{comp_id}/odds"
+                )
+                odds_response = requests.get(odds_url, params={"limit": 10},
+                                             headers=HEADERS, timeout=TIMEOUT)
+                odds_response.raise_for_status()
+                items = odds_response.json().get("items", [])
+                for item in items:
+                    if not isinstance(item, dict) or item.get("$ref"):
+                        continue
+                    provider = (item.get("provider") or {}).get("name") or "ESPN bookmaker"
+                    home_ml = (item.get("homeTeamOdds") or {}).get("moneyLine")
+                    away_ml = (item.get("awayTeamOdds") or {}).get("moneyLine")
+                    draw_ml = (item.get("drawOdds") or {}).get("moneyLine")
+                    for raw, selection in ((home_ml, "Home"), (draw_ml, "Draw"), (away_ml, "Away")):
+                        decimal = american_to_decimal(raw) if raw is not None else None
+                        if decimal is not None and MIN_ODDS <= decimal <= MAX_ODDS:
+                            competitors = comp.get("competitors") or []
+                            home_name = away_name = ""
+                            for team in competitors:
+                                if team.get("homeAway") == "home":
+                                    home_name = (team.get("team") or {}).get("displayName", "")
+                                elif team.get("homeAway") == "away":
+                                    away_name = (team.get("team") or {}).get("displayName", "")
+                            if not home_name or not away_name:
+                                continue
+                            picks.append({
+                                "sport": "فوتبال", "league": league_label,
+                                "home": home_name, "away": away_name, "start": start,
+                                "market": "h2h", "selection": selection,
+                                "odds": decimal, "point": None, "book": provider,
+                                "fixture_sources": ["ESPN"],
+                                "book_count": 1, "source": "ESPN public odds",
+                            })
+            except Exception as exc:
+                errors.append(f"ESPN odds {event_id}: {type(exc).__name__} {str(exc)[:90]}")
+    stats.append(f"ESPN عمومی: {checked} مسابقه بررسی شد؛ {len(picks)} انتخاب ضریب‌دار")
+    return picks, errors, stats
+
 def collect_odds_api(tomorrow):
     if not ODDS_API_KEY:
         return [], [], ["Odds-API.io: کلید API تنظیم نشده"]
@@ -927,6 +1007,10 @@ def collect():
     found.extend(uk_picks)
     errors.extend(uk_errors)
     stats.extend(uk_stats)
+    espn_picks, espn_errors, espn_stats = collect_espn_public_odds(tomorrow)
+    found.extend(espn_picks)
+    errors.extend(espn_errors)
+    stats.extend(espn_stats)
     extra_picks, extra_errors, extra_stats = collect_odds_api(tomorrow)
     found.extend(extra_picks)
     errors.extend(extra_errors)
