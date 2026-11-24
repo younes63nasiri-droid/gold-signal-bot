@@ -1,14 +1,14 @@
 {
-  "balance": 994.127923344661,
+  "balance": 994.3540328862697,
   "open": {
-    "AMD-SWAP-USDT:2026-11-24T14:00:00+00:00": {
-      "symbol": "AMD-SWAP-USDT",
+    "BTC-SWAP-USDT:2026-11-24T15:15:00+00:00": {
+      "symbol": "BTC-SWAP-USDT",
       "direction": "SHORT",
-      "entry": 430.73,
-      "stop": 436.3957142857143,
-      "target": 419.3985714285715,
-      "quantity": 0.020894760058505327,
-      "entry_candle": "2026-11-24T14:00:00+00:00",
+      "entry": 59857.8,
+      "stop": 60469.08214285714,
+      "target": 58635.235714285714,
+      "quantity": 0.00010023756302436775,
+      "entry_candle": "2026-11-24T15:15:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -444,9 +444,25 @@
       "gross_pnl": -0.14875044310528188,
       "fees": 0.0023107497341368307,
       "net_pnl": -0.1510611928394187
+    },
+    {
+      "symbol": "AMD-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 430.73,
+      "stop": 436.3957142857143,
+      "target": 419.3985714285715,
+      "quantity": 0.020894760058505327,
+      "entry_candle": "2026-11-24T14:00:00+00:00",
+      "last_processed_candle": "2026-11-24T14:30:00+00:00",
+      "trade_id": "AMD-SWAP-USDT:2026-11-24T14:00:00+00:00",
+      "exit": 419.3985714285715,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.23676748112009127,
+      "fees": 0.010657939511327945,
+      "net_pnl": 0.22610954160876331
     }
   ],
   "meta": {
-    "last_crypto_signal": "AMD-SWAP-USDT:1795529700000"
+    "last_crypto_signal": "BTC-SWAP-USDT:1795534200000"
   }
 }
