@@ -9,7 +9,7 @@
       "target": 58635.235714285714,
       "quantity": 0.00010023756302436775,
       "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T17:30:00+00:00"
+      "last_processed_candle": "2026-11-24T18:30:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -19,6 +19,16 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
+      "last_processed_candle": "2026-11-24T18:30:00+00:00"
+    },
+    "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00": {
+      "symbol": "COIN-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 103.82,
+      "stop": 105.29107142857141,
+      "target": 100.87785714285714,
+      "quantity": 0.03371219418223849,
+      "entry_candle": "2026-11-24T18:30:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -473,6 +483,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "ANT-SWAP-USDT:1795542300000"
+    "last_crypto_signal": "COIN-SWAP-USDT:1795545900000"
   }
 }
