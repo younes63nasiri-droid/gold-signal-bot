@@ -1,5 +1,5 @@
 {
-  "balance": 994.2152060224186,
+  "balance": 994.3491632485886,
   "open": {
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-24T04:15:00+00:00"
+      "last_processed_candle": "2026-11-24T05:15:00+00:00"
     },
     "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00": {
       "symbol": "GOOGL-SWAP-USDT",
@@ -19,17 +19,7 @@
       "target": 290.38714285714286,
       "quantity": 0.010607828577490187,
       "entry_candle": "2026-11-23T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T04:15:00+00:00"
-    },
-    "XBR-SWAP-USDT:2026-11-23T17:15:00+00:00": {
-      "symbol": "XBR-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 87.45,
-      "stop": 88.15285714285714,
-      "target": 86.04428571428572,
-      "quantity": 0.10291595197255574,
-      "entry_candle": "2026-11-23T17:15:00+00:00",
-      "last_processed_candle": "2026-11-24T04:15:00+00:00"
+      "last_processed_candle": "2026-11-24T05:15:00+00:00"
     },
     "MU-SWAP-USDT:2026-11-23T18:15:00+00:00": {
       "symbol": "MU-SWAP-USDT",
@@ -39,7 +29,7 @@
       "target": 731.6085714285715,
       "quantity": 0.010643430874464281,
       "entry_candle": "2026-11-23T18:15:00+00:00",
-      "last_processed_candle": "2026-11-24T04:15:00+00:00"
+      "last_processed_candle": "2026-11-24T05:15:00+00:00"
     },
     "META-SWAP-USDT:2026-11-23T19:30:00+00:00": {
       "symbol": "META-SWAP-USDT",
@@ -49,7 +39,17 @@
       "target": 607.3114285714286,
       "quantity": 0.010030090270812437,
       "entry_candle": "2026-11-23T19:30:00+00:00",
-      "last_processed_candle": "2026-11-24T04:15:00+00:00"
+      "last_processed_candle": "2026-11-24T05:15:00+00:00"
+    },
+    "ZEC-SWAP-USDT:2026-11-24T05:15:00+00:00": {
+      "symbol": "ZEC-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 766.22,
+      "stop": 777.7582142857143,
+      "target": 743.1435714285715,
+      "quantity": 0.00913575735428467,
+      "entry_candle": "2026-11-24T05:15:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -340,9 +340,25 @@
       "gross_pnl": -0.021161712231572778,
       "fees": 0.004787302972661056,
       "net_pnl": -0.025949015204233834
+    },
+    {
+      "symbol": "XBR-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 87.45,
+      "stop": 88.15285714285714,
+      "target": 86.04428571428572,
+      "quantity": 0.10291595197255574,
+      "entry_candle": "2026-11-23T17:15:00+00:00",
+      "last_processed_candle": "2026-11-24T05:15:00+00:00",
+      "trade_id": "XBR-SWAP-USDT:2026-11-23T17:15:00+00:00",
+      "exit": 86.04428571428572,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.14467042391570656,
+      "fees": 0.010713197745650575,
+      "net_pnl": 0.13395722617005598
     }
   ],
   "meta": {
-    "last_crypto_signal": "XBR-SWAP-USDT:1795494600000"
+    "last_crypto_signal": "ZEC-SWAP-USDT:1795498200000"
   }
 }
