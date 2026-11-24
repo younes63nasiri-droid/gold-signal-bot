@@ -939,8 +939,28 @@ def collect_match_previews(target_date, limit=5):
                 event_date = parse_time(event.get("date"))
                 if event_date is None or event_date.astimezone(TEHRAN).date() >= target_date:
                     continue
+                # Form must come from completed senior matches only. ESPN's
+                # broad soccer scoreboard also contains youth and scheduled events.
+                status = event.get("status") or {}
+                status_type = status.get("type") or {}
+                if status_type.get("completed") is not True:
+                    continue
                 competitions = event.get("competitions") or []
                 if not competitions:
+                    continue
+                competition_label = " ".join(
+                    str(value) for value in (
+                        (event.get("name") or ""),
+                        (event.get("shortName") or ""),
+                        (competitions[0].get("name") or ""),
+                        (competitions[0].get("shortName") or ""),
+                    )
+                ).lower()
+                youth_markers = ("u17", "u-17", "under 17", "under-17",
+                                 "u19", "u-19", "under 19", "under-19",
+                                 "u20", "u-20", "under 20", "under-20",
+                                 "u21", "u-21", "under 21", "under-21", "youth")
+                if any(marker in competition_label for marker in youth_markers):
                     continue
                 sides = {}
                 for item in competitions[0].get("competitors") or []:
