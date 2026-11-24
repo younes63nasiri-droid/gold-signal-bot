@@ -1,5 +1,5 @@
 {
-  "balance": 994.4260423668924,
+  "balance": 994.3827151662344,
   "open": {
     "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
       "symbol": "DODOX-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-23T23:30:00+00:00"
+      "last_processed_candle": "2026-11-24T00:45:00+00:00"
     },
     "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00": {
       "symbol": "GOOGL-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 290.38714285714286,
       "quantity": 0.010607828577490187,
       "entry_candle": "2026-11-23T15:15:00+00:00",
-      "last_processed_candle": "2026-11-23T23:30:00+00:00"
+      "last_processed_candle": "2026-11-24T00:45:00+00:00"
     },
     "XBR-SWAP-USDT:2026-11-23T17:15:00+00:00": {
       "symbol": "XBR-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 86.04428571428572,
       "quantity": 0.10291595197255574,
       "entry_candle": "2026-11-23T17:15:00+00:00",
-      "last_processed_candle": "2026-11-23T23:30:00+00:00"
+      "last_processed_candle": "2026-11-24T00:45:00+00:00"
     },
     "MU-SWAP-USDT:2026-11-23T18:15:00+00:00": {
       "symbol": "MU-SWAP-USDT",
@@ -39,7 +39,7 @@
       "target": 731.6085714285715,
       "quantity": 0.010643430874464281,
       "entry_candle": "2026-11-23T18:15:00+00:00",
-      "last_processed_candle": "2026-11-23T23:30:00+00:00"
+      "last_processed_candle": "2026-11-24T00:45:00+00:00"
     },
     "META-SWAP-USDT:2026-11-23T19:30:00+00:00": {
       "symbol": "META-SWAP-USDT",
@@ -49,16 +49,16 @@
       "target": 607.3114285714286,
       "quantity": 0.010030090270812437,
       "entry_candle": "2026-11-23T19:30:00+00:00",
-      "last_processed_candle": "2026-11-23T23:30:00+00:00"
+      "last_processed_candle": "2026-11-24T00:45:00+00:00"
     },
-    "KORU-SWAP-USDT:2026-11-23T23:30:00+00:00": {
-      "symbol": "KORU-SWAP-USDT",
+    "SKHYNIX-SWAP-USDT:2026-11-24T00:45:00+00:00": {
+      "symbol": "SKHYNIX-SWAP-USDT",
       "direction": "LONG",
-      "entry": 6.253,
-      "stop": 6.124964285714285,
-      "target": 6.509071428571429,
-      "quantity": 0.31984647369262753,
-      "entry_candle": "2026-11-23T23:30:00+00:00",
+      "entry": 887.5,
+      "stop": 874.5978571428572,
+      "target": 913.3042857142857,
+      "quantity": 0.010140845070422535,
+      "entry_candle": "2026-11-24T00:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -302,9 +302,25 @@
       "gross_pnl": -0.05774334368599644,
       "fees": 0.0071653539937884024,
       "net_pnl": -0.06490869767978484
+    },
+    {
+      "symbol": "KORU-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 6.253,
+      "stop": 6.124964285714285,
+      "target": 6.509071428571429,
+      "quantity": 0.31984647369262753,
+      "entry_candle": "2026-11-23T23:30:00+00:00",
+      "last_processed_candle": "2026-11-24T00:00:00+00:00",
+      "trade_id": "KORU-SWAP-USDT:2026-11-23T23:30:00+00:00",
+      "exit": 6.124964285714285,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.040951771721002624,
+      "fees": 0.0023754289369673984,
+      "net_pnl": -0.04332720065797002
     }
   ],
   "meta": {
-    "last_crypto_signal": "KORU-SWAP-USDT:1795477500000"
+    "last_crypto_signal": "SKHYNIX-SWAP-USDT:1795482000000"
   }
 }
