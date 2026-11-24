@@ -1,16 +1,6 @@
 {
-  "balance": 994.2867905376004,
+  "balance": 994.3419250969556,
   "open": {
-    "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00": {
-      "symbol": "DODOX-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 0.039025,
-      "stop": 0.037947249999999995,
-      "target": 0.041180499999999995,
-      "quantity": 51.24919923126202,
-      "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-24T09:15:00+00:00"
-    },
     "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00": {
       "symbol": "GOOGL-SWAP-USDT",
       "direction": "LONG",
@@ -19,17 +9,7 @@
       "target": 290.38714285714286,
       "quantity": 0.010607828577490187,
       "entry_candle": "2026-11-23T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T09:15:00+00:00"
-    },
-    "META-SWAP-USDT:2026-11-23T19:30:00+00:00": {
-      "symbol": "META-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 598.2,
-      "stop": 593.6442857142857,
-      "target": 607.3114285714286,
-      "quantity": 0.010030090270812437,
-      "entry_candle": "2026-11-23T19:30:00+00:00",
-      "last_processed_candle": "2026-11-24T09:15:00+00:00"
+      "last_processed_candle": "2026-11-24T10:15:00+00:00"
     }
   },
   "closed": [
@@ -384,9 +364,41 @@
       "gross_pnl": -0.10592971657600926,
       "fees": 0.006663557829945605,
       "net_pnl": -0.11259327440595486
+    },
+    {
+      "symbol": "DODOX-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.039025,
+      "stop": 0.037947249999999995,
+      "target": 0.041180499999999995,
+      "quantity": 51.24919923126202,
+      "entry_candle": "2026-11-22T16:00:00+00:00",
+      "last_processed_candle": "2026-11-24T09:45:00+00:00",
+      "trade_id": "DODOX-SWAP-USDT:2026-11-22T16:00:00+00:00",
+      "exit": 0.041180499999999995,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.11046764894298516,
+      "fees": 0.002466280589365791,
+      "net_pnl": 0.10800136835361937
+    },
+    {
+      "symbol": "META-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 598.2,
+      "stop": 593.6442857142857,
+      "target": 607.3114285714286,
+      "quantity": 0.010030090270812437,
+      "entry_candle": "2026-11-23T19:30:00+00:00",
+      "last_processed_candle": "2026-11-24T09:45:00+00:00",
+      "trade_id": "META-SWAP-USDT:2026-11-23T19:30:00+00:00",
+      "exit": 593.6442857142857,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.045694225533744394,
+      "fees": 0.007172583464679753,
+      "net_pnl": -0.05286680899842415
     }
   ],
   "meta": {
-    "last_crypto_signal": "PIEVERSE-SWAP-USDT:1795512600000"
+    "last_crypto_signal": "EVAA-SWAP-USDT:1795516200000"
   }
 }
