@@ -9,7 +9,7 @@
       "target": 0.041180499999999995,
       "quantity": 51.24919923126202,
       "entry_candle": "2026-11-22T16:00:00+00:00",
-      "last_processed_candle": "2026-11-24T05:15:00+00:00"
+      "last_processed_candle": "2026-11-24T06:15:00+00:00"
     },
     "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00": {
       "symbol": "GOOGL-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 290.38714285714286,
       "quantity": 0.010607828577490187,
       "entry_candle": "2026-11-23T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T05:15:00+00:00"
+      "last_processed_candle": "2026-11-24T06:15:00+00:00"
     },
     "MU-SWAP-USDT:2026-11-23T18:15:00+00:00": {
       "symbol": "MU-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 731.6085714285715,
       "quantity": 0.010643430874464281,
       "entry_candle": "2026-11-23T18:15:00+00:00",
-      "last_processed_candle": "2026-11-24T05:15:00+00:00"
+      "last_processed_candle": "2026-11-24T06:15:00+00:00"
     },
     "META-SWAP-USDT:2026-11-23T19:30:00+00:00": {
       "symbol": "META-SWAP-USDT",
@@ -39,7 +39,7 @@
       "target": 607.3114285714286,
       "quantity": 0.010030090270812437,
       "entry_candle": "2026-11-23T19:30:00+00:00",
-      "last_processed_candle": "2026-11-24T05:15:00+00:00"
+      "last_processed_candle": "2026-11-24T06:15:00+00:00"
     },
     "ZEC-SWAP-USDT:2026-11-24T05:15:00+00:00": {
       "symbol": "ZEC-SWAP-USDT",
@@ -49,6 +49,16 @@
       "target": 743.1435714285715,
       "quantity": 0.00913575735428467,
       "entry_candle": "2026-11-24T05:15:00+00:00",
+      "last_processed_candle": "2026-11-24T06:15:00+00:00"
+    },
+    "SOXS-SWAP-USDT:2026-11-24T06:30:00+00:00": {
+      "symbol": "SOXS-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 49.9,
+      "stop": 50.86107142857143,
+      "target": 47.97785714285714,
+      "quantity": 0.11022044088176353,
+      "entry_candle": "2026-11-24T06:30:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -359,6 +369,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "ZEC-SWAP-USDT:1795498200000"
+    "last_crypto_signal": "SOXS-SWAP-USDT:1795501800000"
   }
 }
