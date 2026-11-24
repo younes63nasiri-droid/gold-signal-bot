@@ -1,15 +1,15 @@
 {
-  "balance": 994.3419250969556,
+  "balance": 994.2981606937975,
   "open": {
-    "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00": {
-      "symbol": "GOOGL-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 282.81,
-      "stop": 279.0214285714286,
-      "target": 290.38714285714286,
-      "quantity": 0.010607828577490187,
-      "entry_candle": "2026-11-23T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T10:15:00+00:00"
+    "ETH-SWAP-USDT:2026-11-24T11:15:00+00:00": {
+      "symbol": "ETH-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 1685.8,
+      "stop": 1699.9321428571427,
+      "target": 1657.5357142857142,
+      "quantity": 0.0011863803535413454,
+      "entry_candle": "2026-11-24T11:15:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -396,9 +396,25 @@
       "gross_pnl": -0.045694225533744394,
       "fees": 0.007172583464679753,
       "net_pnl": -0.05286680899842415
+    },
+    {
+      "symbol": "GOOGL-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 282.81,
+      "stop": 279.0214285714286,
+      "target": 290.38714285714286,
+      "quantity": 0.010607828577490187,
+      "entry_candle": "2026-11-23T15:15:00+00:00",
+      "last_processed_candle": "2026-11-24T10:45:00+00:00",
+      "trade_id": "GOOGL-SWAP-USDT:2026-11-23T15:15:00+00:00",
+      "exit": 279.0214285714286,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.04018851626786254,
+      "fees": 0.003575886890239282,
+      "net_pnl": -0.04376440315810182
     }
   ],
   "meta": {
-    "last_crypto_signal": "EVAA-SWAP-USDT:1795516200000"
+    "last_crypto_signal": "ETH-SWAP-USDT:1795519800000"
   }
 }
