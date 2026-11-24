@@ -9,7 +9,7 @@
       "target": 58635.235714285714,
       "quantity": 0.00010023756302436775,
       "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T19:45:00+00:00"
+      "last_processed_candle": "2026-11-24T20:45:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-24T19:45:00+00:00"
+      "last_processed_candle": "2026-11-24T20:45:00+00:00"
     },
     "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00": {
       "symbol": "COIN-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 100.87785714285714,
       "quantity": 0.03371219418223849,
       "entry_candle": "2026-11-24T18:30:00+00:00",
-      "last_processed_candle": "2026-11-24T19:45:00+00:00"
+      "last_processed_candle": "2026-11-24T20:45:00+00:00"
     },
     "XAU-SWAP-USDT:2026-11-24T19:45:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -49,6 +49,16 @@
       "target": 0.019827142857142856,
       "quantity": 110.11396795683534,
       "entry_candle": "2026-11-24T19:45:00+00:00",
+      "last_processed_candle": "2026-11-24T20:45:00+00:00"
+    },
+    "AAPL-SWAP-USDT:2026-11-24T20:45:00+00:00": {
+      "symbol": "AAPL-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 354.69,
+      "stop": 353.385,
+      "target": 357.3,
+      "quantity": 0.011277453550988187,
+      "entry_candle": "2026-11-24T20:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -503,6 +513,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "BLESS-SWAP-USDT:1795550400000"
+    "last_crypto_signal": "AAPL-SWAP-USDT:1795554000000"
   }
 }
