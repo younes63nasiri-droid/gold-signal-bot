@@ -1171,6 +1171,7 @@ def main():
     upcoming = [p for p in picks
                 if p.get("start")
                 and p["start"].astimezone(timezone.utc) > cutoff
+                and len(set(p.get("fixture_sources") or [])) >= 2
                 and p.get("book_count", 1) >= 2
                 and p.get("quote_spread_pct", 999.0) <= 20.0]
     # Emit source/filter diagnostics in the Actions log so a zero-pick run
