@@ -539,8 +539,19 @@ def collect_espn_public_odds(tomorrow):
                 odds_response.raise_for_status()
                 items = odds_response.json().get("items", [])
                 for item in items:
-                    if not isinstance(item, dict) or item.get("$ref"):
+                    if not isinstance(item, dict):
                         continue
+                    # ESPN Core often returns odds as $ref pointers rather than
+                    # embedding the provider/price fields in the collection.
+                    if item.get("$ref") and not item.get("provider"):
+                        ref_url = str(item["$ref"]).replace("http://", "https://", 1)
+                        try:
+                            ref_response = requests.get(ref_url, headers=HEADERS, timeout=TIMEOUT)
+                            ref_response.raise_for_status()
+                            item = ref_response.json()
+                        except Exception as ref_exc:
+                            errors.append(f"ESPN odds ref {event_id}: {type(ref_exc).__name__} {str(ref_exc)[:70]}")
+                            continue
                     provider = (item.get("provider") or {}).get("name") or "ESPN bookmaker"
                     home_ml = (item.get("homeTeamOdds") or {}).get("moneyLine")
                     away_ml = (item.get("awayTeamOdds") or {}).get("moneyLine")
