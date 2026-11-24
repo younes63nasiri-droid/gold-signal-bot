@@ -122,6 +122,14 @@ def allowed_competition(fixture):
     if not label.strip():
         return False
 
+    # Youth tournaments are outside the requested senior national-team scope.
+    youth_markers = ("u17", "u-17", "under 17", "under-17",
+                     "u19", "u-19", "under 19", "under-19",
+                     "u20", "u-20", "under 20", "under-20",
+                     "u21", "u-21", "under 21", "under-21", "youth")
+    if any(term in label for term in youth_markers):
+        return False
+
     # International national-team competitions and friendlies.
     if any(term in label for term in NATIONAL_HINTS):
         return True
@@ -876,6 +884,8 @@ def collect_match_previews(target_date, limit=5):
                 # event.name is commonly just "Away at Home", not the league.
                 if not league or " at " in str(league).lower() or " vs " in str(league).lower():
                     league = "نام لیگ در منبع مشخص نیست"
+                if not allowed_competition({"league": league}):
+                    continue
                 fixtures.append({
                     "sport": "فوتبال", "home": sides["home"], "away": sides["away"],
                     "start": start, "league": league,
@@ -886,6 +896,23 @@ def collect_match_previews(target_date, limit=5):
 
     if not fixtures:
         print("PREVIEW_NO_FIXTURES")
+        return []
+
+    # Keep only fixtures independently listed by at least two public schedule
+    # providers. A single feed is not enough to publish an analysis card.
+    schedule_checks, schedule_errors = fixture_crosschecks(target_date)
+    verified_fixtures = []
+    for fixture in fixtures:
+        key = (norm_team(fixture["home"]), norm_team(fixture["away"]))
+        reverse_key = (key[1], key[0])
+        sources = set(schedule_checks.get(key, set())) | set(schedule_checks.get(reverse_key, set()))
+        fixture["schedule_sources"] = sorted(sources)
+        if len(sources) >= 2:
+            verified_fixtures.append(fixture)
+    print(f"PREVIEW_FIXTURE_VERIFICATION: accepted={len(verified_fixtures)} rejected={len(fixtures)-len(verified_fixtures)}")
+    fixtures = verified_fixtures
+    if not fixtures:
+        print("PREVIEW_NO_INDEPENDENT_FIXTURES")
         return []
 
     # ESPN scoreboard accepts one calendar date at a time.
@@ -940,15 +967,18 @@ def collect_match_previews(target_date, limit=5):
         home_form = sorted(form.get(norm_team(fixture["home"]), []), key=lambda x: x["date"])[-5:]
         away_form = sorted(form.get(norm_team(fixture["away"]), []), key=lambda x: x["date"])[-5:]
         # Include the fixture even if a free historical feed lacks one team's form.
-        fixture["home_form"] = "".join(x["result"] for x in home_form) or "ناموجود"
-        fixture["away_form"] = "".join(x["result"] for x in away_form) or "ناموجود"
-        if home_form:
-            fixture["home_avg_scored"] = sum(x["scored"] for x in home_form) / len(home_form)
-            fixture["home_avg_conceded"] = sum(x["conceded"] for x in home_form) / len(home_form)
-        if away_form:
-            fixture["away_avg_scored"] = sum(x["scored"] for x in away_form) / len(away_form)
-            fixture["away_avg_conceded"] = sum(x["conceded"] for x in away_form) / len(away_form)
-        fixture["form_matches"] = min(len(home_form), len(away_form))
+        fixture["home_form_count"] = len(home_form)
+        fixture["away_form_count"] = len(away_form)
+        # Never label two or three results as a five-match form.
+        if len(home_form) < 5 or len(away_form) < 5:
+            continue
+        fixture["home_form"] = "".join(x["result"] for x in home_form)
+        fixture["away_form"] = "".join(x["result"] for x in away_form)
+        fixture["home_avg_scored"] = sum(x["scored"] for x in home_form) / 5
+        fixture["home_avg_conceded"] = sum(x["conceded"] for x in home_form) / 5
+        fixture["away_avg_scored"] = sum(x["scored"] for x in away_form) / 5
+        fixture["away_avg_conceded"] = sum(x["conceded"] for x in away_form) / 5
+        fixture["form_matches"] = 5
         previews.append(fixture)
     previews.sort(key=lambda x: (
         -(x.get("home_avg_scored", 0) + x.get("away_avg_scored", 0)),
@@ -1217,7 +1247,8 @@ def main():
             lines += [
                 f"<b>⚽ {i:02d}. {esc(p['home'])} × {esc(p['away'])}</b>",
                 f"🏆 {esc(p['league'])}  |  🕒 {local_time}",
-                f"📈 فرم ۵ بازی: <b>{hf}</b>  مقابل  <b>{af}</b>",
+                f"📈 فرم ۵ بازی کامل: <b>{hf}</b>  مقابل  <b>{af}</b>",
+                f"📚 تأیید برنامه: {esc('، '.join(p.get('schedule_sources', [])))}",
                 goals,
                 f"🧠 جمع‌بندی فرم: <b>{lean}</b>",
                 "💠 ضریب: <i>برای این مسابقه از منبع فعلی قیمت معتبر دریافت نشد</i>",
@@ -1304,7 +1335,7 @@ def main():
         pass
     lines += [
         f"💎 <b>سیگنال ضریب‌دار: {len(fresh[:10])}</b>",
-        f"📊 <b>آنالیز آماری: {attached_analysis_count + len(analysis_fresh) if fresh else displayed_preview_count}</b>",
+        f"📊 <b>آنالیز آماری: {attached_analysis_count + len(analysis_fresh) if fresh else len(analysis_fresh)}</b>",
         "<i>این خروجی تحلیل آماری است و تضمینی برای نتیجه ندارد.</i>",
     ]
     if errors and fresh:
