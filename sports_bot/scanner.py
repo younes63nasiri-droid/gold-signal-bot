@@ -1142,9 +1142,6 @@ def main():
     displayed_preview_count = 0
     # Do not resend old previews or an empty "0 picks" report on every scan.
     # A Telegram message is sent only when there is a new qualified pick or preview.
-    if not fresh and not analysis_fresh:
-        print("NO_NEW_CONTENT: no new odds picks or unseen previews; Telegram message suppressed.")
-        return
     lines = [
         "✨ <b>VIVA AI</b>  <i>پیشنهادهای منتخب مسابقات</i>",
         f"📅 <b>{tomorrow.strftime('%d.%m.%Y')}</b>  |  به وقت تهران",
@@ -1163,6 +1160,10 @@ def main():
         same_as_pick = (norm_team(p.get("home")), norm_team(p.get("away"))) in pick_fixture_keys
         if analysis_id not in sent_ids and not same_as_pick:
             analysis_fresh.append((p, analysis_id))
+
+    if not fresh and not analysis_fresh:
+        print("NO_NEW_CONTENT: no new odds picks or unseen previews; Telegram message suppressed.")
+        return
 
     if analysis_fresh:
         lines += [
