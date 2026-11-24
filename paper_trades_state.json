@@ -1,14 +1,14 @@
 {
-  "balance": 994.2981606937975,
+  "balance": 994.2789845375004,
   "open": {
-    "ETH-SWAP-USDT:2026-11-24T11:15:00+00:00": {
-      "symbol": "ETH-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 1685.8,
-      "stop": 1699.9321428571427,
-      "target": 1657.5357142857142,
-      "quantity": 0.0011863803535413454,
-      "entry_candle": "2026-11-24T11:15:00+00:00",
+    "BLESS-SWAP-USDT:2026-11-24T12:30:00+00:00": {
+      "symbol": "BLESS-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.019344,
+      "stop": 0.017905285714285714,
+      "target": 0.022221428571428573,
+      "quantity": 103.3912324234905,
+      "entry_candle": "2026-11-24T12:30:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -412,9 +412,25 @@
       "gross_pnl": -0.04018851626786254,
       "fees": 0.003575886890239282,
       "net_pnl": -0.04376440315810182
+    },
+    {
+      "symbol": "ETH-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 1685.8,
+      "stop": 1699.9321428571427,
+      "target": 1657.5357142857142,
+      "quantity": 0.0011863803535413454,
+      "entry_candle": "2026-11-24T11:15:00+00:00",
+      "last_processed_candle": "2026-11-24T11:45:00+00:00",
+      "trade_id": "ETH-SWAP-USDT:2026-11-24T11:15:00+00:00",
+      "exit": 1699.9321428571427,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.016766096639153818,
+      "fees": 0.0024100596579834923,
+      "net_pnl": -0.01917615629713731
     }
   ],
   "meta": {
-    "last_crypto_signal": "ETH-SWAP-USDT:1795519800000"
+    "last_crypto_signal": "BLESS-SWAP-USDT:1795524300000"
   }
 }
