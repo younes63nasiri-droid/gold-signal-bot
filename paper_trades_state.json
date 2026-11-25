@@ -1,5 +1,5 @@
 {
-  "balance": 995.2891181420063,
+  "balance": 995.5423876414302,
   "open": {
     "XAU-SWAP-USDT:2026-11-25T14:45:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -11,14 +11,14 @@
       "entry_candle": "2026-11-25T14:45:00+00:00",
       "last_processed_candle": "2026-11-25T16:00:00+00:00"
     },
-    "MU-SWAP-USDT:2026-11-25T14:45:00+00:00": {
-      "symbol": "MU-SWAP-USDT",
+    "1000PEPE-SWAP-USDT:2026-11-25T16:00:00+00:00": {
+      "symbol": "1000PEPE-SWAP-USDT",
       "direction": "SHORT",
-      "entry": 581.53,
-      "stop": 594.145,
-      "target": 556.3000000000001,
-      "quantity": 0.010317610441421767,
-      "entry_candle": "2026-11-25T14:45:00+00:00",
+      "entry": 0.0033121,
+      "stop": 0.003399625,
+      "target": 0.00313705,
+      "quantity": 603.8465022191359,
+      "entry_candle": "2026-11-25T16:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -774,9 +774,25 @@
       "gross_pnl": 0.20031189403046695,
       "fees": 0.009479812863581719,
       "net_pnl": 0.19083208116688524
+    },
+    {
+      "symbol": "MU-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 581.53,
+      "stop": 594.145,
+      "target": 556.3000000000001,
+      "quantity": 0.010317610441421767,
+      "entry_candle": "2026-11-25T14:45:00+00:00",
+      "last_processed_candle": "2026-11-25T16:00:00+00:00",
+      "trade_id": "MU-SWAP-USDT:2026-11-25T14:45:00+00:00",
+      "exit": 556.3000000000001,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.2603133114370702,
+      "fees": 0.007043812013137757,
+      "net_pnl": 0.25326949942393245
     }
   ],
   "meta": {
-    "last_crypto_signal": "MU-SWAP-USDT:1795618800000"
+    "last_crypto_signal": "1000PEPE-SWAP-USDT:1795623300000"
   }
 }
