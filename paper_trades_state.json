@@ -1,5 +1,5 @@
 {
-  "balance": 994.2600651732581,
+  "balance": 994.24168827211,
   "open": {
     "BTC-SWAP-USDT:2026-11-24T15:15:00+00:00": {
       "symbol": "BTC-SWAP-USDT",
@@ -31,16 +31,6 @@
       "entry_candle": "2026-11-24T18:30:00+00:00",
       "last_processed_candle": "2026-11-24T22:45:00+00:00"
     },
-    "XAU-SWAP-USDT:2026-11-24T19:45:00+00:00": {
-      "symbol": "XAU-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 3562.49,
-      "stop": 3574.5746428571424,
-      "target": 3538.320714285714,
-      "quantity": 0.0011228101692917034,
-      "entry_candle": "2026-11-24T19:45:00+00:00",
-      "last_processed_candle": "2026-11-24T22:45:00+00:00"
-    },
     "AAPL-SWAP-USDT:2026-11-24T20:45:00+00:00": {
       "symbol": "AAPL-SWAP-USDT",
       "direction": "LONG",
@@ -59,6 +49,16 @@
       "target": 31.284285714285716,
       "quantity": 0.030175015087507542,
       "entry_candle": "2026-11-24T22:45:00+00:00",
+      "last_processed_candle": null
+    },
+    "XAU-SWAP-USDT:2026-11-24T23:45:00+00:00": {
+      "symbol": "XAU-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 3557.9,
+      "stop": 3566.733928571429,
+      "target": 3540.232142857143,
+      "quantity": 0.001124258691925012,
+      "entry_candle": "2026-11-24T23:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -526,6 +526,22 @@
       "gross_pnl": -0.09162268662351249,
       "fees": 0.0023450263880258923,
       "net_pnl": -0.09396771301153838
+    },
+    {
+      "symbol": "XAU-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 3562.49,
+      "stop": 3574.5746428571424,
+      "target": 3538.320714285714,
+      "quantity": 0.0011228101692917034,
+      "entry_candle": "2026-11-24T19:45:00+00:00",
+      "last_processed_candle": "2026-11-24T23:15:00+00:00",
+      "trade_id": "XAU-SWAP-USDT:2026-11-24T19:45:00+00:00",
+      "exit": 3574.5746428571424,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.013568759892258087,
+      "fees": 0.004808141255935355,
+      "net_pnl": -0.01837690114819344
     }
   ],
   "meta": {
