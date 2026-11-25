@@ -30,6 +30,16 @@
       "quantity": 0.020842560508558476,
       "entry_candle": "2026-11-25T13:45:00+00:00",
       "last_processed_candle": null
+    },
+    "XAU-SWAP-USDT:2026-11-25T14:45:00+00:00": {
+      "symbol": "XAU-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 3479.46,
+      "stop": 3507.5003571428574,
+      "target": 3423.3792857142853,
+      "quantity": 0.0010059032148666746,
+      "entry_candle": "2026-11-25T14:45:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
