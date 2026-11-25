@@ -1,5 +1,5 @@
 {
-  "balance": 994.2269506921571,
+  "balance": 994.257357218031,
   "open": {
     "BTC-SWAP-USDT:2026-11-24T15:15:00+00:00": {
       "symbol": "BTC-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 58635.235714285714,
       "quantity": 0.00010023756302436775,
       "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-25T01:15:00+00:00"
+      "last_processed_candle": "2026-11-25T02:15:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T01:15:00+00:00"
+      "last_processed_candle": "2026-11-25T02:15:00+00:00"
     },
     "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00": {
       "symbol": "COIN-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 100.87785714285714,
       "quantity": 0.03371219418223849,
       "entry_candle": "2026-11-24T18:30:00+00:00",
-      "last_processed_candle": "2026-11-25T01:15:00+00:00"
+      "last_processed_candle": "2026-11-25T02:15:00+00:00"
     },
     "AAPL-SWAP-USDT:2026-11-24T20:45:00+00:00": {
       "symbol": "AAPL-SWAP-USDT",
@@ -39,27 +39,7 @@
       "target": 357.3,
       "quantity": 0.011277453550988187,
       "entry_candle": "2026-11-24T20:45:00+00:00",
-      "last_processed_candle": "2026-11-25T01:15:00+00:00"
-    },
-    "SOXL-SWAP-USDT:2026-11-24T22:45:00+00:00": {
-      "symbol": "SOXL-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 33.14,
-      "stop": 34.06785714285714,
-      "target": 31.284285714285716,
-      "quantity": 0.030175015087507542,
-      "entry_candle": "2026-11-24T22:45:00+00:00",
-      "last_processed_candle": "2026-11-25T01:15:00+00:00"
-    },
-    "XAG-SWAP-USDT:2026-11-25T01:15:00+00:00": {
-      "symbol": "XAG-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 40.93,
-      "stop": 41.21392857142857,
-      "target": 40.36214285714286,
-      "quantity": 0.07329587099926704,
-      "entry_candle": "2026-11-25T01:15:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-25T02:15:00+00:00"
     }
   },
   "closed": [
@@ -558,9 +538,41 @@
       "gross_pnl": -0.009931620980273436,
       "fees": 0.0048059589725881645,
       "net_pnl": -0.0147375799528616
+    },
+    {
+      "symbol": "SOXL-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 33.14,
+      "stop": 34.06785714285714,
+      "target": 31.284285714285716,
+      "quantity": 0.030175015087507542,
+      "entry_candle": "2026-11-24T22:45:00+00:00",
+      "last_processed_candle": "2026-11-25T01:45:00+00:00",
+      "trade_id": "SOXL-SWAP-USDT:2026-11-24T22:45:00+00:00",
+      "exit": 31.284285714285716,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.05599620656953183,
+      "fees": 0.0011664022760582808,
+      "net_pnl": 0.05482980429347355
+    },
+    {
+      "symbol": "XAG-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 40.93,
+      "stop": 41.21392857142857,
+      "target": 40.36214285714286,
+      "quantity": 0.07329587099926704,
+      "entry_candle": "2026-11-25T01:15:00+00:00",
+      "last_processed_candle": "2026-11-25T01:45:00+00:00",
+      "trade_id": "XAG-SWAP-USDT:2026-11-25T01:15:00+00:00",
+      "exit": 41.21392857142857,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.020810791944434498,
+      "fees": 0.00361248647516666,
+      "net_pnl": -0.02442327841960116
     }
   ],
   "meta": {
-    "last_crypto_signal": "XAG-SWAP-USDT:1795570200000"
+    "last_crypto_signal": "ANT-SWAP-USDT:1795573800000"
   }
 }
