@@ -9,7 +9,17 @@
       "target": 91.68071428571429,
       "quantity": 0.1050768720274306,
       "entry_candle": "2026-11-25T18:00:00+00:00",
-      "last_processed_candle": "2026-11-25T20:00:00+00:00"
+      "last_processed_candle": "2026-11-25T21:00:00+00:00"
+    },
+    "MMT-SWAP-USDT:2026-11-25T21:00:00+00:00": {
+      "symbol": "MMT-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.3046,
+      "stop": 0.2929,
+      "target": 0.32799999999999996,
+      "quantity": 16.414970453053186,
+      "entry_candle": "2026-11-25T21:00:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -831,6 +841,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "XBR-SWAP-USDT:1795637700000"
+    "last_crypto_signal": "MMT-SWAP-USDT:1795641300000"
   }
 }
