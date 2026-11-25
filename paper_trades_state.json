@@ -1,16 +1,6 @@
 {
-  "balance": 994.2378489713931,
+  "balance": 994.4628609864728,
   "open": {
-    "BTC-SWAP-USDT:2026-11-24T15:15:00+00:00": {
-      "symbol": "BTC-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 59857.8,
-      "stop": 60469.08214285714,
-      "target": 58635.235714285714,
-      "quantity": 0.00010023756302436775,
-      "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-25T05:45:00+00:00"
-    },
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
       "direction": "SHORT",
@@ -19,17 +9,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T05:45:00+00:00"
-    },
-    "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00": {
-      "symbol": "COIN-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 103.82,
-      "stop": 105.29107142857141,
-      "target": 100.87785714285714,
-      "quantity": 0.03371219418223849,
-      "entry_candle": "2026-11-24T18:30:00+00:00",
-      "last_processed_candle": "2026-11-25T05:45:00+00:00"
+      "last_processed_candle": "2026-11-25T07:30:00+00:00"
     },
     "XAU-SWAP-USDT:2026-11-25T03:30:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -41,26 +21,6 @@
       "entry_candle": "2026-11-25T03:30:00+00:00",
       "last_processed_candle": "2026-11-25T07:30:00+00:00"
     },
-    "ETH-SWAP-USDT:2026-11-25T03:30:00+00:00": {
-      "symbol": "ETH-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 1665.04,
-      "stop": 1678.1360714285715,
-      "target": 1638.847857142857,
-      "quantity": 0.001201172344207947,
-      "entry_candle": "2026-11-25T03:30:00+00:00",
-      "last_processed_candle": "2026-11-25T05:45:00+00:00"
-    },
-    "ADA-SWAP-USDT:2026-11-25T04:45:00+00:00": {
-      "symbol": "ADA-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 0.1427,
-      "stop": 0.14391071428571428,
-      "target": 0.14027857142857142,
-      "quantity": 10.511562718990891,
-      "entry_candle": "2026-11-25T04:45:00+00:00",
-      "last_processed_candle": "2026-11-25T05:45:00+00:00"
-    },
     "EWY-SWAP-USDT:2026-11-25T05:45:00+00:00": {
       "symbol": "EWY-SWAP-USDT",
       "direction": "SHORT",
@@ -69,6 +29,16 @@
       "target": 126.60214285714287,
       "quantity": 0.031130827301735543,
       "entry_candle": "2026-11-25T05:45:00+00:00",
+      "last_processed_candle": "2026-11-25T07:30:00+00:00"
+    },
+    "BNB-SWAP-USDT:2026-11-25T07:30:00+00:00": {
+      "symbol": "BNB-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 539.36,
+      "stop": 542.7382142857143,
+      "target": 532.6035714285715,
+      "quantity": 0.010197270839513497,
+      "entry_candle": "2026-11-25T07:30:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -616,9 +586,73 @@
       "gross_pnl": -0.014717076884039662,
       "fees": 0.004791169753869576,
       "net_pnl": -0.01950824663790924
+    },
+    {
+      "symbol": "BTC-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 59857.8,
+      "stop": 60469.08214285714,
+      "target": 58635.235714285714,
+      "quantity": 0.00010023756302436775,
+      "entry_candle": "2026-11-24T15:15:00+00:00",
+      "last_processed_candle": "2026-11-25T07:30:00+00:00",
+      "trade_id": "BTC-SWAP-USDT:2026-11-24T15:15:00+00:00",
+      "exit": 58635.235714285714,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.12254686464062713,
+      "fees": 0.0071264718812156245,
+      "net_pnl": 0.1154203927594115
+    },
+    {
+      "symbol": "COIN-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 103.82,
+      "stop": 105.29107142857141,
+      "target": 100.87785714285714,
+      "quantity": 0.03371219418223849,
+      "entry_candle": "2026-11-24T18:30:00+00:00",
+      "last_processed_candle": "2026-11-25T07:30:00+00:00",
+      "trade_id": "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00",
+      "exit": 100.87785714285714,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.09918609131188588,
+      "fees": 0.004140488345212868,
+      "net_pnl": 0.09504560296667301
+    },
+    {
+      "symbol": "ETH-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 1665.04,
+      "stop": 1678.1360714285715,
+      "target": 1638.847857142857,
+      "quantity": 0.001201172344207947,
+      "entry_candle": "2026-11-25T03:30:00+00:00",
+      "last_processed_candle": "2026-11-25T07:30:00+00:00",
+      "trade_id": "ETH-SWAP-USDT:2026-11-25T03:30:00+00:00",
+      "exit": 1638.847857142857,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.0314612776355438,
+      "fees": 0.0023811232334186735,
+      "net_pnl": 0.02908015440212513
+    },
+    {
+      "symbol": "ADA-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.1427,
+      "stop": 0.14391071428571428,
+      "target": 0.14027857142857142,
+      "quantity": 10.511562718990891,
+      "entry_candle": "2026-11-25T04:45:00+00:00",
+      "last_processed_candle": "2026-11-25T06:45:00+00:00",
+      "trade_id": "ADA-SWAP-USDT:2026-11-25T04:45:00+00:00",
+      "exit": 0.14391071428571428,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.012726499149063987,
+      "fees": 0.0018076358994894384,
+      "net_pnl": -0.014534135048553425
     }
   ],
   "meta": {
-    "last_crypto_signal": "EWY-SWAP-USDT:1795586400000"
+    "last_crypto_signal": "BNB-SWAP-USDT:1795592700000"
   }
 }
