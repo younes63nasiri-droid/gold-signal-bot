@@ -9,7 +9,7 @@
       "target": 58635.235714285714,
       "quantity": 0.00010023756302436775,
       "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-24T23:45:00+00:00"
+      "last_processed_candle": "2026-11-25T01:15:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-24T23:45:00+00:00"
+      "last_processed_candle": "2026-11-25T01:15:00+00:00"
     },
     "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00": {
       "symbol": "COIN-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 100.87785714285714,
       "quantity": 0.03371219418223849,
       "entry_candle": "2026-11-24T18:30:00+00:00",
-      "last_processed_candle": "2026-11-24T23:45:00+00:00"
+      "last_processed_candle": "2026-11-25T01:15:00+00:00"
     },
     "AAPL-SWAP-USDT:2026-11-24T20:45:00+00:00": {
       "symbol": "AAPL-SWAP-USDT",
@@ -39,7 +39,7 @@
       "target": 357.3,
       "quantity": 0.011277453550988187,
       "entry_candle": "2026-11-24T20:45:00+00:00",
-      "last_processed_candle": "2026-11-24T23:45:00+00:00"
+      "last_processed_candle": "2026-11-25T01:15:00+00:00"
     },
     "SOXL-SWAP-USDT:2026-11-24T22:45:00+00:00": {
       "symbol": "SOXL-SWAP-USDT",
@@ -49,7 +49,7 @@
       "target": 31.284285714285716,
       "quantity": 0.030175015087507542,
       "entry_candle": "2026-11-24T22:45:00+00:00",
-      "last_processed_candle": "2026-11-24T23:45:00+00:00"
+      "last_processed_candle": "2026-11-25T01:15:00+00:00"
     },
     "XAU-SWAP-USDT:2026-11-24T23:45:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -60,6 +60,16 @@
       "quantity": 0.001124258691925012,
       "entry_candle": "2026-11-24T23:45:00+00:00",
       "last_processed_candle": "2026-11-25T01:15:00+00:00"
+    },
+    "XAG-SWAP-USDT:2026-11-25T01:15:00+00:00": {
+      "symbol": "XAG-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 40.93,
+      "stop": 41.21392857142857,
+      "target": 40.36214285714286,
+      "quantity": 0.07329587099926704,
+      "entry_candle": "2026-11-25T01:15:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -545,6 +555,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "EVAA-SWAP-USDT:1795564800000"
+    "last_crypto_signal": "XAG-SWAP-USDT:1795570200000"
   }
 }
