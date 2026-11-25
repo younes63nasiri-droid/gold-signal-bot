@@ -1,16 +1,6 @@
 {
-  "balance": 995.4546814563972,
+  "balance": 995.3464566004163,
   "open": {
-    "NVDA-SWAP-USDT:2026-11-25T17:00:00+00:00": {
-      "symbol": "NVDA-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 145.07,
-      "stop": 148.38285714285715,
-      "target": 138.4442857142857,
-      "quantity": 0.031019507823809196,
-      "entry_candle": "2026-11-25T17:00:00+00:00",
-      "last_processed_candle": "2026-11-25T17:45:00+00:00"
-    },
     "XBR-SWAP-USDT:2026-11-25T18:00:00+00:00": {
       "symbol": "XBR-SWAP-USDT",
       "direction": "LONG",
@@ -19,7 +9,7 @@
       "target": 91.68071428571429,
       "quantity": 0.1050768720274306,
       "entry_candle": "2026-11-25T18:00:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-25T19:00:00+00:00"
     }
   },
   "closed": [
@@ -822,9 +812,25 @@
       "gross_pnl": -0.05285166510672972,
       "fees": 0.0024317109990640373,
       "net_pnl": -0.05528337610579376
+    },
+    {
+      "symbol": "NVDA-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 145.07,
+      "stop": 148.38285714285715,
+      "target": 138.4442857142857,
+      "quantity": 0.031019507823809196,
+      "entry_candle": "2026-11-25T17:00:00+00:00",
+      "last_processed_candle": "2026-11-25T18:45:00+00:00",
+      "trade_id": "NVDA-SWAP-USDT:2026-11-25T17:00:00+00:00",
+      "exit": 148.38285714285715,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.1027631980620197,
+      "fees": 0.005461657918837211,
+      "net_pnl": -0.1082248559808569
     }
   ],
   "meta": {
-    "last_crypto_signal": "XBR-SWAP-USDT:1795629600000"
+    "last_crypto_signal": "XBR-SWAP-USDT:1795634100000"
   }
 }
