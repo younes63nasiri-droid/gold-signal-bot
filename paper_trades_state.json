@@ -1,5 +1,5 @@
 {
-  "balance": 994.4628609864728,
+  "balance": 994.4217917513079,
   "open": {
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T07:30:00+00:00"
+      "last_processed_candle": "2026-11-25T08:45:00+00:00"
     },
     "XAU-SWAP-USDT:2026-11-25T03:30:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -29,16 +29,16 @@
       "target": 126.60214285714287,
       "quantity": 0.031130827301735543,
       "entry_candle": "2026-11-25T05:45:00+00:00",
-      "last_processed_candle": "2026-11-25T07:30:00+00:00"
+      "last_processed_candle": "2026-11-25T08:45:00+00:00"
     },
-    "BNB-SWAP-USDT:2026-11-25T07:30:00+00:00": {
-      "symbol": "BNB-SWAP-USDT",
+    "AMD-SWAP-USDT:2026-11-25T08:45:00+00:00": {
+      "symbol": "AMD-SWAP-USDT",
       "direction": "SHORT",
-      "entry": 539.36,
-      "stop": 542.7382142857143,
-      "target": 532.6035714285715,
-      "quantity": 0.010197270839513497,
-      "entry_candle": "2026-11-25T07:30:00+00:00",
+      "entry": 397.3,
+      "stop": 401.49785714285713,
+      "target": 388.9042857142857,
+      "quantity": 0.020135917442738484,
+      "entry_candle": "2026-11-25T08:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -650,9 +650,25 @@
       "gross_pnl": -0.012726499149063987,
       "fees": 0.0018076358994894384,
       "net_pnl": -0.014534135048553425
+    },
+    {
+      "symbol": "BNB-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 539.36,
+      "stop": 542.7382142857143,
+      "target": 532.6035714285715,
+      "quantity": 0.010197270839513497,
+      "entry_candle": "2026-11-25T07:30:00+00:00",
+      "last_processed_candle": "2026-11-25T08:30:00+00:00",
+      "trade_id": "BNB-SWAP-USDT:2026-11-25T07:30:00+00:00",
+      "exit": 542.7382142857143,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.03444856602534242,
+      "fees": 0.006620669139615206,
+      "net_pnl": -0.041069235164957626
     }
   ],
   "meta": {
-    "last_crypto_signal": "BNB-SWAP-USDT:1795592700000"
+    "last_crypto_signal": "AMD-SWAP-USDT:1795597200000"
   }
 }
