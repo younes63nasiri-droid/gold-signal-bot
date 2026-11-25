@@ -9,7 +9,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T10:00:00+00:00"
+      "last_processed_candle": "2026-11-25T11:00:00+00:00"
     },
     "XAU-SWAP-USDT:2026-11-25T03:30:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 575.5714285714286,
       "quantity": 0.01031778786628147,
       "entry_candle": "2026-11-25T10:00:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-25T11:00:00+00:00"
     }
   },
   "closed": [
@@ -691,6 +691,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "META-SWAP-USDT:1795601700000"
+    "last_crypto_signal": "SPY-SWAP-USDT:1795605300000"
   }
 }
