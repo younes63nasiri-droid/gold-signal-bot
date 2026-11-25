@@ -1,5 +1,5 @@
 {
-  "balance": 994.24168827211,
+  "balance": 994.2269506921571,
   "open": {
     "BTC-SWAP-USDT:2026-11-24T15:15:00+00:00": {
       "symbol": "BTC-SWAP-USDT",
@@ -49,16 +49,6 @@
       "target": 31.284285714285716,
       "quantity": 0.030175015087507542,
       "entry_candle": "2026-11-24T22:45:00+00:00",
-      "last_processed_candle": "2026-11-25T01:15:00+00:00"
-    },
-    "XAU-SWAP-USDT:2026-11-24T23:45:00+00:00": {
-      "symbol": "XAU-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 3557.9,
-      "stop": 3566.733928571429,
-      "target": 3540.232142857143,
-      "quantity": 0.001124258691925012,
-      "entry_candle": "2026-11-24T23:45:00+00:00",
       "last_processed_candle": "2026-11-25T01:15:00+00:00"
     },
     "XAG-SWAP-USDT:2026-11-25T01:15:00+00:00": {
@@ -552,6 +542,22 @@
       "gross_pnl": -0.013568759892258087,
       "fees": 0.004808141255935355,
       "net_pnl": -0.01837690114819344
+    },
+    {
+      "symbol": "XAU-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 3557.9,
+      "stop": 3566.733928571429,
+      "target": 3540.232142857143,
+      "quantity": 0.001124258691925012,
+      "entry_candle": "2026-11-24T23:45:00+00:00",
+      "last_processed_candle": "2026-11-25T02:00:00+00:00",
+      "trade_id": "XAU-SWAP-USDT:2026-11-24T23:45:00+00:00",
+      "exit": 3566.733928571429,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.009931620980273436,
+      "fees": 0.0048059589725881645,
+      "net_pnl": -0.0147375799528616
     }
   ],
   "meta": {
