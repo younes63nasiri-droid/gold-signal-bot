@@ -9,7 +9,7 @@
       "target": 91.68071428571429,
       "quantity": 0.1050768720274306,
       "entry_candle": "2026-11-25T18:00:00+00:00",
-      "last_processed_candle": "2026-11-25T19:00:00+00:00"
+      "last_processed_candle": "2026-11-25T20:00:00+00:00"
     }
   },
   "closed": [
@@ -831,6 +831,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "XBR-SWAP-USDT:1795634100000"
+    "last_crypto_signal": "XBR-SWAP-USDT:1795637700000"
   }
 }
