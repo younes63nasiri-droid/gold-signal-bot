@@ -9,7 +9,7 @@
       "target": 58635.235714285714,
       "quantity": 0.00010023756302436775,
       "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-25T02:15:00+00:00"
+      "last_processed_candle": "2026-11-25T03:30:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T02:15:00+00:00"
+      "last_processed_candle": "2026-11-25T03:30:00+00:00"
     },
     "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00": {
       "symbol": "COIN-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 100.87785714285714,
       "quantity": 0.03371219418223849,
       "entry_candle": "2026-11-24T18:30:00+00:00",
-      "last_processed_candle": "2026-11-25T02:15:00+00:00"
+      "last_processed_candle": "2026-11-25T03:30:00+00:00"
     },
     "AAPL-SWAP-USDT:2026-11-24T20:45:00+00:00": {
       "symbol": "AAPL-SWAP-USDT",
@@ -39,7 +39,7 @@
       "target": 357.3,
       "quantity": 0.011277453550988187,
       "entry_candle": "2026-11-24T20:45:00+00:00",
-      "last_processed_candle": "2026-11-25T02:15:00+00:00"
+      "last_processed_candle": "2026-11-25T03:30:00+00:00"
     },
     "XAU-SWAP-USDT:2026-11-25T03:30:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -48,6 +48,16 @@
       "stop": 3576.3092857142856,
       "target": 3519.3714285714286,
       "quantity": 0.0011244388347440356,
+      "entry_candle": "2026-11-25T03:30:00+00:00",
+      "last_processed_candle": null
+    },
+    "ETH-SWAP-USDT:2026-11-25T03:30:00+00:00": {
+      "symbol": "ETH-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 1665.04,
+      "stop": 1678.1360714285715,
+      "target": 1638.847857142857,
+      "quantity": 0.001201172344207947,
       "entry_candle": "2026-11-25T03:30:00+00:00",
       "last_processed_candle": null
     }
@@ -583,6 +593,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "ANT-SWAP-USDT:1795573800000"
+    "last_crypto_signal": "ETH-SWAP-USDT:1795578300000"
   }
 }
