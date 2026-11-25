@@ -1,16 +1,6 @@
 {
-  "balance": 995.509964832503,
+  "balance": 995.4546814563972,
   "open": {
-    "1000PEPE-SWAP-USDT:2026-11-25T16:00:00+00:00": {
-      "symbol": "1000PEPE-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 0.0033121,
-      "stop": 0.003399625,
-      "target": 0.00313705,
-      "quantity": 603.8465022191359,
-      "entry_candle": "2026-11-25T16:00:00+00:00",
-      "last_processed_candle": "2026-11-25T17:00:00+00:00"
-    },
     "NVDA-SWAP-USDT:2026-11-25T17:00:00+00:00": {
       "symbol": "NVDA-SWAP-USDT",
       "direction": "SHORT",
@@ -19,6 +9,16 @@
       "target": 138.4442857142857,
       "quantity": 0.031019507823809196,
       "entry_candle": "2026-11-25T17:00:00+00:00",
+      "last_processed_candle": "2026-11-25T17:45:00+00:00"
+    },
+    "XBR-SWAP-USDT:2026-11-25T18:00:00+00:00": {
+      "symbol": "XBR-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 90.41,
+      "stop": 89.77464285714285,
+      "target": 91.68071428571429,
+      "quantity": 0.1050768720274306,
+      "entry_candle": "2026-11-25T18:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -806,9 +806,25 @@
       "gross_pnl": -0.028205885396009957,
       "fees": 0.004216923531237605,
       "net_pnl": -0.03242280892724756
+    },
+    {
+      "symbol": "1000PEPE-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.0033121,
+      "stop": 0.003399625,
+      "target": 0.00313705,
+      "quantity": 603.8465022191359,
+      "entry_candle": "2026-11-25T16:00:00+00:00",
+      "last_processed_candle": "2026-11-25T17:15:00+00:00",
+      "trade_id": "1000PEPE-SWAP-USDT:2026-11-25T16:00:00+00:00",
+      "exit": 0.003399625,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.05285166510672972,
+      "fees": 0.0024317109990640373,
+      "net_pnl": -0.05528337610579376
     }
   ],
   "meta": {
-    "last_crypto_signal": "NVDA-SWAP-USDT:1795626900000"
+    "last_crypto_signal": "XBR-SWAP-USDT:1795629600000"
   }
 }
