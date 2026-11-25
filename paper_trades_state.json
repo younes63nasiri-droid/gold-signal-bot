@@ -9,7 +9,7 @@
       "target": 58635.235714285714,
       "quantity": 0.00010023756302436775,
       "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-25T04:45:00+00:00"
+      "last_processed_candle": "2026-11-25T05:45:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T04:45:00+00:00"
+      "last_processed_candle": "2026-11-25T05:45:00+00:00"
     },
     "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00": {
       "symbol": "COIN-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 100.87785714285714,
       "quantity": 0.03371219418223849,
       "entry_candle": "2026-11-24T18:30:00+00:00",
-      "last_processed_candle": "2026-11-25T04:45:00+00:00"
+      "last_processed_candle": "2026-11-25T05:45:00+00:00"
     },
     "XAU-SWAP-USDT:2026-11-25T03:30:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -49,7 +49,7 @@
       "target": 1638.847857142857,
       "quantity": 0.001201172344207947,
       "entry_candle": "2026-11-25T03:30:00+00:00",
-      "last_processed_candle": "2026-11-25T04:45:00+00:00"
+      "last_processed_candle": "2026-11-25T05:45:00+00:00"
     },
     "ADA-SWAP-USDT:2026-11-25T04:45:00+00:00": {
       "symbol": "ADA-SWAP-USDT",
@@ -59,6 +59,16 @@
       "target": 0.14027857142857142,
       "quantity": 10.511562718990891,
       "entry_candle": "2026-11-25T04:45:00+00:00",
+      "last_processed_candle": "2026-11-25T05:45:00+00:00"
+    },
+    "EWY-SWAP-USDT:2026-11-25T05:45:00+00:00": {
+      "symbol": "EWY-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 128.49,
+      "stop": 129.43392857142857,
+      "target": 126.60214285714287,
+      "quantity": 0.031130827301735543,
+      "entry_candle": "2026-11-25T05:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -609,6 +619,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "ADA-SWAP-USDT:1795582800000"
+    "last_crypto_signal": "EWY-SWAP-USDT:1795586400000"
   }
 }
