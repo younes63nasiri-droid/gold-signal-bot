@@ -1,36 +1,6 @@
 {
-  "balance": 994.7593956534429,
+  "balance": 995.2891181420063,
   "open": {
-    "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
-      "symbol": "ANT-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 81.16,
-      "stop": 83.77428571428571,
-      "target": 75.93142857142857,
-      "quantity": 0.05544603252833909,
-      "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T13:45:00+00:00"
-    },
-    "META-SWAP-USDT:2026-11-25T10:00:00+00:00": {
-      "symbol": "META-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 581.52,
-      "stop": 584.4942857142858,
-      "target": 575.5714285714286,
-      "quantity": 0.01031778786628147,
-      "entry_candle": "2026-11-25T10:00:00+00:00",
-      "last_processed_candle": "2026-11-25T13:45:00+00:00"
-    },
-    "AMD-SWAP-USDT:2026-11-25T13:45:00+00:00": {
-      "symbol": "AMD-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 383.83,
-      "stop": 388.6353571428571,
-      "target": 374.2192857142857,
-      "quantity": 0.020842560508558476,
-      "entry_candle": "2026-11-25T13:45:00+00:00",
-      "last_processed_candle": null
-    },
     "XAU-SWAP-USDT:2026-11-25T14:45:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
       "direction": "SHORT",
@@ -38,6 +8,16 @@
       "stop": 3507.5003571428574,
       "target": 3423.3792857142853,
       "quantity": 0.0010059032148666746,
+      "entry_candle": "2026-11-25T14:45:00+00:00",
+      "last_processed_candle": null
+    },
+    "MU-SWAP-USDT:2026-11-25T14:45:00+00:00": {
+      "symbol": "MU-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 581.53,
+      "stop": 594.145,
+      "target": 556.3000000000001,
+      "quantity": 0.010317610441421767,
       "entry_candle": "2026-11-25T14:45:00+00:00",
       "last_processed_candle": null
     }
@@ -746,9 +726,57 @@
       "gross_pnl": 0.05584480422223806,
       "fees": 0.003566493117466657,
       "net_pnl": 0.0522783111047714
+    },
+    {
+      "symbol": "ANT-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 81.16,
+      "stop": 83.77428571428571,
+      "target": 75.93142857142857,
+      "quantity": 0.05544603252833909,
+      "entry_candle": "2026-11-24T17:30:00+00:00",
+      "last_processed_candle": "2026-11-25T14:30:00+00:00",
+      "trade_id": "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00",
+      "exit": 75.93142857142857,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.2899035415053158,
+      "fees": 0.00522605787509681,
+      "net_pnl": 0.28467748363021894
+    },
+    {
+      "symbol": "META-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 581.52,
+      "stop": 584.4942857142858,
+      "target": 575.5714285714286,
+      "quantity": 0.01031778786628147,
+      "entry_candle": "2026-11-25T10:00:00+00:00",
+      "last_processed_candle": "2026-11-25T14:15:00+00:00",
+      "trade_id": "META-SWAP-USDT:2026-11-25T10:00:00+00:00",
+      "exit": 575.5714285714286,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.0613760981074229,
+      "fees": 0.007163174341135546,
+      "net_pnl": 0.054212923766287356
+    },
+    {
+      "symbol": "AMD-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 383.83,
+      "stop": 388.6353571428571,
+      "target": 374.2192857142857,
+      "quantity": 0.020842560508558476,
+      "entry_candle": "2026-11-25T13:45:00+00:00",
+      "last_processed_candle": "2026-11-25T14:30:00+00:00",
+      "trade_id": "AMD-SWAP-USDT:2026-11-25T13:45:00+00:00",
+      "exit": 374.2192857142857,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.20031189403046695,
+      "fees": 0.009479812863581719,
+      "net_pnl": 0.19083208116688524
     }
   ],
   "meta": {
-    "last_crypto_signal": "AMD-SWAP-USDT:1795615200000"
+    "last_crypto_signal": "MU-SWAP-USDT:1795618800000"
   }
 }
