@@ -1,5 +1,5 @@
 {
-  "balance": 994.257357218031,
+  "balance": 994.2378489713931,
   "open": {
     "BTC-SWAP-USDT:2026-11-24T15:15:00+00:00": {
       "symbol": "BTC-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 58635.235714285714,
       "quantity": 0.00010023756302436775,
       "entry_candle": "2026-11-24T15:15:00+00:00",
-      "last_processed_candle": "2026-11-25T03:30:00+00:00"
+      "last_processed_candle": "2026-11-25T04:45:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T03:30:00+00:00"
+      "last_processed_candle": "2026-11-25T04:45:00+00:00"
     },
     "COIN-SWAP-USDT:2026-11-24T18:30:00+00:00": {
       "symbol": "COIN-SWAP-USDT",
@@ -29,17 +29,7 @@
       "target": 100.87785714285714,
       "quantity": 0.03371219418223849,
       "entry_candle": "2026-11-24T18:30:00+00:00",
-      "last_processed_candle": "2026-11-25T03:30:00+00:00"
-    },
-    "AAPL-SWAP-USDT:2026-11-24T20:45:00+00:00": {
-      "symbol": "AAPL-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 354.69,
-      "stop": 353.385,
-      "target": 357.3,
-      "quantity": 0.011277453550988187,
-      "entry_candle": "2026-11-24T20:45:00+00:00",
-      "last_processed_candle": "2026-11-25T03:30:00+00:00"
+      "last_processed_candle": "2026-11-25T04:45:00+00:00"
     },
     "XAU-SWAP-USDT:2026-11-25T03:30:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -59,6 +49,16 @@
       "target": 1638.847857142857,
       "quantity": 0.001201172344207947,
       "entry_candle": "2026-11-25T03:30:00+00:00",
+      "last_processed_candle": "2026-11-25T04:45:00+00:00"
+    },
+    "ADA-SWAP-USDT:2026-11-25T04:45:00+00:00": {
+      "symbol": "ADA-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.1427,
+      "stop": 0.14391071428571428,
+      "target": 0.14027857142857142,
+      "quantity": 10.511562718990891,
+      "entry_candle": "2026-11-25T04:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -590,9 +590,25 @@
       "gross_pnl": -0.020810791944434498,
       "fees": 0.00361248647516666,
       "net_pnl": -0.02442327841960116
+    },
+    {
+      "symbol": "AAPL-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 354.69,
+      "stop": 353.385,
+      "target": 357.3,
+      "quantity": 0.011277453550988187,
+      "entry_candle": "2026-11-24T20:45:00+00:00",
+      "last_processed_candle": "2026-11-25T04:30:00+00:00",
+      "trade_id": "AAPL-SWAP-USDT:2026-11-24T20:45:00+00:00",
+      "exit": 353.385,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.014717076884039662,
+      "fees": 0.004791169753869576,
+      "net_pnl": -0.01950824663790924
     }
   ],
   "meta": {
-    "last_crypto_signal": "ETH-SWAP-USDT:1795578300000"
+    "last_crypto_signal": "ADA-SWAP-USDT:1795582800000"
   }
 }
