@@ -1,5 +1,5 @@
 {
-  "balance": 994.7071173423382,
+  "balance": 994.7593956534429,
   "open": {
     "ANT-SWAP-USDT:2026-11-24T17:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 75.93142857142857,
       "quantity": 0.05544603252833909,
       "entry_candle": "2026-11-24T17:30:00+00:00",
-      "last_processed_candle": "2026-11-25T12:15:00+00:00"
+      "last_processed_candle": "2026-11-25T13:45:00+00:00"
     },
     "META-SWAP-USDT:2026-11-25T10:00:00+00:00": {
       "symbol": "META-SWAP-USDT",
@@ -19,16 +19,16 @@
       "target": 575.5714285714286,
       "quantity": 0.01031778786628147,
       "entry_candle": "2026-11-25T10:00:00+00:00",
-      "last_processed_candle": "2026-11-25T12:15:00+00:00"
+      "last_processed_candle": "2026-11-25T13:45:00+00:00"
     },
-    "XAG-SWAP-USDT:2026-11-25T12:15:00+00:00": {
-      "symbol": "XAG-SWAP-USDT",
+    "AMD-SWAP-USDT:2026-11-25T13:45:00+00:00": {
+      "symbol": "AMD-SWAP-USDT",
       "direction": "SHORT",
-      "entry": 40.06,
-      "stop": 40.432857142857145,
-      "target": 39.31428571428572,
-      "quantity": 0.07488766849725412,
-      "entry_candle": "2026-11-25T12:15:00+00:00",
+      "entry": 383.83,
+      "stop": 388.6353571428571,
+      "target": 374.2192857142857,
+      "quantity": 0.020842560508558476,
+      "entry_candle": "2026-11-25T13:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -720,9 +720,25 @@
       "gross_pnl": 0.03863205072571709,
       "fees": 0.004776820769564569,
       "net_pnl": 0.03385522995615252
+    },
+    {
+      "symbol": "XAG-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 40.06,
+      "stop": 40.432857142857145,
+      "target": 39.31428571428572,
+      "quantity": 0.07488766849725412,
+      "entry_candle": "2026-11-25T12:15:00+00:00",
+      "last_processed_candle": "2026-11-25T13:45:00+00:00",
+      "trade_id": "XAG-SWAP-USDT:2026-11-25T12:15:00+00:00",
+      "exit": 39.31428571428572,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.05584480422223806,
+      "fees": 0.003566493117466657,
+      "net_pnl": 0.0522783111047714
     }
   ],
   "meta": {
-    "last_crypto_signal": "XAG-SWAP-USDT:1795609800000"
+    "last_crypto_signal": "AMD-SWAP-USDT:1795615200000"
   }
 }
