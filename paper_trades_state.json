@@ -1,5 +1,5 @@
 {
-  "balance": 995.1547132711456,
+  "balance": 995.1326091633441,
   "open": {
     "SPCX-SWAP-USDT:2026-11-26T12:15:00+00:00": {
       "symbol": "SPCX-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 130.45642857142857,
       "quantity": 0.030897574540398577,
       "entry_candle": "2026-11-26T12:15:00+00:00",
-      "last_processed_candle": "2026-11-26T21:15:00+00:00"
+      "last_processed_candle": "2026-11-26T22:15:00+00:00"
     },
     "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00": {
       "symbol": "XBR-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 92.49142857142857,
       "quantity": 0.10377976840725366,
       "entry_candle": "2026-11-26T17:00:00+00:00",
-      "last_processed_candle": "2026-11-26T21:15:00+00:00"
+      "last_processed_candle": "2026-11-26T22:15:00+00:00"
     },
     "XTI-SWAP-USDT:2026-11-26T18:00:00+00:00": {
       "symbol": "XTI-SWAP-USDT",
@@ -29,16 +29,16 @@
       "target": 85.83285714285714,
       "quantity": 0.10012957945576628,
       "entry_candle": "2026-11-26T18:00:00+00:00",
-      "last_processed_candle": "2026-11-26T21:15:00+00:00"
+      "last_processed_candle": "2026-11-26T22:15:00+00:00"
     },
-    "DOGE-SWAP-USDT:2026-11-26T21:15:00+00:00": {
-      "symbol": "DOGE-SWAP-USDT",
+    "XAG-SWAP-USDT:2026-11-26T22:15:00+00:00": {
+      "symbol": "XAG-SWAP-USDT",
       "direction": "LONG",
-      "entry": 0.05693,
-      "stop": 0.05668357142857143,
-      "target": 0.057422857142857144,
-      "quantity": 70.26172492534691,
-      "entry_candle": "2026-11-26T21:15:00+00:00",
+      "entry": 41.75,
+      "stop": 41.63,
+      "target": 41.99,
+      "quantity": 0.0718562874251497,
+      "entry_candle": "2026-11-26T22:15:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1034,9 +1034,25 @@
       "gross_pnl": -0.07512661789532936,
       "fees": 0.0023549240292628022,
       "net_pnl": -0.07748154192459217
+    },
+    {
+      "symbol": "DOGE-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.05693,
+      "stop": 0.05668357142857143,
+      "target": 0.057422857142857144,
+      "quantity": 70.26172492534691,
+      "entry_candle": "2026-11-26T21:15:00+00:00",
+      "last_processed_candle": "2026-11-26T22:00:00+00:00",
+      "trade_id": "DOGE-SWAP-USDT:2026-11-26T21:15:00+00:00",
+      "exit": 0.05668357142857143,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.01731449649946046,
+      "fees": 0.004789611302100323,
+      "net_pnl": -0.022104107801560784
     }
   ],
   "meta": {
-    "last_crypto_signal": "DOGE-SWAP-USDT:1795728600000"
+    "last_crypto_signal": "XAG-SWAP-USDT:1795732200000"
   }
 }
