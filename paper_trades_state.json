@@ -1,5 +1,5 @@
 {
-  "balance": 995.2723722166875,
+  "balance": 995.2346403460132,
   "open": {
     "ETH-SWAP-USDT:2026-11-26T08:45:00+00:00": {
       "symbol": "ETH-SWAP-USDT",
@@ -9,16 +9,16 @@
       "target": 1718.3435714285713,
       "quantity": 0.0011762284235598555,
       "entry_candle": "2026-11-26T08:45:00+00:00",
-      "last_processed_candle": "2026-11-26T10:00:00+00:00"
+      "last_processed_candle": "2026-11-26T11:00:00+00:00"
     },
-    "INTC-SWAP-USDT:2026-11-26T10:00:00+00:00": {
-      "symbol": "INTC-SWAP-USDT",
+    "SSV-SWAP-USDT:2026-11-26T11:00:00+00:00": {
+      "symbol": "SSV-SWAP-USDT",
       "direction": "LONG",
-      "entry": 55.11,
-      "stop": 54.856071428571425,
-      "target": 55.61785714285714,
-      "quantity": 0.11794592632915986,
-      "entry_candle": "2026-11-26T10:00:00+00:00",
+      "entry": 2.562,
+      "stop": 2.453142857142857,
+      "target": 2.7797142857142854,
+      "quantity": 0.19516003122560502,
+      "entry_candle": "2026-11-26T11:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -918,9 +918,25 @@
       "gross_pnl": -0.04333141707387202,
       "fees": 0.010174001149755675,
       "net_pnl": -0.05350541822362769
+    },
+    {
+      "symbol": "INTC-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 55.11,
+      "stop": 54.856071428571425,
+      "target": 55.61785714285714,
+      "quantity": 0.11794592632915986,
+      "entry_candle": "2026-11-26T10:00:00+00:00",
+      "last_processed_candle": "2026-11-26T10:30:00+00:00",
+      "trade_id": "INTC-SWAP-USDT:2026-11-26T10:00:00+00:00",
+      "exit": 54.856071428571425,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.029949840578583388,
+      "fees": 0.007782030095652848,
+      "net_pnl": -0.03773187067423624
     }
   ],
   "meta": {
-    "last_crypto_signal": "INTC-SWAP-USDT:1795688100000"
+    "last_crypto_signal": "SSV-SWAP-USDT:1795691700000"
   }
 }
