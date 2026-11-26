@@ -1,6 +1,17 @@
 {
   "balance": 995.2723722166875,
-  "open": {},
+  "open": {
+    "ETH-SWAP-USDT:2026-11-26T08:45:00+00:00": {
+      "symbol": "ETH-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 1700.35,
+      "stop": 1691.3532142857143,
+      "target": 1718.3435714285713,
+      "quantity": 0.0011762284235598555,
+      "entry_candle": "2026-11-26T08:45:00+00:00",
+      "last_processed_candle": null
+    }
+  },
   "closed": [
     {
       "symbol": "DODOX-SWAP-USDT",
@@ -900,6 +911,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "VVV-SWAP-USDT:1795679100000"
+    "last_crypto_signal": "ETH-SWAP-USDT:1795683600000"
   }
 }
