@@ -1,5 +1,5 @@
 {
-  "balance": 995.1326091633441,
+  "balance": 995.1203915825058,
   "open": {
     "SPCX-SWAP-USDT:2026-11-26T12:15:00+00:00": {
       "symbol": "SPCX-SWAP-USDT",
@@ -9,7 +9,7 @@
       "target": 130.45642857142857,
       "quantity": 0.030897574540398577,
       "entry_candle": "2026-11-26T12:15:00+00:00",
-      "last_processed_candle": "2026-11-26T22:15:00+00:00"
+      "last_processed_candle": "2026-11-26T23:15:00+00:00"
     },
     "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00": {
       "symbol": "XBR-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 92.49142857142857,
       "quantity": 0.10377976840725366,
       "entry_candle": "2026-11-26T17:00:00+00:00",
-      "last_processed_candle": "2026-11-26T22:15:00+00:00"
+      "last_processed_candle": "2026-11-26T23:15:00+00:00"
     },
     "XTI-SWAP-USDT:2026-11-26T18:00:00+00:00": {
       "symbol": "XTI-SWAP-USDT",
@@ -29,16 +29,16 @@
       "target": 85.83285714285714,
       "quantity": 0.10012957945576628,
       "entry_candle": "2026-11-26T18:00:00+00:00",
-      "last_processed_candle": "2026-11-26T22:15:00+00:00"
+      "last_processed_candle": "2026-11-26T23:15:00+00:00"
     },
-    "XAG-SWAP-USDT:2026-11-26T22:15:00+00:00": {
-      "symbol": "XAG-SWAP-USDT",
+    "INIT-SWAP-USDT:2026-11-26T23:15:00+00:00": {
+      "symbol": "INIT-SWAP-USDT",
       "direction": "LONG",
-      "entry": 41.75,
-      "stop": 41.63,
-      "target": 41.99,
-      "quantity": 0.0718562874251497,
-      "entry_candle": "2026-11-26T22:15:00+00:00",
+      "entry": 0.14279,
+      "stop": 0.13685642857142857,
+      "target": 0.15465714285714288,
+      "quantity": 10.504937320540654,
+      "entry_candle": "2026-11-26T23:15:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1050,9 +1050,25 @@
       "gross_pnl": -0.01731449649946046,
       "fees": 0.004789611302100323,
       "net_pnl": -0.022104107801560784
+    },
+    {
+      "symbol": "XAG-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 41.75,
+      "stop": 41.63,
+      "target": 41.99,
+      "quantity": 0.0718562874251497,
+      "entry_candle": "2026-11-26T22:15:00+00:00",
+      "last_processed_candle": "2026-11-26T23:00:00+00:00",
+      "trade_id": "XAG-SWAP-USDT:2026-11-26T22:15:00+00:00",
+      "exit": 41.63,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.00862275449101778,
+      "fees": 0.003594826347305389,
+      "net_pnl": -0.01221758083832317
     }
   ],
   "meta": {
-    "last_crypto_signal": "XAG-SWAP-USDT:1795732200000"
+    "last_crypto_signal": "INIT-SWAP-USDT:1795735800000"
   }
 }
