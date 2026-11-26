@@ -9,7 +9,7 @@
       "target": 91.68071428571429,
       "quantity": 0.1050768720274306,
       "entry_candle": "2026-11-25T18:00:00+00:00",
-      "last_processed_candle": "2026-11-25T23:00:00+00:00"
+      "last_processed_candle": "2026-11-26T00:00:00+00:00"
     },
     "MMT-SWAP-USDT:2026-11-25T21:00:00+00:00": {
       "symbol": "MMT-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 0.32799999999999996,
       "quantity": 16.414970453053186,
       "entry_candle": "2026-11-25T21:00:00+00:00",
-      "last_processed_candle": "2026-11-25T23:00:00+00:00"
+      "last_processed_candle": "2026-11-26T00:00:00+00:00"
     },
     "META-SWAP-USDT:2026-11-25T22:00:00+00:00": {
       "symbol": "META-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 617.12,
       "quantity": 0.010683936290866057,
       "entry_candle": "2026-11-25T22:00:00+00:00",
-      "last_processed_candle": "2026-11-25T23:00:00+00:00"
+      "last_processed_candle": "2026-11-26T00:00:00+00:00"
     }
   },
   "closed": [
@@ -851,6 +851,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "XBR-SWAP-USDT:1795648500000"
+    "last_crypto_signal": "XBR-SWAP-USDT:1795652100000"
   }
 }
