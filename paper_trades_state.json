@@ -1,5 +1,5 @@
 {
-  "balance": 995.2321948130702,
+  "balance": 995.1547132711456,
   "open": {
     "SPCX-SWAP-USDT:2026-11-26T12:15:00+00:00": {
       "symbol": "SPCX-SWAP-USDT",
@@ -9,17 +9,7 @@
       "target": 130.45642857142857,
       "quantity": 0.030897574540398577,
       "entry_candle": "2026-11-26T12:15:00+00:00",
-      "last_processed_candle": "2026-11-26T17:00:00+00:00"
-    },
-    "BLESS-SWAP-USDT:2026-11-26T16:00:00+00:00": {
-      "symbol": "BLESS-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 0.01777,
-      "stop": 0.0171025,
-      "target": 0.019105,
-      "quantity": 112.54924029262801,
-      "entry_candle": "2026-11-26T16:00:00+00:00",
-      "last_processed_candle": "2026-11-26T17:00:00+00:00"
+      "last_processed_candle": "2026-11-26T18:00:00+00:00"
     },
     "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00": {
       "symbol": "XBR-SWAP-USDT",
@@ -29,6 +19,16 @@
       "target": 92.49142857142857,
       "quantity": 0.10377976840725366,
       "entry_candle": "2026-11-26T17:00:00+00:00",
+      "last_processed_candle": "2026-11-26T18:00:00+00:00"
+    },
+    "XTI-SWAP-USDT:2026-11-26T18:00:00+00:00": {
+      "symbol": "XTI-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 84.89,
+      "stop": 84.41857142857144,
+      "target": 85.83285714285714,
+      "quantity": 0.10012957945576628,
+      "entry_candle": "2026-11-26T18:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1008,9 +1008,25 @@
       "gross_pnl": -0.005431830526887567,
       "fees": 0.0011967409016838675,
       "net_pnl": -0.006628571428571434
+    },
+    {
+      "symbol": "BLESS-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.01777,
+      "stop": 0.0171025,
+      "target": 0.019105,
+      "quantity": 112.54924029262801,
+      "entry_candle": "2026-11-26T16:00:00+00:00",
+      "last_processed_candle": "2026-11-26T17:30:00+00:00",
+      "trade_id": "BLESS-SWAP-USDT:2026-11-26T16:00:00+00:00",
+      "exit": 0.0171025,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.07512661789532936,
+      "fees": 0.0023549240292628022,
+      "net_pnl": -0.07748154192459217
     }
   ],
   "meta": {
-    "last_crypto_signal": "XBR-SWAP-USDT:1795713300000"
+    "last_crypto_signal": "XTI-SWAP-USDT:1795716900000"
   }
 }
