@@ -9,7 +9,7 @@
       "target": 130.45642857142857,
       "quantity": 0.030897574540398577,
       "entry_candle": "2026-11-26T12:15:00+00:00",
-      "last_processed_candle": "2026-11-26T16:00:00+00:00"
+      "last_processed_candle": "2026-11-26T17:00:00+00:00"
     },
     "BLESS-SWAP-USDT:2026-11-26T16:00:00+00:00": {
       "symbol": "BLESS-SWAP-USDT",
@@ -19,6 +19,16 @@
       "target": 0.019105,
       "quantity": 112.54924029262801,
       "entry_candle": "2026-11-26T16:00:00+00:00",
+      "last_processed_candle": "2026-11-26T17:00:00+00:00"
+    },
+    "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00": {
+      "symbol": "XBR-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 91.54,
+      "stop": 91.06428571428572,
+      "target": 92.49142857142857,
+      "quantity": 0.10377976840725366,
+      "entry_candle": "2026-11-26T17:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1001,6 +1011,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "BLESS-SWAP-USDT:1795709700000"
+    "last_crypto_signal": "XBR-SWAP-USDT:1795713300000"
   }
 }
