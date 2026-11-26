@@ -9,7 +9,7 @@
       "target": 1718.3435714285713,
       "quantity": 0.0011762284235598555,
       "entry_candle": "2026-11-26T08:45:00+00:00",
-      "last_processed_candle": "2026-11-26T11:00:00+00:00"
+      "last_processed_candle": "2026-11-26T12:15:00+00:00"
     },
     "SSV-SWAP-USDT:2026-11-26T11:00:00+00:00": {
       "symbol": "SSV-SWAP-USDT",
@@ -19,6 +19,16 @@
       "target": 2.7797142857142854,
       "quantity": 0.19516003122560502,
       "entry_candle": "2026-11-26T11:00:00+00:00",
+      "last_processed_candle": "2026-11-26T12:15:00+00:00"
+    },
+    "SPCX-SWAP-USDT:2026-11-26T12:15:00+00:00": {
+      "symbol": "SPCX-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 129.46,
+      "stop": 128.96178571428572,
+      "target": 130.45642857142857,
+      "quantity": 0.030897574540398577,
+      "entry_candle": "2026-11-26T12:15:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -937,6 +947,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "SSV-SWAP-USDT:1795691700000"
+    "last_crypto_signal": "SPCX-SWAP-USDT:1795696200000"
   }
 }
