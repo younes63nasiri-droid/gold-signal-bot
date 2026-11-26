@@ -9,7 +9,7 @@
       "target": 130.45642857142857,
       "quantity": 0.030897574540398577,
       "entry_candle": "2026-11-26T12:15:00+00:00",
-      "last_processed_candle": "2026-11-26T20:15:00+00:00"
+      "last_processed_candle": "2026-11-26T21:15:00+00:00"
     },
     "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00": {
       "symbol": "XBR-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 92.49142857142857,
       "quantity": 0.10377976840725366,
       "entry_candle": "2026-11-26T17:00:00+00:00",
-      "last_processed_candle": "2026-11-26T20:15:00+00:00"
+      "last_processed_candle": "2026-11-26T21:15:00+00:00"
     },
     "XTI-SWAP-USDT:2026-11-26T18:00:00+00:00": {
       "symbol": "XTI-SWAP-USDT",
@@ -29,7 +29,17 @@
       "target": 85.83285714285714,
       "quantity": 0.10012957945576628,
       "entry_candle": "2026-11-26T18:00:00+00:00",
-      "last_processed_candle": "2026-11-26T20:15:00+00:00"
+      "last_processed_candle": "2026-11-26T21:15:00+00:00"
+    },
+    "DOGE-SWAP-USDT:2026-11-26T21:15:00+00:00": {
+      "symbol": "DOGE-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.05693,
+      "stop": 0.05668357142857143,
+      "target": 0.057422857142857144,
+      "quantity": 70.26172492534691,
+      "entry_candle": "2026-11-26T21:15:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -1027,6 +1037,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "SPCX-SWAP-USDT:1795725000000"
+    "last_crypto_signal": "DOGE-SWAP-USDT:1795728600000"
   }
 }
