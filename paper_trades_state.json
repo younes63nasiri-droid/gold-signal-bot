@@ -1,5 +1,5 @@
 {
-  "balance": 995.2346403460132,
+  "balance": 995.2517993102116,
   "open": {
     "ETH-SWAP-USDT:2026-11-26T08:45:00+00:00": {
       "symbol": "ETH-SWAP-USDT",
@@ -9,17 +9,7 @@
       "target": 1718.3435714285713,
       "quantity": 0.0011762284235598555,
       "entry_candle": "2026-11-26T08:45:00+00:00",
-      "last_processed_candle": "2026-11-26T13:30:00+00:00"
-    },
-    "SSV-SWAP-USDT:2026-11-26T11:00:00+00:00": {
-      "symbol": "SSV-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 2.562,
-      "stop": 2.453142857142857,
-      "target": 2.7797142857142854,
-      "quantity": 0.19516003122560502,
-      "entry_candle": "2026-11-26T11:00:00+00:00",
-      "last_processed_candle": "2026-11-26T13:30:00+00:00"
+      "last_processed_candle": "2026-11-26T14:45:00+00:00"
     },
     "SPCX-SWAP-USDT:2026-11-26T12:15:00+00:00": {
       "symbol": "SPCX-SWAP-USDT",
@@ -29,16 +19,16 @@
       "target": 130.45642857142857,
       "quantity": 0.030897574540398577,
       "entry_candle": "2026-11-26T12:15:00+00:00",
-      "last_processed_candle": "2026-11-26T13:30:00+00:00"
+      "last_processed_candle": "2026-11-26T14:45:00+00:00"
     },
-    "META-SWAP-USDT:2026-11-26T13:30:00+00:00": {
-      "symbol": "META-SWAP-USDT",
+    "SOL-SWAP-USDT:2026-11-26T14:45:00+00:00": {
+      "symbol": "SOL-SWAP-USDT",
       "direction": "LONG",
-      "entry": 615.12,
-      "stop": 613.5192857142857,
-      "target": 618.3214285714287,
-      "quantity": 0.010567043828846405,
-      "entry_candle": "2026-11-26T13:30:00+00:00",
+      "entry": 71.01,
+      "stop": 70.62428571428572,
+      "target": 71.78142857142858,
+      "quantity": 0.01408252358822701,
+      "entry_candle": "2026-11-26T14:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -954,9 +944,41 @@
       "gross_pnl": -0.029949840578583388,
       "fees": 0.007782030095652848,
       "net_pnl": -0.03773187067423624
+    },
+    {
+      "symbol": "SSV-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 2.562,
+      "stop": 2.453142857142857,
+      "target": 2.7797142857142854,
+      "quantity": 0.19516003122560502,
+      "entry_candle": "2026-11-26T11:00:00+00:00",
+      "last_processed_candle": "2026-11-26T14:30:00+00:00",
+      "trade_id": "SSV-SWAP-USDT:2026-11-26T11:00:00+00:00",
+      "exit": 2.7797142857142854,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.04248912679826026,
+      "fees": 0.0006254934760789562,
+      "net_pnl": 0.0418636333221813
+    },
+    {
+      "symbol": "META-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 615.12,
+      "stop": 613.5192857142857,
+      "target": 618.3214285714287,
+      "quantity": 0.010567043828846405,
+      "entry_candle": "2026-11-26T13:30:00+00:00",
+      "last_processed_candle": "2026-11-26T14:15:00+00:00",
+      "trade_id": "META-SWAP-USDT:2026-11-26T13:30:00+00:00",
+      "exit": 613.5192857142857,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.016914818014603313,
+      "fees": 0.007789851109191238,
+      "net_pnl": -0.02470466912379455
     }
   ],
   "meta": {
-    "last_crypto_signal": "META-SWAP-USDT:1795700700000"
+    "last_crypto_signal": "SOL-SWAP-USDT:1795705200000"
   }
 }
