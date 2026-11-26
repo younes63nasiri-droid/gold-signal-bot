@@ -1,16 +1,6 @@
 {
-  "balance": 995.2339314805693,
+  "balance": 995.3559740493432,
   "open": {
-    "XBR-SWAP-USDT:2026-11-25T18:00:00+00:00": {
-      "symbol": "XBR-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 90.41,
-      "stop": 89.77464285714285,
-      "target": 91.68071428571429,
-      "quantity": 0.1050768720274306,
-      "entry_candle": "2026-11-25T18:00:00+00:00",
-      "last_processed_candle": "2026-11-26T04:45:00+00:00"
-    },
     "1000PEPE-SWAP-USDT:2026-11-26T03:30:00+00:00": {
       "symbol": "1000PEPE-SWAP-USDT",
       "direction": "LONG",
@@ -19,7 +9,17 @@
       "target": 0.0036602,
       "quantity": 561.5611399691142,
       "entry_candle": "2026-11-26T03:30:00+00:00",
-      "last_processed_candle": "2026-11-26T04:45:00+00:00"
+      "last_processed_candle": "2026-11-26T05:45:00+00:00"
+    },
+    "XTI-SWAP-USDT:2026-11-26T05:45:00+00:00": {
+      "symbol": "XTI-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 84.49,
+      "stop": 84.0592857142857,
+      "target": 85.35142857142857,
+      "quantity": 0.1006036217303823,
+      "entry_candle": "2026-11-26T05:45:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -870,9 +870,25 @@
       "gross_pnl": 0.09327076381926087,
       "fees": 0.007855962458291555,
       "net_pnl": 0.08541480136096932
+    },
+    {
+      "symbol": "XBR-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 90.41,
+      "stop": 89.77464285714285,
+      "target": 91.68071428571429,
+      "quantity": 0.1050768720274306,
+      "entry_candle": "2026-11-25T18:00:00+00:00",
+      "last_processed_candle": "2026-11-26T05:30:00+00:00",
+      "trade_id": "XBR-SWAP-USDT:2026-11-25T18:00:00+00:00",
+      "exit": 91.68071428571429,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.13352268238342846,
+      "fees": 0.011480113609430057,
+      "net_pnl": 0.1220425687739984
     }
   ],
   "meta": {
-    "last_crypto_signal": "XBR-SWAP-USDT:1795669200000"
+    "last_crypto_signal": "XTI-SWAP-USDT:1795672800000"
   }
 }
