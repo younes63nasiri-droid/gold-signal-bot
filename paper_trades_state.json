@@ -9,6 +9,16 @@
       "target": 1718.3435714285713,
       "quantity": 0.0011762284235598555,
       "entry_candle": "2026-11-26T08:45:00+00:00",
+      "last_processed_candle": "2026-11-26T10:00:00+00:00"
+    },
+    "INTC-SWAP-USDT:2026-11-26T10:00:00+00:00": {
+      "symbol": "INTC-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 55.11,
+      "stop": 54.856071428571425,
+      "target": 55.61785714285714,
+      "quantity": 0.11794592632915986,
+      "entry_candle": "2026-11-26T10:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -911,6 +921,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "ETH-SWAP-USDT:1795683600000"
+    "last_crypto_signal": "INTC-SWAP-USDT:1795688100000"
   }
 }
