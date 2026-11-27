@@ -1,16 +1,6 @@
 {
-  "balance": 995.1203915825058,
+  "balance": 995.0822659393635,
   "open": {
-    "SPCX-SWAP-USDT:2026-11-26T12:15:00+00:00": {
-      "symbol": "SPCX-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 129.46,
-      "stop": 128.96178571428572,
-      "target": 130.45642857142857,
-      "quantity": 0.030897574540398577,
-      "entry_candle": "2026-11-26T12:15:00+00:00",
-      "last_processed_candle": "2026-11-27T00:15:00+00:00"
-    },
     "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00": {
       "symbol": "XBR-SWAP-USDT",
       "direction": "LONG",
@@ -19,7 +9,7 @@
       "target": 92.49142857142857,
       "quantity": 0.10377976840725366,
       "entry_candle": "2026-11-26T17:00:00+00:00",
-      "last_processed_candle": "2026-11-27T00:15:00+00:00"
+      "last_processed_candle": "2026-11-27T01:45:00+00:00"
     },
     "XTI-SWAP-USDT:2026-11-26T18:00:00+00:00": {
       "symbol": "XTI-SWAP-USDT",
@@ -29,17 +19,17 @@
       "target": 85.83285714285714,
       "quantity": 0.10012957945576628,
       "entry_candle": "2026-11-26T18:00:00+00:00",
-      "last_processed_candle": "2026-11-27T00:15:00+00:00"
+      "last_processed_candle": "2026-11-27T01:45:00+00:00"
     },
-    "INIT-SWAP-USDT:2026-11-26T23:15:00+00:00": {
-      "symbol": "INIT-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 0.14279,
-      "stop": 0.13685642857142857,
-      "target": 0.15465714285714288,
-      "quantity": 10.504937320540654,
-      "entry_candle": "2026-11-26T23:15:00+00:00",
-      "last_processed_candle": "2026-11-27T00:15:00+00:00"
+    "SKHYNIX-SWAP-USDT:2026-11-27T01:45:00+00:00": {
+      "symbol": "SKHYNIX-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 792.97,
+      "stop": 807.0689285714286,
+      "target": 764.7721428571429,
+      "quantity": 0.010088654047441895,
+      "entry_candle": "2026-11-27T01:45:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -1066,9 +1056,41 @@
       "gross_pnl": -0.00862275449101778,
       "fees": 0.003594826347305389,
       "net_pnl": -0.01221758083832317
+    },
+    {
+      "symbol": "SPCX-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 129.46,
+      "stop": 128.96178571428572,
+      "target": 130.45642857142857,
+      "quantity": 0.030897574540398577,
+      "entry_candle": "2026-11-26T12:15:00+00:00",
+      "last_processed_candle": "2026-11-27T01:00:00+00:00",
+      "trade_id": "SPCX-SWAP-USDT:2026-11-26T12:15:00+00:00",
+      "exit": 130.45642857142857,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.030787226059897,
+      "fees": 0.004818472335635937,
+      "net_pnl": 0.025968753724261065
+    },
+    {
+      "symbol": "INIT-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.14279,
+      "stop": 0.13685642857142857,
+      "target": 0.15465714285714288,
+      "quantity": 10.504937320540654,
+      "entry_candle": "2026-11-26T23:15:00+00:00",
+      "last_processed_candle": "2026-11-27T00:30:00+00:00",
+      "trade_id": "INIT-SWAP-USDT:2026-11-26T23:15:00+00:00",
+      "exit": 0.13685642857142857,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.0623317959440937,
+      "fees": 0.0017626009224335434,
+      "net_pnl": -0.06409439686652725
     }
   ],
   "meta": {
-    "last_crypto_signal": "XBR-SWAP-USDT:1795739400000"
+    "last_crypto_signal": "SKHYNIX-SWAP-USDT:1795744800000"
   }
 }
