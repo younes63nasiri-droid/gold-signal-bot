@@ -1,16 +1,6 @@
 {
-  "balance": 995.0457775554138,
+  "balance": 995.2912616549877,
   "open": {
-    "MMT-SWAP-USDT:2026-11-27T04:15:00+00:00": {
-      "symbol": "MMT-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 0.1911,
-      "stop": 0.19902857142857142,
-      "target": 0.17524285714285714,
-      "quantity": 15.698587127158556,
-      "entry_candle": "2026-11-27T04:15:00+00:00",
-      "last_processed_candle": "2026-11-27T05:15:00+00:00"
-    },
     "1000PEPE-SWAP-USDT:2026-11-27T05:15:00+00:00": {
       "symbol": "1000PEPE-SWAP-USDT",
       "direction": "LONG",
@@ -19,6 +9,16 @@
       "target": 0.0036652285714285715,
       "quantity": 559.0027391134216,
       "entry_candle": "2026-11-27T05:15:00+00:00",
+      "last_processed_candle": "2026-11-27T06:30:00+00:00"
+    },
+    "XTI-SWAP-USDT:2026-11-27T06:30:00+00:00": {
+      "symbol": "XTI-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 86.05,
+      "stop": 85.70392857142858,
+      "target": 86.74214285714285,
+      "quantity": 0.10459035444509007,
+      "entry_candle": "2026-11-27T06:30:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1142,9 +1142,25 @@
       "gross_pnl": -0.050625240614261595,
       "fees": 0.0053696248556314415,
       "net_pnl": -0.05599486546989304
+    },
+    {
+      "symbol": "MMT-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.1911,
+      "stop": 0.19902857142857142,
+      "target": 0.17524285714285714,
+      "quantity": 15.698587127158556,
+      "entry_candle": "2026-11-27T04:15:00+00:00",
+      "last_processed_candle": "2026-11-27T06:30:00+00:00",
+      "trade_id": "MMT-SWAP-USDT:2026-11-27T04:15:00+00:00",
+      "exit": 0.17524285714285714,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.24893473873065694,
+      "fees": 0.003450639156761605,
+      "net_pnl": 0.24548409957389533
     }
   ],
   "meta": {
-    "last_crypto_signal": "1000PEPE-SWAP-USDT:1795757400000"
+    "last_crypto_signal": "XTI-SWAP-USDT:1795761900000"
   }
 }
