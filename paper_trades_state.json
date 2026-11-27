@@ -9,7 +9,7 @@
       "target": 0.0036652285714285715,
       "quantity": 559.0027391134216,
       "entry_candle": "2026-11-27T05:15:00+00:00",
-      "last_processed_candle": "2026-11-27T06:30:00+00:00"
+      "last_processed_candle": "2026-11-27T08:00:00+00:00"
     },
     "XTI-SWAP-USDT:2026-11-27T06:30:00+00:00": {
       "symbol": "XTI-SWAP-USDT",
@@ -19,6 +19,16 @@
       "target": 86.74214285714285,
       "quantity": 0.10459035444509007,
       "entry_candle": "2026-11-27T06:30:00+00:00",
+      "last_processed_candle": "2026-11-27T08:00:00+00:00"
+    },
+    "NVDA-SWAP-USDT:2026-11-27T08:00:00+00:00": {
+      "symbol": "NVDA-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 156.2,
+      "stop": 154.94,
+      "target": 158.72,
+      "quantity": 0.03201024327784891,
+      "entry_candle": "2026-11-27T08:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1161,6 +1171,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "XTI-SWAP-USDT:1795761900000"
+    "last_crypto_signal": "NVDA-SWAP-USDT:1795767300000"
   }
 }
