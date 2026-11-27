@@ -9,6 +9,16 @@
       "target": 1.0244428571428572,
       "quantity": 4.491466214193033,
       "entry_candle": "2026-11-27T03:00:00+00:00",
+      "last_processed_candle": "2026-11-27T04:15:00+00:00"
+    },
+    "MMT-SWAP-USDT:2026-11-27T04:15:00+00:00": {
+      "symbol": "MMT-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.1911,
+      "stop": 0.19902857142857142,
+      "target": 0.17524285714285714,
+      "quantity": 15.698587127158556,
+      "entry_candle": "2026-11-27T04:15:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1119,6 +1129,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "BTW-SWAP-USDT:1795749300000"
+    "last_crypto_signal": "MMT-SWAP-USDT:1795753800000"
   }
 }
