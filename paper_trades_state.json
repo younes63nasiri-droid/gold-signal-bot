@@ -9,7 +9,7 @@
       "target": 130.45642857142857,
       "quantity": 0.030897574540398577,
       "entry_candle": "2026-11-26T12:15:00+00:00",
-      "last_processed_candle": "2026-11-26T23:15:00+00:00"
+      "last_processed_candle": "2026-11-27T00:15:00+00:00"
     },
     "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00": {
       "symbol": "XBR-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 92.49142857142857,
       "quantity": 0.10377976840725366,
       "entry_candle": "2026-11-26T17:00:00+00:00",
-      "last_processed_candle": "2026-11-26T23:15:00+00:00"
+      "last_processed_candle": "2026-11-27T00:15:00+00:00"
     },
     "XTI-SWAP-USDT:2026-11-26T18:00:00+00:00": {
       "symbol": "XTI-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 85.83285714285714,
       "quantity": 0.10012957945576628,
       "entry_candle": "2026-11-26T18:00:00+00:00",
-      "last_processed_candle": "2026-11-26T23:15:00+00:00"
+      "last_processed_candle": "2026-11-27T00:15:00+00:00"
     },
     "INIT-SWAP-USDT:2026-11-26T23:15:00+00:00": {
       "symbol": "INIT-SWAP-USDT",
@@ -39,7 +39,7 @@
       "target": 0.15465714285714288,
       "quantity": 10.504937320540654,
       "entry_candle": "2026-11-26T23:15:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-27T00:15:00+00:00"
     }
   },
   "closed": [
@@ -1069,6 +1069,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "INIT-SWAP-USDT:1795735800000"
+    "last_crypto_signal": "XBR-SWAP-USDT:1795739400000"
   }
 }
