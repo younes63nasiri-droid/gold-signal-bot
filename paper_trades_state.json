@@ -1,16 +1,6 @@
 {
-  "balance": 994.9674312000684,
+  "balance": 995.1911485680828,
   "open": {
-    "SNDK-SWAP-USDT:2026-11-27T15:15:00+00:00": {
-      "symbol": "SNDK-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 81.34,
-      "stop": 79.47035714285714,
-      "target": 85.07928571428572,
-      "quantity": 0.06147037128104253,
-      "entry_candle": "2026-11-27T15:15:00+00:00",
-      "last_processed_candle": "2026-11-27T17:15:00+00:00"
-    },
     "XAU-SWAP-USDT:2026-11-27T18:15:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
       "direction": "LONG",
@@ -18,6 +8,16 @@
       "stop": 3631.7939285714288,
       "target": 3679.9021428571427,
       "quantity": 0.001096542327904535,
+      "entry_candle": "2026-11-27T18:15:00+00:00",
+      "last_processed_candle": null
+    },
+    "META-SWAP-USDT:2026-11-27T18:15:00+00:00": {
+      "symbol": "META-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 629.95,
+      "stop": 625.0910714285715,
+      "target": 639.6678571428572,
+      "quantity": 0.010318279228510198,
       "entry_candle": "2026-11-27T18:15:00+00:00",
       "last_processed_candle": null
     }
@@ -1270,9 +1270,25 @@
       "gross_pnl": -0.023453433038749017,
       "fees": 0.0047859279401767495,
       "net_pnl": -0.028239360978925765
+    },
+    {
+      "symbol": "SNDK-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 81.34,
+      "stop": 79.47035714285714,
+      "target": 85.07928571428572,
+      "quantity": 0.06147037128104253,
+      "entry_candle": "2026-11-27T15:15:00+00:00",
+      "last_processed_candle": "2026-11-27T17:45:00+00:00",
+      "trade_id": "SNDK-SWAP-USDT:2026-11-27T15:15:00+00:00",
+      "exit": 85.07928571428572,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.22985528118304116,
+      "fees": 0.006137913168709825,
+      "net_pnl": 0.22371736801433134
     }
   ],
   "meta": {
-    "last_crypto_signal": "SNDK-SWAP-USDT:1795800600000"
+    "last_crypto_signal": "META-SWAP-USDT:1795804200000"
   }
 }
