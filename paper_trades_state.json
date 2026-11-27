@@ -9,7 +9,7 @@
       "target": 0.0036652285714285715,
       "quantity": 559.0027391134216,
       "entry_candle": "2026-11-27T05:15:00+00:00",
-      "last_processed_candle": "2026-11-27T10:15:00+00:00"
+      "last_processed_candle": "2026-11-27T11:15:00+00:00"
     },
     "SNDK-SWAP-USDT:2026-11-27T10:15:00+00:00": {
       "symbol": "SNDK-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 83.95357142857142,
       "quantity": 0.061102285225467436,
       "entry_candle": "2026-11-27T10:15:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-27T11:15:00+00:00"
     }
   },
   "closed": [
@@ -1209,6 +1209,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "SNDK-SWAP-USDT:1795775400000"
+    "last_crypto_signal": "BULLA-SWAP-USDT:1795779000000"
   }
 }
