@@ -9,7 +9,7 @@
       "target": 85.07928571428572,
       "quantity": 0.06147037128104253,
       "entry_candle": "2026-11-27T15:15:00+00:00",
-      "last_processed_candle": "2026-11-27T16:15:00+00:00"
+      "last_processed_candle": "2026-11-27T17:15:00+00:00"
     }
   },
   "closed": [
@@ -1263,6 +1263,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "SNDK-SWAP-USDT:1795797000000"
+    "last_crypto_signal": "SNDK-SWAP-USDT:1795800600000"
   }
 }
