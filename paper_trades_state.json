@@ -1,5 +1,5 @@
 {
-  "balance": 995.135505363179,
+  "balance": 995.0646667561366,
   "open": {
     "1000PEPE-SWAP-USDT:2026-11-27T05:15:00+00:00": {
       "symbol": "1000PEPE-SWAP-USDT",
@@ -9,17 +9,17 @@
       "target": 0.0036652285714285715,
       "quantity": 559.0027391134216,
       "entry_candle": "2026-11-27T05:15:00+00:00",
-      "last_processed_candle": "2026-11-27T11:15:00+00:00"
+      "last_processed_candle": "2026-11-27T12:30:00+00:00"
     },
-    "SNDK-SWAP-USDT:2026-11-27T10:15:00+00:00": {
-      "symbol": "SNDK-SWAP-USDT",
+    "AVAX-SWAP-USDT:2026-11-27T12:30:00+00:00": {
+      "symbol": "AVAX-SWAP-USDT",
       "direction": "LONG",
-      "entry": 81.83,
-      "stop": 80.76821428571428,
-      "target": 83.95357142857142,
-      "quantity": 0.061102285225467436,
-      "entry_candle": "2026-11-27T10:15:00+00:00",
-      "last_processed_candle": "2026-11-27T11:15:00+00:00"
+      "entry": 6.791,
+      "stop": 6.758214285714286,
+      "target": 6.85657142857143,
+      "quantity": 1.0307760270946842,
+      "entry_candle": "2026-11-27T12:30:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -1206,9 +1206,25 @@
       "gross_pnl": -0.05650747356908449,
       "fees": 0.005966095515858549,
       "net_pnl": -0.06247356908494304
+    },
+    {
+      "symbol": "SNDK-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 81.83,
+      "stop": 80.76821428571428,
+      "target": 83.95357142857142,
+      "quantity": 0.061102285225467436,
+      "entry_candle": "2026-11-27T10:15:00+00:00",
+      "last_processed_candle": "2026-11-27T11:45:00+00:00",
+      "trade_id": "SNDK-SWAP-USDT:2026-11-27T10:15:00+00:00",
+      "exit": 80.76821428571428,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.06487753356261268,
+      "fees": 0.005961073479862433,
+      "net_pnl": -0.07083860704247512
     }
   ],
   "meta": {
-    "last_crypto_signal": "BULLA-SWAP-USDT:1795779000000"
+    "last_crypto_signal": "AVAX-SWAP-USDT:1795783500000"
   }
 }
