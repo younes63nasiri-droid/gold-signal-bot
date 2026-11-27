@@ -9,7 +9,7 @@
       "target": 0.0036652285714285715,
       "quantity": 559.0027391134216,
       "entry_candle": "2026-11-27T05:15:00+00:00",
-      "last_processed_candle": "2026-11-27T12:30:00+00:00"
+      "last_processed_candle": "2026-11-27T14:00:00+00:00"
     },
     "AVAX-SWAP-USDT:2026-11-27T12:30:00+00:00": {
       "symbol": "AVAX-SWAP-USDT",
@@ -19,6 +19,16 @@
       "target": 6.85657142857143,
       "quantity": 1.0307760270946842,
       "entry_candle": "2026-11-27T12:30:00+00:00",
+      "last_processed_candle": "2026-11-27T14:00:00+00:00"
+    },
+    "DOGE-SWAP-USDT:2026-11-27T14:00:00+00:00": {
+      "symbol": "DOGE-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.05884,
+      "stop": 0.058495000000000005,
+      "target": 0.059530000000000007,
+      "quantity": 67.98096532970767,
+      "entry_candle": "2026-11-27T14:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1225,6 +1235,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "AVAX-SWAP-USDT:1795783500000"
+    "last_crypto_signal": "DOGE-SWAP-USDT:1795788900000"
   }
 }
