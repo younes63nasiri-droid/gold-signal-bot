@@ -1,34 +1,14 @@
 {
-  "balance": 995.0822659393635,
+  "balance": 995.1017724208837,
   "open": {
-    "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00": {
-      "symbol": "XBR-SWAP-USDT",
+    "BTW-SWAP-USDT:2026-11-27T03:00:00+00:00": {
+      "symbol": "BTW-SWAP-USDT",
       "direction": "LONG",
-      "entry": 91.54,
-      "stop": 91.06428571428572,
-      "target": 92.49142857142857,
-      "quantity": 0.10377976840725366,
-      "entry_candle": "2026-11-26T17:00:00+00:00",
-      "last_processed_candle": "2026-11-27T01:45:00+00:00"
-    },
-    "XTI-SWAP-USDT:2026-11-26T18:00:00+00:00": {
-      "symbol": "XTI-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 84.89,
-      "stop": 84.41857142857144,
-      "target": 85.83285714285714,
-      "quantity": 0.10012957945576628,
-      "entry_candle": "2026-11-26T18:00:00+00:00",
-      "last_processed_candle": "2026-11-27T01:45:00+00:00"
-    },
-    "SKHYNIX-SWAP-USDT:2026-11-27T01:45:00+00:00": {
-      "symbol": "SKHYNIX-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 792.97,
-      "stop": 807.0689285714286,
-      "target": 764.7721428571429,
-      "quantity": 0.010088654047441895,
-      "entry_candle": "2026-11-27T01:45:00+00:00",
+      "entry": 1.0019,
+      "stop": 0.9906285714285714,
+      "target": 1.0244428571428572,
+      "quantity": 4.491466214193033,
+      "entry_candle": "2026-11-27T03:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1088,9 +1068,57 @@
       "gross_pnl": -0.0623317959440937,
       "fees": 0.0017626009224335434,
       "net_pnl": -0.06409439686652725
+    },
+    {
+      "symbol": "XBR-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 91.54,
+      "stop": 91.06428571428572,
+      "target": 92.49142857142857,
+      "quantity": 0.10377976840725366,
+      "entry_candle": "2026-11-26T17:00:00+00:00",
+      "last_processed_candle": "2026-11-27T02:00:00+00:00",
+      "trade_id": "XBR-SWAP-USDT:2026-11-26T17:00:00+00:00",
+      "exit": 92.49142857142857,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.09873903679890066,
+      "fees": 0.011459243422079341,
+      "net_pnl": 0.08727979337682132
+    },
+    {
+      "symbol": "XTI-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 84.89,
+      "stop": 84.41857142857144,
+      "target": 85.83285714285714,
+      "quantity": 0.10012957945576628,
+      "entry_candle": "2026-11-26T18:00:00+00:00",
+      "last_processed_candle": "2026-11-27T02:00:00+00:00",
+      "trade_id": "XTI-SWAP-USDT:2026-11-26T18:00:00+00:00",
+      "exit": 85.83285714285714,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.09440788920115037,
+      "fees": 0.01025664473352069,
+      "net_pnl": 0.08415124446762969
+    },
+    {
+      "symbol": "SKHYNIX-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 792.97,
+      "stop": 807.0689285714286,
+      "target": 764.7721428571429,
+      "quantity": 0.010088654047441895,
+      "entry_candle": "2026-11-27T01:45:00+00:00",
+      "last_processed_candle": "2026-11-27T02:15:00+00:00",
+      "trade_id": "SKHYNIX-SWAP-USDT:2026-11-27T01:45:00+00:00",
+      "exit": 807.0689285714286,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.14223921279673718,
+      "fees": 0.009685343527678043,
+      "net_pnl": -0.15192455632441523
     }
   ],
   "meta": {
-    "last_crypto_signal": "SKHYNIX-SWAP-USDT:1795744800000"
+    "last_crypto_signal": "BTW-SWAP-USDT:1795749300000"
   }
 }
