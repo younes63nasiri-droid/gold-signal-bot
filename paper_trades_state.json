@@ -1,34 +1,14 @@
 {
-  "balance": 995.0646667561366,
+  "balance": 994.9674312000684,
   "open": {
-    "1000PEPE-SWAP-USDT:2026-11-27T05:15:00+00:00": {
-      "symbol": "1000PEPE-SWAP-USDT",
+    "SNDK-SWAP-USDT:2026-11-27T15:15:00+00:00": {
+      "symbol": "SNDK-SWAP-USDT",
       "direction": "LONG",
-      "entry": 0.0035778,
-      "stop": 0.003534085714285714,
-      "target": 0.0036652285714285715,
-      "quantity": 559.0027391134216,
-      "entry_candle": "2026-11-27T05:15:00+00:00",
-      "last_processed_candle": "2026-11-27T14:00:00+00:00"
-    },
-    "AVAX-SWAP-USDT:2026-11-27T12:30:00+00:00": {
-      "symbol": "AVAX-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 6.791,
-      "stop": 6.758214285714286,
-      "target": 6.85657142857143,
-      "quantity": 1.0307760270946842,
-      "entry_candle": "2026-11-27T12:30:00+00:00",
-      "last_processed_candle": "2026-11-27T14:00:00+00:00"
-    },
-    "DOGE-SWAP-USDT:2026-11-27T14:00:00+00:00": {
-      "symbol": "DOGE-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 0.05884,
-      "stop": 0.058495000000000005,
-      "target": 0.059530000000000007,
-      "quantity": 67.98096532970767,
-      "entry_candle": "2026-11-27T14:00:00+00:00",
+      "entry": 81.34,
+      "stop": 79.47035714285714,
+      "target": 85.07928571428572,
+      "quantity": 0.06147037128104253,
+      "entry_candle": "2026-11-27T15:15:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1232,9 +1212,57 @@
       "gross_pnl": -0.06487753356261268,
       "fees": 0.005961073479862433,
       "net_pnl": -0.07083860704247512
+    },
+    {
+      "symbol": "1000PEPE-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.0035778,
+      "stop": 0.003534085714285714,
+      "target": 0.0036652285714285715,
+      "quantity": 559.0027391134216,
+      "entry_candle": "2026-11-27T05:15:00+00:00",
+      "last_processed_candle": "2026-11-27T14:30:00+00:00",
+      "trade_id": "1000PEPE-SWAP-USDT:2026-11-27T05:15:00+00:00",
+      "exit": 0.003534085714285714,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.024436405452672488,
+      "fees": 0.002385338156728396,
+      "net_pnl": -0.026821743609400883
+    },
+    {
+      "symbol": "AVAX-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 6.791,
+      "stop": 6.758214285714286,
+      "target": 6.85657142857143,
+      "quantity": 1.0307760270946842,
+      "entry_candle": "2026-11-27T12:30:00+00:00",
+      "last_processed_candle": "2026-11-27T14:15:00+00:00",
+      "trade_id": "AVAX-SWAP-USDT:2026-11-27T12:30:00+00:00",
+      "exit": 6.758214285714286,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.03379472831689037,
+      "fees": 0.008379723163009866,
+      "net_pnl": -0.04217445147990024
+    },
+    {
+      "symbol": "DOGE-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 0.05884,
+      "stop": 0.058495000000000005,
+      "target": 0.059530000000000007,
+      "quantity": 67.98096532970767,
+      "entry_candle": "2026-11-27T14:00:00+00:00",
+      "last_processed_candle": "2026-11-27T14:15:00+00:00",
+      "trade_id": "DOGE-SWAP-USDT:2026-11-27T14:00:00+00:00",
+      "exit": 0.058495000000000005,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.023453433038749017,
+      "fees": 0.0047859279401767495,
+      "net_pnl": -0.028239360978925765
     }
   ],
   "meta": {
-    "last_crypto_signal": "DOGE-SWAP-USDT:1795788900000"
+    "last_crypto_signal": "SNDK-SWAP-USDT:1795792500000"
   }
 }
