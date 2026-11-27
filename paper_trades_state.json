@@ -19,6 +19,16 @@
       "target": 639.6678571428572,
       "quantity": 0.010318279228510198,
       "entry_candle": "2026-11-27T18:15:00+00:00",
+      "last_processed_candle": "2026-11-27T19:15:00+00:00"
+    },
+    "MU-SWAP-USDT:2026-11-27T19:30:00+00:00": {
+      "symbol": "MU-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 646.99,
+      "stop": 639.1096428571428,
+      "target": 662.7507142857143,
+      "quantity": 0.010046523130187484,
+      "entry_candle": "2026-11-27T19:30:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1289,6 +1299,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "META-SWAP-USDT:1795804200000"
+    "last_crypto_signal": "MU-SWAP-USDT:1795807800000"
   }
 }
