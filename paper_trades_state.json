@@ -19,7 +19,7 @@
       "target": 639.6678571428572,
       "quantity": 0.010318279228510198,
       "entry_candle": "2026-11-27T18:15:00+00:00",
-      "last_processed_candle": "2026-11-28T10:30:00+00:00"
+      "last_processed_candle": "2026-11-28T11:30:00+00:00"
     },
     "SOXS-SWAP-USDT:2026-11-28T05:00:00+00:00": {
       "symbol": "SOXS-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 53.193571428571424,
       "quantity": 0.11078286558345643,
       "entry_candle": "2026-11-28T05:00:00+00:00",
-      "last_processed_candle": "2026-11-28T10:30:00+00:00"
+      "last_processed_candle": "2026-11-28T11:30:00+00:00"
     },
     "NVDA-SWAP-USDT:2026-11-28T08:30:00+00:00": {
       "symbol": "NVDA-SWAP-USDT",
@@ -39,7 +39,7 @@
       "target": 146.61928571428572,
       "quantity": 0.030458914308921076,
       "entry_candle": "2026-11-28T08:30:00+00:00",
-      "last_processed_candle": "2026-11-28T10:30:00+00:00"
+      "last_processed_candle": "2026-11-28T11:30:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-28T09:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -49,7 +49,17 @@
       "target": 92.02071428571429,
       "quantity": 0.054842601733026214,
       "entry_candle": "2026-11-28T09:30:00+00:00",
-      "last_processed_candle": "2026-11-28T10:30:00+00:00"
+      "last_processed_candle": "2026-11-28T11:30:00+00:00"
+    },
+    "AVAX-SWAP-USDT:2026-11-28T11:30:00+00:00": {
+      "symbol": "AVAX-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 6.496,
+      "stop": 6.5269642857142856,
+      "target": 6.434071428571429,
+      "quantity": 1.000615763546798,
+      "entry_candle": "2026-11-28T11:30:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -1447,6 +1457,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "NVDA-SWAP-USDT:1795862700000"
+    "last_crypto_signal": "AVAX-SWAP-USDT:1795866300000"
   }
 }
