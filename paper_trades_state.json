@@ -1,5 +1,5 @@
 {
-  "balance": 995.1871400706913,
+  "balance": 995.160210751241,
   "open": {
     "XAU-SWAP-USDT:2026-11-27T18:15:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -19,7 +19,7 @@
       "target": 639.6678571428572,
       "quantity": 0.010318279228510198,
       "entry_candle": "2026-11-27T18:15:00+00:00",
-      "last_processed_candle": "2026-11-28T07:30:00+00:00"
+      "last_processed_candle": "2026-11-28T08:30:00+00:00"
     },
     "SOXS-SWAP-USDT:2026-11-28T05:00:00+00:00": {
       "symbol": "SOXS-SWAP-USDT",
@@ -29,16 +29,16 @@
       "target": 53.193571428571424,
       "quantity": 0.11078286558345643,
       "entry_candle": "2026-11-28T05:00:00+00:00",
-      "last_processed_candle": "2026-11-28T07:30:00+00:00"
+      "last_processed_candle": "2026-11-28T08:30:00+00:00"
     },
-    "SNDK-SWAP-USDT:2026-11-28T07:30:00+00:00": {
-      "symbol": "SNDK-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 85.75,
-      "stop": 85.43285714285715,
-      "target": 86.38428571428571,
-      "quantity": 0.0641399416909621,
-      "entry_candle": "2026-11-28T07:30:00+00:00",
+    "NVDA-SWAP-USDT:2026-11-28T08:30:00+00:00": {
+      "symbol": "NVDA-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 147.74,
+      "stop": 148.30035714285717,
+      "target": 146.61928571428572,
+      "quantity": 0.030458914308921076,
+      "entry_candle": "2026-11-28T08:30:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1418,9 +1418,25 @@
       "gross_pnl": 0.03520105357842226,
       "fees": 0.007178879367852946,
       "net_pnl": 0.028022174210569312
+    },
+    {
+      "symbol": "SNDK-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 85.75,
+      "stop": 85.43285714285715,
+      "target": 86.38428571428571,
+      "quantity": 0.0641399416909621,
+      "entry_candle": "2026-11-28T07:30:00+00:00",
+      "last_processed_candle": "2026-11-28T08:00:00+00:00",
+      "trade_id": "SNDK-SWAP-USDT:2026-11-28T07:30:00+00:00",
+      "exit": 85.43285714285715,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.02034152436484784,
+      "fees": 0.006587795085381091,
+      "net_pnl": -0.02692931945022893
     }
   ],
   "meta": {
-    "last_crypto_signal": "SNDK-SWAP-USDT:1795851900000"
+    "last_crypto_signal": "NVDA-SWAP-USDT:1795855500000"
   }
 }
