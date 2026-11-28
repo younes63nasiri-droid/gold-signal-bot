@@ -1,5 +1,5 @@
 {
-  "balance": 995.0399242807374,
+  "balance": 995.0106590062874,
   "open": {
     "XAU-SWAP-USDT:2026-11-27T18:15:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -19,16 +19,16 @@
       "target": 639.6678571428572,
       "quantity": 0.010318279228510198,
       "entry_candle": "2026-11-27T18:15:00+00:00",
-      "last_processed_candle": "2026-11-28T02:45:00+00:00"
+      "last_processed_candle": "2026-11-28T03:45:00+00:00"
     },
-    "ANT-SWAP-USDT:2026-11-28T02:45:00+00:00": {
-      "symbol": "ANT-SWAP-USDT",
-      "direction": "LONG",
-      "entry": 91.82,
-      "stop": 91.3925,
-      "target": 92.675,
-      "quantity": 0.054454367240252675,
-      "entry_candle": "2026-11-28T02:45:00+00:00",
+    "MMT-SWAP-USDT:2026-11-28T03:45:00+00:00": {
+      "symbol": "MMT-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.1582,
+      "stop": 0.16298928571428573,
+      "target": 0.14862142857142857,
+      "quantity": 15.802781289506953,
+      "entry_candle": "2026-11-28T03:45:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1360,9 +1360,25 @@
       "gross_pnl": -0.00734454013787759,
       "fees": 0.002404406724082726,
       "net_pnl": -0.009748946861960315
+    },
+    {
+      "symbol": "ANT-SWAP-USDT",
+      "direction": "LONG",
+      "entry": 91.82,
+      "stop": 91.3925,
+      "target": 92.675,
+      "quantity": 0.054454367240252675,
+      "entry_candle": "2026-11-28T02:45:00+00:00",
+      "last_processed_candle": "2026-11-28T03:45:00+00:00",
+      "trade_id": "ANT-SWAP-USDT:2026-11-28T02:45:00+00:00",
+      "exit": 91.3925,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.02327924199520774,
+      "fees": 0.005986032454802875,
+      "net_pnl": -0.029265274450010616
     }
   ],
   "meta": {
-    "last_crypto_signal": "ANT-SWAP-USDT:1795834800000"
+    "last_crypto_signal": "MMT-SWAP-USDT:1795838400000"
   }
 }
