@@ -1,5 +1,5 @@
 {
-  "balance": 995.0106590062874,
+  "balance": 995.1591178964807,
   "open": {
     "XAU-SWAP-USDT:2026-11-27T18:15:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -19,17 +19,7 @@
       "target": 639.6678571428572,
       "quantity": 0.010318279228510198,
       "entry_candle": "2026-11-27T18:15:00+00:00",
-      "last_processed_candle": "2026-11-28T05:00:00+00:00"
-    },
-    "MMT-SWAP-USDT:2026-11-28T03:45:00+00:00": {
-      "symbol": "MMT-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 0.1582,
-      "stop": 0.16298928571428573,
-      "target": 0.14862142857142857,
-      "quantity": 15.802781289506953,
-      "entry_candle": "2026-11-28T03:45:00+00:00",
-      "last_processed_candle": "2026-11-28T05:00:00+00:00"
+      "last_processed_candle": "2026-11-28T06:00:00+00:00"
     },
     "SOXS-SWAP-USDT:2026-11-28T05:00:00+00:00": {
       "symbol": "SOXS-SWAP-USDT",
@@ -39,6 +29,16 @@
       "target": 53.193571428571424,
       "quantity": 0.11078286558345643,
       "entry_candle": "2026-11-28T05:00:00+00:00",
+      "last_processed_candle": "2026-11-28T06:00:00+00:00"
+    },
+    "BTC-SWAP-USDT:2026-11-28T06:00:00+00:00": {
+      "symbol": "BTC-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 59747.4,
+      "stop": 59922.66428571429,
+      "target": 59396.87142857143,
+      "quantity": 0.00010042277990339329,
+      "entry_candle": "2026-11-28T06:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1386,9 +1386,25 @@
       "gross_pnl": -0.02327924199520774,
       "fees": 0.005986032454802875,
       "net_pnl": -0.029265274450010616
+    },
+    {
+      "symbol": "MMT-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.1582,
+      "stop": 0.16298928571428573,
+      "target": 0.14862142857142857,
+      "quantity": 15.802781289506953,
+      "entry_candle": "2026-11-28T03:45:00+00:00",
+      "last_processed_candle": "2026-11-28T05:45:00+00:00",
+      "trade_id": "MMT-SWAP-USDT:2026-11-28T03:45:00+00:00",
+      "exit": 0.14862142857142857,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.15136806935163458,
+      "fees": 0.002909179158389019,
+      "net_pnl": 0.14845889019324557
     }
   ],
   "meta": {
-    "last_crypto_signal": "SOXS-SWAP-USDT:1795842900000"
+    "last_crypto_signal": "BTC-SWAP-USDT:1795846500000"
   }
 }
