@@ -19,7 +19,7 @@
       "target": 639.6678571428572,
       "quantity": 0.010318279228510198,
       "entry_candle": "2026-11-27T18:15:00+00:00",
-      "last_processed_candle": "2026-11-28T03:45:00+00:00"
+      "last_processed_candle": "2026-11-28T05:00:00+00:00"
     },
     "MMT-SWAP-USDT:2026-11-28T03:45:00+00:00": {
       "symbol": "MMT-SWAP-USDT",
@@ -29,6 +29,16 @@
       "target": 0.14862142857142857,
       "quantity": 15.802781289506953,
       "entry_candle": "2026-11-28T03:45:00+00:00",
+      "last_processed_candle": "2026-11-28T05:00:00+00:00"
+    },
+    "SOXS-SWAP-USDT:2026-11-28T05:00:00+00:00": {
+      "symbol": "SOXS-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 54.16,
+      "stop": 54.643214285714286,
+      "target": 53.193571428571424,
+      "quantity": 0.11078286558345643,
+      "entry_candle": "2026-11-28T05:00:00+00:00",
       "last_processed_candle": null
     }
   },
@@ -1379,6 +1389,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "MMT-SWAP-USDT:1795838400000"
+    "last_crypto_signal": "SOXS-SWAP-USDT:1795842900000"
   }
 }
