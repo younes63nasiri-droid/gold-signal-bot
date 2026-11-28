@@ -1,5 +1,5 @@
 {
-  "balance": 995.033553160065,
+  "balance": 995.0877570448732,
   "open": {
     "XAU-SWAP-USDT:2026-11-27T18:15:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -19,17 +19,7 @@
       "target": 92.02071428571429,
       "quantity": 0.054842601733026214,
       "entry_candle": "2026-11-28T09:30:00+00:00",
-      "last_processed_candle": "2026-11-28T15:45:00+00:00"
-    },
-    "AVAX-SWAP-USDT:2026-11-28T11:30:00+00:00": {
-      "symbol": "AVAX-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 6.496,
-      "stop": 6.5269642857142856,
-      "target": 6.434071428571429,
-      "quantity": 1.000615763546798,
-      "entry_candle": "2026-11-28T11:30:00+00:00",
-      "last_processed_candle": "2026-11-28T15:45:00+00:00"
+      "last_processed_candle": "2026-11-28T16:45:00+00:00"
     },
     "SOL-SWAP-USDT:2026-11-28T14:45:00+00:00": {
       "symbol": "SOL-SWAP-USDT",
@@ -39,7 +29,7 @@
       "target": 69.77642857142857,
       "quantity": 0.01417434443656981,
       "entry_candle": "2026-11-28T14:45:00+00:00",
-      "last_processed_candle": "2026-11-28T15:45:00+00:00"
+      "last_processed_candle": "2026-11-28T16:45:00+00:00"
     }
   },
   "closed": [
@@ -1498,9 +1488,25 @@
       "gross_pnl": -0.017067870196677992,
       "fees": 0.005410240722118006,
       "net_pnl": -0.022478110918796
+    },
+    {
+      "symbol": "AVAX-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 6.496,
+      "stop": 6.5269642857142856,
+      "target": 6.434071428571429,
+      "quantity": 1.000615763546798,
+      "entry_candle": "2026-11-28T11:30:00+00:00",
+      "last_processed_candle": "2026-11-28T16:30:00+00:00",
+      "trade_id": "AVAX-SWAP-USDT:2026-11-28T11:30:00+00:00",
+      "exit": 6.434071428571429,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.061966704785362106,
+      "fees": 0.007762819977128783,
+      "net_pnl": 0.05420388480823332
     }
   ],
   "meta": {
-    "last_crypto_signal": "HYPE-SWAP-USDT:1795881600000"
+    "last_crypto_signal": "HYPE-SWAP-USDT:1795885200000"
   }
 }
