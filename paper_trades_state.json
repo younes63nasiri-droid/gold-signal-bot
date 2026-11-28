@@ -1,5 +1,5 @@
 {
-  "balance": 995.0560312709838,
+  "balance": 995.033553160065,
   "open": {
     "XAU-SWAP-USDT:2026-11-27T18:15:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -11,16 +11,6 @@
       "entry_candle": "2026-11-27T18:15:00+00:00",
       "last_processed_candle": "2026-11-28T14:45:00+00:00"
     },
-    "NVDA-SWAP-USDT:2026-11-28T08:30:00+00:00": {
-      "symbol": "NVDA-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 147.74,
-      "stop": 148.30035714285717,
-      "target": 146.61928571428572,
-      "quantity": 0.030458914308921076,
-      "entry_candle": "2026-11-28T08:30:00+00:00",
-      "last_processed_candle": "2026-11-28T13:45:00+00:00"
-    },
     "ANT-SWAP-USDT:2026-11-28T09:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
       "direction": "LONG",
@@ -29,7 +19,7 @@
       "target": 92.02071428571429,
       "quantity": 0.054842601733026214,
       "entry_candle": "2026-11-28T09:30:00+00:00",
-      "last_processed_candle": "2026-11-28T13:45:00+00:00"
+      "last_processed_candle": "2026-11-28T14:45:00+00:00"
     },
     "AVAX-SWAP-USDT:2026-11-28T11:30:00+00:00": {
       "symbol": "AVAX-SWAP-USDT",
@@ -39,7 +29,17 @@
       "target": 6.434071428571429,
       "quantity": 1.000615763546798,
       "entry_candle": "2026-11-28T11:30:00+00:00",
-      "last_processed_candle": "2026-11-28T13:45:00+00:00"
+      "last_processed_candle": "2026-11-28T14:45:00+00:00"
+    },
+    "SOL-SWAP-USDT:2026-11-28T14:45:00+00:00": {
+      "symbol": "SOL-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 70.55,
+      "stop": 70.93678571428572,
+      "target": 69.77642857142857,
+      "quantity": 0.01417434443656981,
+      "entry_candle": "2026-11-28T14:45:00+00:00",
+      "last_processed_candle": null
     }
   },
   "closed": [
@@ -1482,9 +1482,25 @@
       "gross_pnl": 0.01628043414491069,
       "fees": 0.0017902317395130534,
       "net_pnl": 0.014490202405397638
+    },
+    {
+      "symbol": "NVDA-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 147.74,
+      "stop": 148.30035714285717,
+      "target": 146.61928571428572,
+      "quantity": 0.030458914308921076,
+      "entry_candle": "2026-11-28T08:30:00+00:00",
+      "last_processed_candle": "2026-11-28T14:30:00+00:00",
+      "trade_id": "NVDA-SWAP-USDT:2026-11-28T08:30:00+00:00",
+      "exit": 148.30035714285717,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.017067870196677992,
+      "fees": 0.005410240722118006,
+      "net_pnl": -0.022478110918796
     }
   ],
   "meta": {
-    "last_crypto_signal": "NVDA-SWAP-USDT:1795874400000"
+    "last_crypto_signal": "SOL-SWAP-USDT:1795878000000"
   }
 }
