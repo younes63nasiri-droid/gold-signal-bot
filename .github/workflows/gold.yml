@@ -26,6 +26,6 @@ jobs:
 
       - name: Run gold signal bot
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.GOLD_TELEGRAM_BOT_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
         run: python gold2.py
