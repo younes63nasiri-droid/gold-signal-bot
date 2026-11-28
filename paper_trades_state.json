@@ -19,7 +19,7 @@
       "target": 92.02071428571429,
       "quantity": 0.054842601733026214,
       "entry_candle": "2026-11-28T09:30:00+00:00",
-      "last_processed_candle": "2026-11-28T14:45:00+00:00"
+      "last_processed_candle": "2026-11-28T15:45:00+00:00"
     },
     "AVAX-SWAP-USDT:2026-11-28T11:30:00+00:00": {
       "symbol": "AVAX-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 6.434071428571429,
       "quantity": 1.000615763546798,
       "entry_candle": "2026-11-28T11:30:00+00:00",
-      "last_processed_candle": "2026-11-28T14:45:00+00:00"
+      "last_processed_candle": "2026-11-28T15:45:00+00:00"
     },
     "SOL-SWAP-USDT:2026-11-28T14:45:00+00:00": {
       "symbol": "SOL-SWAP-USDT",
@@ -39,7 +39,7 @@
       "target": 69.77642857142857,
       "quantity": 0.01417434443656981,
       "entry_candle": "2026-11-28T14:45:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-28T15:45:00+00:00"
     }
   },
   "closed": [
@@ -1501,6 +1501,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "SOL-SWAP-USDT:1795878000000"
+    "last_crypto_signal": "HYPE-SWAP-USDT:1795881600000"
   }
 }
