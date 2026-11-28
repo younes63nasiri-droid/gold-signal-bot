@@ -19,7 +19,7 @@
       "target": 92.02071428571429,
       "quantity": 0.054842601733026214,
       "entry_candle": "2026-11-28T09:30:00+00:00",
-      "last_processed_candle": "2026-11-28T16:45:00+00:00"
+      "last_processed_candle": "2026-11-28T17:30:00+00:00"
     },
     "SOL-SWAP-USDT:2026-11-28T14:45:00+00:00": {
       "symbol": "SOL-SWAP-USDT",
@@ -29,7 +29,7 @@
       "target": 69.77642857142857,
       "quantity": 0.01417434443656981,
       "entry_candle": "2026-11-28T14:45:00+00:00",
-      "last_processed_candle": "2026-11-28T16:45:00+00:00"
+      "last_processed_candle": "2026-11-28T17:30:00+00:00"
     }
   },
   "closed": [
@@ -1507,6 +1507,6 @@
     }
   ],
   "meta": {
-    "last_crypto_signal": "HYPE-SWAP-USDT:1795885200000"
+    "last_crypto_signal": "HYPE-SWAP-USDT:1795887900000"
   }
 }
