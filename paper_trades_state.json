@@ -1,5 +1,5 @@
 {
-  "balance": 995.1023050509586,
+  "balance": 995.0560312709838,
   "open": {
     "XAU-SWAP-USDT:2026-11-27T18:15:00+00:00": {
       "symbol": "XAU-SWAP-USDT",
@@ -11,16 +11,6 @@
       "entry_candle": "2026-11-27T18:15:00+00:00",
       "last_processed_candle": "2026-11-28T13:45:00+00:00"
     },
-    "SOXS-SWAP-USDT:2026-11-28T05:00:00+00:00": {
-      "symbol": "SOXS-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 54.16,
-      "stop": 54.643214285714286,
-      "target": 53.193571428571424,
-      "quantity": 0.11078286558345643,
-      "entry_candle": "2026-11-28T05:00:00+00:00",
-      "last_processed_candle": "2026-11-28T12:30:00+00:00"
-    },
     "NVDA-SWAP-USDT:2026-11-28T08:30:00+00:00": {
       "symbol": "NVDA-SWAP-USDT",
       "direction": "SHORT",
@@ -29,7 +19,7 @@
       "target": 146.61928571428572,
       "quantity": 0.030458914308921076,
       "entry_candle": "2026-11-28T08:30:00+00:00",
-      "last_processed_candle": "2026-11-28T12:30:00+00:00"
+      "last_processed_candle": "2026-11-28T13:45:00+00:00"
     },
     "ANT-SWAP-USDT:2026-11-28T09:30:00+00:00": {
       "symbol": "ANT-SWAP-USDT",
@@ -39,7 +29,7 @@
       "target": 92.02071428571429,
       "quantity": 0.054842601733026214,
       "entry_candle": "2026-11-28T09:30:00+00:00",
-      "last_processed_candle": "2026-11-28T12:30:00+00:00"
+      "last_processed_candle": "2026-11-28T13:45:00+00:00"
     },
     "AVAX-SWAP-USDT:2026-11-28T11:30:00+00:00": {
       "symbol": "AVAX-SWAP-USDT",
@@ -49,17 +39,7 @@
       "target": 6.434071428571429,
       "quantity": 1.000615763546798,
       "entry_candle": "2026-11-28T11:30:00+00:00",
-      "last_processed_candle": "2026-11-28T12:30:00+00:00"
-    },
-    "ADA-SWAP-USDT:2026-11-28T12:30:00+00:00": {
-      "symbol": "ADA-SWAP-USDT",
-      "direction": "SHORT",
-      "entry": 0.1461,
-      "stop": 0.14689285714285716,
-      "target": 0.1445142857142857,
-      "quantity": 10.266940451745379,
-      "entry_candle": "2026-11-28T12:30:00+00:00",
-      "last_processed_candle": null
+      "last_processed_candle": "2026-11-28T13:45:00+00:00"
     }
   },
   "closed": [
@@ -1470,9 +1450,41 @@
       "gross_pnl": -0.05013578175138623,
       "fees": 0.007769918530949167,
       "net_pnl": -0.057905700282335396
+    },
+    {
+      "symbol": "SOXS-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 54.16,
+      "stop": 54.643214285714286,
+      "target": 53.193571428571424,
+      "quantity": 0.11078286558345643,
+      "entry_candle": "2026-11-28T05:00:00+00:00",
+      "last_processed_candle": "2026-11-28T13:30:00+00:00",
+      "trade_id": "SOXS-SWAP-USDT:2026-11-28T05:00:00+00:00",
+      "exit": 54.643214285714286,
+      "exit_reason": "STOP_LOSS",
+      "gross_pnl": -0.053531863262292076,
+      "fees": 0.007232119117957375,
+      "net_pnl": -0.06076398238024945
+    },
+    {
+      "symbol": "ADA-SWAP-USDT",
+      "direction": "SHORT",
+      "entry": 0.1461,
+      "stop": 0.14689285714285716,
+      "target": 0.1445142857142857,
+      "quantity": 10.266940451745379,
+      "entry_candle": "2026-11-28T12:30:00+00:00",
+      "last_processed_candle": "2026-11-28T13:45:00+00:00",
+      "trade_id": "ADA-SWAP-USDT:2026-11-28T12:30:00+00:00",
+      "exit": 0.1445142857142857,
+      "exit_reason": "TAKE_PROFIT",
+      "gross_pnl": 0.01628043414491069,
+      "fees": 0.0017902317395130534,
+      "net_pnl": 0.014490202405397638
     }
   ],
   "meta": {
-    "last_crypto_signal": "ADA-SWAP-USDT:1795869900000"
+    "last_crypto_signal": "NVDA-SWAP-USDT:1795874400000"
   }
 }
